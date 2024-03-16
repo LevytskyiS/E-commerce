@@ -1,3 +1,18 @@
-from django.shortcuts import render
+from rest_framework import generics
 
-# Create your views here.
+from products.models import AttributeName
+from .serializers import AttributeNameSerializer
+
+
+class AttributeNameCreateAPIView(generics.CreateAPIView):
+    serializer_class = AttributeNameSerializer
+
+
+class AttributeNameGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = AttributeName.objects.all()
+    serializer_class = AttributeNameSerializer
+
+
+class AttributeNameListAPIView(generics.ListAPIView):
+    queryset = AttributeName.objects.all()
+    serializer_class = AttributeNameSerializer
