@@ -10,6 +10,12 @@ urlpatterns = [
     path(
         "attributename/<int:pk>/", views.AttributeNameGetUpdateDestroyAPIView.as_view()
     ),
-    path("attributename_list/", views.AttributeNameListAPIView.as_view()),
+    path("attributenames/", views.AttributeNameListAPIView.as_view()),
     # AttributeValue Objects
+    path("attributevalue/", views.AttributeValueCreateAPIView.as_view()),
+    path(
+        "attributevalue/<int:pk>/",
+        views.AttributeValueGetUpdateDestroyAPIView.as_view(),
+    ),
+    path("attributevalues/", views.AttributeValueListAPIView.as_view()),
 ]

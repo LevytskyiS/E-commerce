@@ -14,7 +14,7 @@ class AttributeNameAPITest(TestCase):
         self.client = APIClient()
         self.post_url = "/api/v1/attributename/"
         self.RUD_url = "/api/v1/attributename/<int:pk>/"
-        self.get_list_url = "/api/v1/attributename_list/"
+        self.get_list_url = "/api/v1/attributenames/"
 
     def perform_post(self, data):
         response = self.client.post(
