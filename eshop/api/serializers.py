@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from products.models import AttributeName, AttributeValue, Attribute
+from products.models import AttributeName, AttributeValue, Attribute, Brand
 
 
 class AttributeNameSerializer(serializers.ModelSerializer):
@@ -20,4 +20,10 @@ class AttributeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attribute
         fields = ("id", "attribute_name", "attribute_value")
-        # depth = 1
+
+
+class BrandSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Brand
+        fields = ("id", "name")
