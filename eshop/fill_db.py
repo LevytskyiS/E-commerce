@@ -9,7 +9,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "eshop.settings")
 # Call the django.setup() function before accessing Django settings.
 django.setup()
 
-from products.models import AttributeName, AttributeValue, Attribute
+from products.models import AttributeName, AttributeValue, Attribute, Brand
 
 attr_names = ["color", "certificate"]
 attr_values = [
@@ -27,6 +27,14 @@ attr_values = [
     },
     {"certificate": ["OEKO", "TEX", "WTF-6", "OMG"]},
 ]
+brands = [
+    "Nike",
+    "Abibas",
+    "Converse",
+    "Under Armour",
+    "Reebok",
+    "New Balance",
+]
 
 
 def create_attribute_names(names):
@@ -39,9 +47,10 @@ def create_attribute_values(attr_values: list) -> None:
     for attr_value in attr_values:
         for value in attr_value.values():
             for item in value:
-                requests.post(
-                    "http://127.0.0.1:8000/api/v1/attributevalue/", data={"value": item}
-                )
+                AttributeValue.objects.create(value=item)
+                # requests.post(
+                #     "http://127.0.0.1:8000/api/v1/attributevalue/", data={"value": item}
+                # )
 
 
 def create_attributes(names, values):
@@ -64,6 +73,12 @@ def create_attributes(names, values):
                 attribute.save()
 
 
+def create_brands(brands):
+    for brand in brands:
+        Brand.objects.create(name=brand)
+
+
 create_attribute_names(attr_names)
 create_attribute_values(attr_values)
-# create_attributes(attr_names, attr_values)
+create_attributes(attr_names, attr_values)
+create_brands(brands)
