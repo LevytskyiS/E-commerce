@@ -1,7 +1,12 @@
 from rest_framework import generics
+from rest_framework import viewsets
 
-from products.models import AttributeName, AttributeValue
-from .serializers import AttributeNameSerializer, AttributeValueSerializer
+from products.models import AttributeName, AttributeValue, Attribute
+from .serializers import (
+    AttributeNameSerializer,
+    AttributeValueSerializer,
+    AttributeSerializer,
+)
 
 
 # AttributeName
@@ -32,3 +37,13 @@ class AttributeValueGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
 class AttributeValueListAPIView(generics.ListAPIView):
     queryset = AttributeValue.objects.all()
     serializer_class = AttributeValueSerializer
+
+
+# Attribute + ModelViewSet for RUD requests
+class AttributeCreateAPIView(generics.CreateAPIView):
+    serializer_class = AttributeSerializer
+
+
+class AttributeAPIViewSet(viewsets.ModelViewSet):
+    queryset = Attribute.objects.all()
+    serializer_class = AttributeSerializer

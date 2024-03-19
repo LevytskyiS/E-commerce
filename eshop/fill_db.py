@@ -64,6 +64,6 @@ def create_attributes(names, values):
                 attribute.save()
 
 
-# create_attribute_names(attr_names)
-# create_attribute_values(attr_values)
+create_attribute_names(attr_names)
+create_attribute_values(attr_values)
 # create_attributes(attr_names, attr_values)

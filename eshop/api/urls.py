@@ -18,4 +18,17 @@ urlpatterns = [
         views.AttributeValueGetUpdateDestroyAPIView.as_view(),
     ),
     path("attributevalues/", views.AttributeValueListAPIView.as_view()),
+    # Attribute Objects
+    path("attributes/", views.AttributeAPIViewSet.as_view({"get": "list"})),
+    path("attribute/", views.AttributeCreateAPIView.as_view()),
+    path(
+        "attribute/<int:pk>/",
+        views.AttributeAPIViewSet.as_view(
+            {
+                "get": "retrieve",
+                "patch": "partial_update",
+                "delete": "destroy",
+            }
+        ),
+    ),
 ]
