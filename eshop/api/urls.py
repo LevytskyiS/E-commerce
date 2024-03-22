@@ -35,4 +35,8 @@ urlpatterns = [
     path("brand/", views.BrandCreateAPIView.as_view()),
     path("brand/<int:pk>/", views.BrandGetUpdateDestroyAPIView.as_view()),
     path("brands/", views.BrandListAPIView.as_view()),
+    # Product Objects
+    path("product/", views.ProductCreateAPIView.as_view()),
+    path("product/<int:pk>/", views.ProductGetUpdateDestroyAPIView.as_view()),
+    path("products/", views.ProductListAPIView.as_view()),
 ]

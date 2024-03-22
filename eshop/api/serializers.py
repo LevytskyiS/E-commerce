@@ -1,15 +1,25 @@
 from rest_framework import serializers
 
-from products.models import AttributeName, AttributeValue, Attribute, Brand
+from products.models import (
+    AttributeName,
+    AttributeValue,
+    Attribute,
+    Brand,
+    Product,
+    Image,
+    ProductImage,
+)
 
 
 class AttributeNameSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = AttributeName
         fields = ("id", "name")
 
 
 class AttributeValueSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = AttributeValue
         fields = ("id", "value")
@@ -27,3 +37,10 @@ class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
         fields = ("id", "name")
+
+
+class ProductSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Product
+        fields = "__all__"

@@ -1,12 +1,13 @@
 from rest_framework import generics
 from rest_framework import viewsets
 
-from products.models import AttributeName, AttributeValue, Attribute, Brand
+from products.models import AttributeName, AttributeValue, Attribute, Brand, Product
 from .serializers import (
     AttributeNameSerializer,
     AttributeValueSerializer,
     AttributeSerializer,
     BrandSerializer,
+    ProductSerializer,
 )
 
 
@@ -63,3 +64,18 @@ class BrandGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 class BrandListAPIView(generics.ListAPIView):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
+
+
+# Products
+class ProductCreateAPIView(generics.CreateAPIView):
+    serializer_class = ProductSerializer
+
+
+class ProductGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+
+class ProductListAPIView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
