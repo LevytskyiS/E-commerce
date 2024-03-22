@@ -64,13 +64,24 @@ class ProductImageSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
 
     total_price = serializers.SerializerMethodField()
+    order_item_ids = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
-        fields = ("id", "number", "created_at", "updated_at", "total_price")
+        fields = (
+            "id",
+            "number",
+            "created_at",
+            "updated_at",
+            "order_item_ids",
+            "total_price",
+        )
 
     def get_total_price(self, obj: Order):
         return obj.total_price()
+
+    def get_order_item_ids(self, obj: Order):
+        return [item.id for item in obj.items.all()]
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
