@@ -133,11 +133,28 @@ def create_order():
         Order.objects.create(number=number)
 
 
-# create_attribute_names(attr_names)
-# create_attribute_values(attr_values)
-# create_attributes(attr_names, attr_values)
-# create_brands(brands)
-# create_images()
-# create_products()
-# creade_product_images()
-# create_order()
+def create_order_items():
+    orders = Order.objects.all()
+
+    for order in orders:
+        number_of_products = random.randint(1, 5)
+
+        for i in range(1, number_of_products + 1):
+            product = random.choice(Product.objects.all())
+            quantity = random.randint(1, 4)
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                quantity=quantity,
+            )
+
+
+create_attribute_names(attr_names)
+create_attribute_values(attr_values)
+create_attributes(attr_names, attr_values)
+create_brands(brands)
+create_images()
+create_products()
+creade_product_images()
+create_order()
+create_order_items()
