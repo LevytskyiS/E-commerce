@@ -1,5 +1,6 @@
 import os
 import random
+import math
 
 import django
 import requests
@@ -125,10 +126,10 @@ def creade_product_images():
         )
 
 
-create_attribute_names(attr_names)
-create_attribute_values(attr_values)
-create_attributes(attr_names, attr_values)
-create_brands(brands)
-create_images()
-create_products()
-creade_product_images()
+# create_attribute_names(attr_names)
+# create_attribute_values(attr_values)
+# create_attributes(attr_names, attr_values)
+# create_brands(brands)
+# create_images()
+# create_products()
+# creade_product_images()

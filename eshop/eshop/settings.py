@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # apps
     "api",
     "products",
+    "orders",
     # installed packages
     "rest_framework",
     "django_extensions",
