@@ -1,4 +1,5 @@
 import os
+import random
 
 import django
 import requests
@@ -9,7 +10,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "eshop.settings")
 # Call the django.setup() function before accessing Django settings.
 django.setup()
 
-from products.models import AttributeName, AttributeValue, Attribute, Brand
+from products.models import AttributeName, AttributeValue, Attribute, Brand, Product
 
 attr_names = ["color", "certificate"]
 attr_values = [
@@ -78,7 +79,20 @@ def create_brands(brands):
         Brand.objects.create(name=brand)
 
 
+def create_products():
+    code = "TX"
+    for i in range(1, 51):
+        name = f"{code}{i}"
+        brand = random.choice(Brand.objects.all())
+        price = random.choice([i for i in range(20, 200)])
+        attibute = random.choice(Attribute.objects.all())
+        product = Product.objects.create(name=name, brand=brand, price=price)
+        product.attributes.add(attibute)
+        product.save()
+
+
 create_attribute_names(attr_names)
 create_attribute_values(attr_values)
 create_attributes(attr_names, attr_values)
 create_brands(brands)
+create_products()

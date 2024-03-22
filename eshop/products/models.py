@@ -66,6 +66,7 @@ class Product(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(0, "The price must be equal or greater than 0.")],
     )
+    attributes = models.ManyToManyField(Attribute, related_name="products")
 
     def __str__(self):
         return self.name
