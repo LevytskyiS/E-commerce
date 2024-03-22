@@ -9,6 +9,7 @@ from products.models import (
     Image,
     ProductImage,
 )
+from orders.models import Order, OrderItem
 
 
 class AttributeNameSerializer(serializers.ModelSerializer):
@@ -58,3 +59,10 @@ class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
         fields = "__all__"
+
+
+class OrderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Order
+        fields = ("id", "number", "created_at", "updated_at")

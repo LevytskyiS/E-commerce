@@ -10,6 +10,7 @@ from products.models import (
     Image,
     ProductImage,
 )
+from orders.models import Order, OrderItem
 from .serializers import (
     AttributeNameSerializer,
     AttributeValueSerializer,
@@ -18,6 +19,7 @@ from .serializers import (
     ProductSerializer,
     ImageSerializer,
     ProductImageSerializer,
+    OrderSerializer,
 )
 
 
@@ -119,3 +121,18 @@ class ProductImageGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
 class ProductImageListAPIView(generics.ListAPIView):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
+
+
+# Order
+class OrderCreateAPIView(generics.CreateAPIView):
+    serializer_class = OrderSerializer
+
+
+class OrderGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
+class OrderListAPIView(generics.ListAPIView):
+    queryset = Order.objects.all().order_by("id")
+    serializer_class = OrderSerializer

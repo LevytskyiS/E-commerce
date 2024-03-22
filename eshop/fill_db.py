@@ -21,6 +21,7 @@ from products.models import (
     Image,
     ProductImage,
 )
+from orders.models import Order, OrderItem
 
 attr_names = ["color", "certificate"]
 attr_values = [
@@ -126,6 +127,12 @@ def creade_product_images():
         )
 
 
+def create_order():
+    for i in range(100, 121):
+        number = f"KT{i}"
+        Order.objects.create(number=number)
+
+
 # create_attribute_names(attr_names)
 # create_attribute_values(attr_values)
 # create_attributes(attr_names, attr_values)
@@ -133,3 +140,4 @@ def creade_product_images():
 # create_images()
 # create_products()
 # creade_product_images()
+# create_order()
