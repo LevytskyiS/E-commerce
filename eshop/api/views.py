@@ -20,6 +20,7 @@ from .serializers import (
     ImageSerializer,
     ProductImageSerializer,
     OrderSerializer,
+    OrderItemSerializer,
 )
 
 
@@ -136,3 +137,18 @@ class OrderGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 class OrderListAPIView(generics.ListAPIView):
     queryset = Order.objects.all().order_by("id")
     serializer_class = OrderSerializer
+
+
+# OrderItem
+class OrderItemCreateAPIView(generics.CreateAPIView):
+    serializer_class = OrderItemSerializer
+
+
+class OrderItemGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = OrderItem.objects.all().order_by("id")
+    serializer_class = OrderItemSerializer
+
+
+class OrderItemListAPIView(generics.ListAPIView):
+    queryset = OrderItem.objects.all().order_by("id")
+    serializer_class = OrderItemSerializer

@@ -31,4 +31,6 @@ class OrderItem(models.Model):
         return self.quantity * self.product.price
 
     def __str__(self):
-        return f"{self.product.name} ({self.quantity} units)"
+        return (
+            f"OrderItem {self.order}: Order {self.product.name} ({self.quantity} units)"
+        )
