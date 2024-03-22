@@ -1,13 +1,23 @@
 from rest_framework import generics
 from rest_framework import viewsets
 
-from products.models import AttributeName, AttributeValue, Attribute, Brand, Product
+from products.models import (
+    AttributeName,
+    AttributeValue,
+    Attribute,
+    Brand,
+    Product,
+    Image,
+    ProductImage,
+)
 from .serializers import (
     AttributeNameSerializer,
     AttributeValueSerializer,
     AttributeSerializer,
     BrandSerializer,
     ProductSerializer,
+    ImageSerializer,
+    ProductImageSerializer,
 )
 
 
@@ -66,7 +76,7 @@ class BrandListAPIView(generics.ListAPIView):
     serializer_class = BrandSerializer
 
 
-# Products
+# Product
 class ProductCreateAPIView(generics.CreateAPIView):
     serializer_class = ProductSerializer
 
@@ -79,3 +89,33 @@ class ProductGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+
+# Image
+class ImageCreateAPIView(generics.CreateAPIView):
+    serializer_class = ImageSerializer
+
+
+class ImageGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+
+
+class ImageListAPIView(generics.ListAPIView):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+
+
+# ProductImage
+class ProductImageCreateAPIView(generics.CreateAPIView):
+    serializer_class = ProductImageSerializer
+
+
+class ProductImageGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageSerializer
+
+
+class ProductImageListAPIView(generics.ListAPIView):
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageSerializer

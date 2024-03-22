@@ -10,7 +10,16 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "eshop.settings")
 # Call the django.setup() function before accessing Django settings.
 django.setup()
 
-from products.models import AttributeName, AttributeValue, Attribute, Brand, Product
+from eshop.settings import PIXABAY_API_KEY
+from products.models import (
+    AttributeName,
+    AttributeValue,
+    Attribute,
+    Brand,
+    Product,
+    Image,
+    ProductImage,
+)
 
 attr_names = ["color", "certificate"]
 attr_values = [
@@ -79,6 +88,20 @@ def create_brands(brands):
         Brand.objects.create(name=brand)
 
 
+def create_images():
+    response = requests.get(
+        f"https://pixabay.com/api/?key={PIXABAY_API_KEY}&q=fashion&image_type=photo"
+    )
+    hits = response.json()["hits"]
+    counter = 1
+
+    for data in hits:
+        image = data.get("largeImageURL")
+        name = f"image{counter}"
+        Image.objects.create(name=name, image=image)
+        counter += 1
+
+
 def create_products():
     code = "TX"
     for i in range(1, 51):
@@ -91,8 +114,21 @@ def create_products():
         product.save()
 
 
+def creade_product_images():
+    products = Product.objects.all()
+    images = Image.objects.all()
+    counter = 1
+
+    for product in products:
+        ProductImage.objects.create(
+            name=f"Prod photo {counter}", product=product, image=random.choice(images)
+        )
+
+
 create_attribute_names(attr_names)
 create_attribute_values(attr_values)
 create_attributes(attr_names, attr_values)
 create_brands(brands)
+create_images()
 create_products()
+creade_product_images()
