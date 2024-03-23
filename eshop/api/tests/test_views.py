@@ -1,14 +1,14 @@
 import json
+from datetime import datetime
 
 from django.test import TestCase
 from django.forms.models import model_to_dict
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 from rest_framework import status
-from requests.auth import HTTPBasicAuth
 
 from products.models import AttributeName
-from orders.models import OrderItem
+from orders.models import OrderItem, Order
 
 
 class AttributeNameAPITest(TestCase):
@@ -98,6 +98,33 @@ class AttributeNameAPITest(TestCase):
         self.assertEqual(len(AttributeName.objects.filter(name="Market")), 0)
 
 
+class OrderAPITest(TestCase):
+    def setUp(self) -> None:
+        Order.objects.create(number="KT987654")
+        self.client = APIClient()
+
+    def perform_patch(self, data, id):
+        url = f"/api/v1/order/{id}/"
+        response = self.client.patch(
+            url, data=json.dumps(data), content_type="application/json"
+        )
+        return response
+
+    # def test_update(self):
+    #     order = Order.objects.first()
+    #     data = {"number": "123"}
+    #     response = self.perform_patch(data, order.id)
+
+    #     created_at = response.json()["created_at"]
+    #     _updated_at = response.json()["updated_at"]
+    #     obj_id = response.json()["id"]
+
+    #     updated_at = datetime.strptime(_updated_at, "%Y-%m-%dT%H:%M:%S.%fZ")
+    #     print(order.updated_at, updated_at)
+    #     self.assertEqual(obj_id, order.id)
+    #     self.assertNotEqual(updated_at, order.updated_at)
+
+
 class OrderItemAPITest(TestCase):
     def setUp(self) -> None:
         AttributeName.objects.create(name="color")
@@ -105,9 +132,6 @@ class OrderItemAPITest(TestCase):
         self.user.set_password("admin")
         self.user.save()
         self.client = APIClient()
-        # self.client.credentials(
-        #     HTTP_AUTHORIZATION="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzExMTkxNjc2LCJpYXQiOjE3MTExOTEzNzYsImp0aSI6ImYwMzRlODI3ZWZkNDQ1YzRhNzE4ZGI4ODg2ZGJiMDZkIiwidXNlcl9pZCI6MX0.QYHBPEOyaVyrWfmkTcUUuSGJIXA1_xvfMnazqFGXvks"
-        # )
 
     def get_token(self):
         response = self.client.post(
@@ -122,6 +146,4 @@ class OrderItemAPITest(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens['access']}")
         url = "/api/v1/attributenames/"
         response = self.client.get(url, content_type="application/json")
-        print(response.json())
-        # print(response.json())
-        # print(response)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
