@@ -6,10 +6,40 @@ services:
     environment:
       POSTGRES_PASSWORD: ${PASSWORD}
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - ./db:/var/lib/postgresql/data
+  
+  webapp:
+    restart: always
+    build:
+      context: ./
+    ports: 
+      - "8000:8000"
+    depends_on:
+      - postgres
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
   redis:
     image: redis
     ports:
       - "6379:6379"
+    restart: always
+
+  worker:
+    restart: always
+    build:
+      context: ./
+    depends_on:
+      - webapp
+    command: celery -A eshop worker -l info
+
+  flower:
+    build:
+      context: ./
+    restart: always
+    depends_on:
+      - worker
+    ports: 
+      - "5555:5555"
+    command: celery -A eshop flower -l info
