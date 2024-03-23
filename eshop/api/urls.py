@@ -54,6 +54,13 @@ urlpatterns = [
     path("productimage/", views.ProductImageCreateAPIView.as_view()),
     path("productimage/<int:pk>/", views.ProductImageGetUpdateDestroyAPIView.as_view()),
     path("productimages/", views.ProductImageListAPIView.as_view()),
+    # ShippingAddress Objects
+    path("shipping_address/", views.ShippingAddressCreateAPIView.as_view()),
+    path(
+        "shipping_address/<int:pk>/",
+        views.ShippingAddressGetUpdateDestroyAPIView.as_view(),
+    ),
+    path("shipping_addresses/", views.ShippingAddressListAPIView.as_view()),
     # Order Objects
     path("order/", views.OrderCreateAPIView.as_view()),
     path("order/<int:pk>/", views.OrderGetUpdateDestroyAPIView.as_view()),

@@ -11,7 +11,7 @@ from products.models import (
     Image,
     ProductImage,
 )
-from orders.models import Order, OrderItem
+from orders.models import Order, OrderItem, ShippingAddress
 from .serializers import (
     AttributeNameSerializer,
     AttributeValueSerializer,
@@ -22,6 +22,7 @@ from .serializers import (
     ProductImageSerializer,
     OrderSerializer,
     OrderItemSerializer,
+    ShippingAddressSerializer,
 )
 
 
@@ -125,6 +126,21 @@ class ProductImageGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
 class ProductImageListAPIView(generics.ListAPIView):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
+
+
+# ShippingAddress
+class ShippingAddressCreateAPIView(generics.CreateAPIView):
+    serializer_class = ShippingAddressSerializer
+
+
+class ShippingAddressGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ShippingAddress.objects.all()
+    serializer_class = ShippingAddressSerializer
+
+
+class ShippingAddressListAPIView(generics.ListAPIView):
+    queryset = ShippingAddress.objects.all().order_by("id")
+    serializer_class = ShippingAddressSerializer
 
 
 # Order

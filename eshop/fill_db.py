@@ -6,10 +6,13 @@ import django
 import requests
 
 from django.conf import settings
+from faker import Faker
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "eshop.settings")
 # Call the django.setup() function before accessing Django settings.
 django.setup()
+
+from django.contrib.auth.models import User
 
 from eshop.settings import PIXABAY_API_KEY
 from products.models import (
@@ -21,8 +24,10 @@ from products.models import (
     Image,
     ProductImage,
 )
-from orders.models import Order, OrderItem
+from orders.models import Order, OrderItem, ShippingAddress
 
+
+faker = Faker()
 attr_names = ["color", "certificate"]
 attr_values = [
     {
@@ -47,6 +52,25 @@ brands = [
     "Reebok",
     "New Balance",
 ]
+
+
+def create_users():
+    names = set()
+
+    while len(names) < 10:
+        name = faker.first_name()
+        names.add(name)
+
+    admin = User.objects.create(username="admin", email="lol@gmail.com")
+    admin.set_password("admin")
+    admin.save()
+
+    for name in names:
+        email = faker.email()
+        password = faker.password()
+        user = User.objects.create(username=name, email=email)
+        user.set_password(password)
+        user.save()
 
 
 def create_attribute_names(names):
@@ -127,10 +151,41 @@ def creade_product_images():
         )
 
 
+def create_shipping_address():
+    for _ in range(10):
+        user = random.choice(User.objects.all())
+        city = faker.city()
+        street = faker.street_name()
+        house_number = int(faker.building_number())
+        apartment = faker.building_number()
+        country_code = faker.country_code()
+        zipcode = faker.postcode()
+
+        ShippingAddress.objects.create(
+            user=user,
+            city=city,
+            street=street,
+            house_number=house_number,
+            apartment=apartment,
+            country_code=country_code,
+            zipcode=zipcode,
+        )
+    # city = models.CharField(max_length=256)
+    # street = models.CharField(max_length=256)
+    # house_number = models.IntegerField()
+    # apartment = models.CharField(max_length=10)
+    # country_code = models.CharField(max_length=2)
+    # zipcode = models.CharField(max_length=8)
+
+
 def create_order():
     for i in range(100, 121):
         number = f"KT{i}"
-        Order.objects.create(number=number)
+        Order.objects.create(
+            number=number,
+            user=random.choice(User.objects.all()),
+            shipping_address=random.choice(ShippingAddress.objects.all()),
+        )
 
 
 def create_order_items():
@@ -149,6 +204,7 @@ def create_order_items():
             )
 
 
+create_users()
 create_attribute_names(attr_names)
 create_attribute_values(attr_values)
 create_attributes(attr_names, attr_values)
@@ -156,5 +212,6 @@ create_brands(brands)
 create_images()
 create_products()
 creade_product_images()
+create_shipping_address()
 create_order()
 create_order_items()

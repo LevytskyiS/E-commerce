@@ -9,7 +9,7 @@ from products.models import (
     Image,
     ProductImage,
 )
-from orders.models import Order, OrderItem
+from orders.models import Order, OrderItem, ShippingAddress
 
 
 class AttributeNameSerializer(serializers.ModelSerializer):
@@ -61,16 +61,26 @@ class ProductImageSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class ShippingAddressSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ShippingAddress
+        fields = "__all__"
+
+
 class OrderSerializer(serializers.ModelSerializer):
 
     total_price = serializers.SerializerMethodField()
     order_item_ids = serializers.SerializerMethodField()
 
     class Meta:
+        # depth = 1
         model = Order
         fields = (
             "id",
             "number",
+            "user",
+            "shipping_address",
             "created_at",
             "updated_at",
             "order_item_ids",
