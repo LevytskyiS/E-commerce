@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_extensions",
     "rest_framework_simplejwt",
+    "django_celery_results",
 ]
 
 MIDDLEWARE = [
@@ -172,4 +173,13 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 PIXABAY_API_KEY = env("PIXABAY_API_KEY")
 
+# Вместо 127... поменять на redis, когда буду запускать приложение в dockere тоже
+CELERY_CACHE_BACKEND = "django-cache"
 CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://redis:6379/1",
+    }
+}
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/2"
