@@ -2,10 +2,13 @@ import json
 
 from django.test import TestCase
 from django.forms.models import model_to_dict
-
+from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 from rest_framework import status
+from requests.auth import HTTPBasicAuth
+
 from products.models import AttributeName
+from orders.models import OrderItem
 
 
 class AttributeNameAPITest(TestCase):
@@ -93,3 +96,32 @@ class AttributeNameAPITest(TestCase):
         response = self.perform_delete(new_obj.id)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(len(AttributeName.objects.filter(name="Market")), 0)
+
+
+class OrderItemAPITest(TestCase):
+    def setUp(self) -> None:
+        AttributeName.objects.create(name="color")
+        self.user = User.objects.create(username="admin", email="lol@gmail.com")
+        self.user.set_password("admin")
+        self.user.save()
+        self.client = APIClient()
+        # self.client.credentials(
+        #     HTTP_AUTHORIZATION="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzExMTkxNjc2LCJpYXQiOjE3MTExOTEzNzYsImp0aSI6ImYwMzRlODI3ZWZkNDQ1YzRhNzE4ZGI4ODg2ZGJiMDZkIiwidXNlcl9pZCI6MX0.QYHBPEOyaVyrWfmkTcUUuSGJIXA1_xvfMnazqFGXvks"
+        # )
+
+    def get_token(self):
+        response = self.client.post(
+            "/api/v1/token/",
+            content_type="application/json",
+            data=json.dumps({"username": self.user.username, "password": "admin"}),
+        )
+        return response.json()
+
+    def test_get_otderitem_list(self):
+        tokens = self.get_token()
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens['access']}")
+        url = "/api/v1/attributenames/"
+        response = self.client.get(url, content_type="application/json")
+        print(response.json())
+        # print(response.json())
+        # print(response)

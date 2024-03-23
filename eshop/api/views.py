@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from products.models import (
     AttributeName,
@@ -37,6 +38,8 @@ class AttributeNameGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
 class AttributeNameListAPIView(generics.ListAPIView):
     queryset = AttributeName.objects.all()
     serializer_class = AttributeNameSerializer
+    # For testing
+    permission_classes = [IsAuthenticated]
 
 
 # AttributeValue
