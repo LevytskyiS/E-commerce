@@ -1,0 +1,9 @@
+db/
+redis/
+venv/
+celerybeat-schedule.bak
+celerybeat-schedule.dat
+celerybeat-schedule.dir
+flower.bak
+flower.dat
+flower.dir
