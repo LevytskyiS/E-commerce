@@ -62,6 +62,8 @@ def create_users():
         names.add(name)
 
     admin = User.objects.create(username="admin", email="lol@gmail.com")
+    admin.is_staff = True
+    admin.is_superuser = True
     admin.set_password("admin")
     admin.save()
 

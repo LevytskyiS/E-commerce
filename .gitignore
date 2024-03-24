@@ -154,3 +154,7 @@ cython_debug/
 # Project files
 steps.txt
 eshop/db
+eshop/redis
+eshop/celerybeat-schedule.bak
+eshop/celerybeat-schedule.dat
+eshop/celerybeat-schedule.dir
