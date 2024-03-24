@@ -11,16 +11,17 @@ from products.models import Product, Brand
 
 @app.task
 def place_order():
-    print("PLACED ORDER")
     ship_address = ShippingAddress.objects.first()
     user = User.objects.first()
+
     try:
         order = Order.objects.create(
             shipping_address=ship_address,
             user=user,
-            number=f"KT{random.randint(100, 9999)}",
+            number=f"KT{random.randint(100000, 999999)}",
         )
     except Exception as e:
         print(e)
         return "Something went wrong!"
+
     return model_to_dict(order)
