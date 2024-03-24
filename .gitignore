@@ -158,3 +158,9 @@ eshop/redis
 eshop/celerybeat-schedule.bak
 eshop/celerybeat-schedule.dat
 eshop/celerybeat-schedule.dir
+eshop/flower_db.bak
+eshop/flower_db.dat
+eshop/flower_db.dir
+eshop/flower.bak
+eshop/flower.dat
+eshop/flower.dir
