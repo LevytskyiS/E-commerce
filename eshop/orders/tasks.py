@@ -3,16 +3,47 @@ import random
 from django.contrib.auth.models import User
 from django.forms.models import model_to_dict
 from celery import shared_task
+from faker import Faker
 
 from eshop.celery import app
 from .models import Order, OrderItem, ShippingAddress
 from products.models import Product, Brand
 
+faker = Faker()
+
+
+@app.task
+def add_shipping_address():
+    number_of_addresses = random.randint(2, 5)
+    addresses = []
+
+    for _ in range(1, number_of_addresses + 1):
+        user = random.choice(User.objects.all())
+        city = faker.city()
+        street = faker.street_name()
+        house_number = int(faker.building_number())
+        apartment = faker.building_number()
+        country_code = faker.country_code()
+        zipcode = faker.postcode()
+
+        address = ShippingAddress.objects.create(
+            user=user,
+            city=city,
+            street=street,
+            house_number=house_number,
+            apartment=apartment,
+            country_code=country_code,
+            zipcode=zipcode,
+        )
+        addresses.append(model_to_dict(address))
+
+    return addresses
+
 
 def create_order():
-
     address = random.choice(ShippingAddress.objects.all())
     user = random.choice(User.objects.all())
+
     try:
         order = Order.objects.create(
             shipping_address=address,
