@@ -23,8 +23,12 @@ app.conf.beat_schedule = {
         "task": "orders.tasks.place_order",
         "schedule": crontab(minute="*/30", hour="8-19"),
     },
+    # "task2": {
+    #     "task": "orders.tasks.add_shipping_address",
+    #     "schedule": crontab(minute="*/60", hour="12-14", day_of_week="1"),
+    # },
     "task2": {
-        "task": "orders.tasks.add_shipping_address",
-        "schedule": crontab(minute="*/60", hour="12-14", day_of_week="1"),
+        "task": "orders.tasks.create_users",
+        "schedule": crontab(minute="*/60", hour="12-14", day_of_week="1,3"),
     },
 }

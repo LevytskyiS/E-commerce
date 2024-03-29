@@ -2,42 +2,41 @@ import random
 
 from django.contrib.auth.models import User
 from django.forms.models import model_to_dict
-from celery import shared_task
 from faker import Faker
 
 from eshop.celery import app
 from .models import Order, OrderItem, ShippingAddress
-from products.models import Product, Brand
+from products.models import Product
 
 faker = Faker()
 
 
-@app.task
-def add_shipping_address():
-    number_of_addresses = random.randint(2, 5)
-    addresses = []
+# @app.task
+# def add_shipping_address():
+#     number_of_addresses = random.randint(2, 5)
+#     addresses = []
 
-    for _ in range(1, number_of_addresses + 1):
-        user = random.choice(User.objects.all())
-        city = faker.city()
-        street = faker.street_name()
-        house_number = int(faker.building_number())
-        apartment = faker.building_number()
-        country_code = faker.country_code()
-        zipcode = faker.postcode()
+#     for _ in range(1, number_of_addresses + 1):
+#         user = random.choice(User.objects.all())
+#         city = faker.city()
+#         street = faker.street_name()
+#         house_number = int(faker.building_number())
+#         apartment = faker.building_number()
+#         country_code = faker.country_code()
+#         zipcode = faker.postcode()
 
-        address = ShippingAddress.objects.create(
-            user=user,
-            city=city,
-            street=street,
-            house_number=house_number,
-            apartment=apartment,
-            country_code=country_code,
-            zipcode=zipcode,
-        )
-        addresses.append(model_to_dict(address))
+#         address = ShippingAddress.objects.create(
+#             user=user,
+#             city=city,
+#             street=street,
+#             house_number=house_number,
+#             apartment=apartment,
+#             country_code=country_code,
+#             zipcode=zipcode,
+#         )
+#         addresses.append(model_to_dict(address))
 
-    return addresses
+#     return addresses
 
 
 def create_order():
@@ -51,7 +50,6 @@ def create_order():
             number=f"KT{random.randint(100000, 999999)}",
         )
     except Exception as e:
-        print(e)
         return None
 
     return order
@@ -89,3 +87,24 @@ def place_order():
         )
 
     return placed_orders
+
+
+@app.task
+def create_users():
+    number_of_new_users = random.randint(2, 5)
+    new_users = []
+    names = set()
+
+    while len(names) < number_of_new_users:
+        name = faker.first_name()
+        names.add(name)
+
+    for name in names:
+        email = faker.email()
+        password = faker.password()
+        user = User.objects.create(username=name, email=email)
+        user.set_password(password)
+        user.save()
+        new_users.append(model_to_dict(user))
+
+    return new_users
