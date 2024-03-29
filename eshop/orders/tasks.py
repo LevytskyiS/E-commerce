@@ -47,7 +47,7 @@ def create_order():
         order = Order.objects.create(
             shipping_address=address,
             user=user,
-            code=f"KT{random.randint(100000, 999999)}",
+            code=f"MM{random.randint(100000, 999999)}",
         )
     except Exception as e:
         return None

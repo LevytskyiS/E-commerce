@@ -495,7 +495,7 @@ def create_shipping_address():
 
 def create_order():
     for i in range(100, 121):
-        code = f"KT{i}"
+        code = f"MM{i}"
         Order.objects.create(
             code=code,
             user=random.choice(User.objects.all()),
