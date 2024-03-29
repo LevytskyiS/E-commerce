@@ -46,6 +46,10 @@ urlpatterns = [
     path("product/", views.ProductCreateAPIView.as_view()),
     path("product/<int:pk>/", views.ProductGetUpdateDestroyAPIView.as_view()),
     path("products/", views.ProductListAPIView.as_view()),
+    # Nomenclature Objects
+    path("nomenclature/", views.NomenclatureCreateAPIView.as_view()),
+    path("nomenclature/<int:pk>/", views.NomenclatureGetUpdateDestroyAPIView.as_view()),
+    path("nomenclatures/", views.NomenclatureListAPIView.as_view()),
     # Image Objects
     path("image/", views.ImageCreateAPIView.as_view()),
     path("image/<int:pk>/", views.ImageGetUpdateDestroyAPIView.as_view()),

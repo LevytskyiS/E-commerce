@@ -68,7 +68,7 @@ class Product(models.Model):
 
 
 class Nomenclature(models.Model):
-    code = models.CharField(max_length=15)
+    code = models.CharField(max_length=15, unique=True)
     product = models.ForeignKey(
         Product, related_name="nomenclatures", on_delete=models.CASCADE
     )

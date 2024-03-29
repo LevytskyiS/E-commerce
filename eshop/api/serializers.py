@@ -9,7 +9,7 @@ from products.models import (
     Image,
     ProductImage,
 )
-from orders.models import Order, OrderItem, ShippingAddress
+from orders.models import Order, OrderItem, ShippingAddress, Nomenclature
 
 
 class AttributeNameSerializer(serializers.ModelSerializer):
@@ -44,6 +44,13 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
+        fields = "__all__"
+
+
+class NomenclatureSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Nomenclature
         fields = "__all__"
 
 

@@ -8,6 +8,7 @@ from products.models import (
     Attribute,
     Brand,
     Product,
+    Nomenclature,
     Image,
     ProductImage,
 )
@@ -18,6 +19,7 @@ from .serializers import (
     AttributeSerializer,
     BrandSerializer,
     ProductSerializer,
+    NomenclatureSerializer,
     ImageSerializer,
     ProductImageSerializer,
     OrderSerializer,
@@ -96,6 +98,21 @@ class ProductGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+
+# Nomenclature
+class NomenclatureCreateAPIView(generics.CreateAPIView):
+    serializer_class = NomenclatureSerializer
+
+
+class NomenclatureGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Nomenclature.objects.all()
+    serializer_class = NomenclatureSerializer
+
+
+class NomenclatureListAPIView(generics.ListAPIView):
+    queryset = Nomenclature.objects.all()
+    serializer_class = NomenclatureSerializer
 
 
 # Image
