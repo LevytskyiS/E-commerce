@@ -4,10 +4,9 @@ from .models import (
     AttributeName,
     AttributeValue,
     Attribute,
-    # Category,
     Brand,
-    # Subcategory,
     Product,
+    Nomenclature,
     Image,
     ProductImage,
 )
@@ -30,31 +29,24 @@ class AttributeAdmin(admin.ModelAdmin):
     list_filter = ("attribute_name", "attribute_value")
 
 
-# @admin.register(Category)
-# class CategoryAdmin(admin.ModelAdmin):
-#     list_display = ("id", "name")
-#     search_fields = ("name",)
-
-
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
     search_fields = ("name",)
 
 
-# @admin.register(Subcategory)
-# class SubcategoryAdmin(admin.ModelAdmin):
-#     list_display = ("id", "name", "category")
-#     list_filter = ("category",)
-#     raw_id_fields = ("brand",)
-#     search_fields = ("name",)
-
-
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "brand", "price")
+    list_display = ("id", "name", "brand")
     list_filter = ("brand",)
+    raw_id_fields = ("attributes",)
     search_fields = ("name",)
+
+
+@admin.register(Nomenclature)
+class NomenclatureAdmin(admin.ModelAdmin):
+    list_display = ("id", "code", "product", "price")
+    list_filter = ("product",)
 
 
 @admin.register(Image)

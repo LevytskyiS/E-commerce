@@ -24,7 +24,7 @@ class OrderAdmin(admin.ModelAdmin):
         "id",
         "user",
         "shipping_address",
-        "number",
+        "code",
         "created_at",
         "updated_at",
     )
@@ -34,4 +34,5 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ("id", "order", "product", "quantity")
+    list_display = ("id", "order", "nomenclature", "quantity")
+    list_filter = ("order", "nomenclature")

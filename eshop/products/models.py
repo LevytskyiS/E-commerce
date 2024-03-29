@@ -61,15 +61,25 @@ class Brand(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=30, unique=True)
     brand = models.ForeignKey(Brand, related_name="product", on_delete=models.CASCADE)
+    attributes = models.ManyToManyField(Attribute, related_name="products")
+
+    def __str__(self):
+        return self.name
+
+
+class Nomenclature(models.Model):
+    code = models.CharField(max_length=15)
+    product = models.ForeignKey(
+        Product, related_name="nomenclatures", on_delete=models.CASCADE
+    )
     price = models.DecimalField(
         max_digits=8,
         decimal_places=2,
         validators=[MinValueValidator(0, "The price must be equal or greater than 0.")],
     )
-    attributes = models.ManyToManyField(Attribute, related_name="products")
 
     def __str__(self):
-        return self.name
+        return self.code
 
 
 class Image(models.Model):

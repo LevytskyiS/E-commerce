@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from products.models import Product
+from products.models import Nomenclature
 
 
 class ShippingAddress(models.Model):
@@ -27,13 +27,13 @@ class Order(models.Model):
     shipping_address = models.ForeignKey(
         ShippingAddress, related_name="orders", on_delete=models.CASCADE
     )
-    number = models.CharField(max_length=10, unique=True)
+    code = models.CharField(max_length=10, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
 
     def __str__(self):
-        return self.number
+        return self.code
 
     def total_price(self):
         return sum(item.total_price() for item in self.items.all())
@@ -41,13 +41,13 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="items")
+    nomenclature = models.ForeignKey(
+        Nomenclature, on_delete=models.CASCADE, related_name="items"
+    )
     quantity = models.PositiveIntegerField()
 
     def total_price(self):
-        return self.quantity * self.product.price
+        return self.quantity * self.nomenclature.price
 
     def __str__(self):
-        return (
-            f"OrderItem {self.order}: Order {self.product.name} ({self.quantity} units)"
-        )
+        return f"Order {self.order}: Nomenclature {self.nomenclature.code} - ({self.quantity} units)"

@@ -24,7 +24,7 @@ from products.models import (
     Image,
     ProductImage,
 )
-from orders.models import Order, OrderItem, ShippingAddress
+from orders.models import Order, OrderItem, ShippingAddress, Nomenclature
 
 
 faker = Faker()
@@ -404,22 +404,61 @@ def create_images():
 
 
 def create_products():
-    code = "TX"
-    for i in range(1, 51):
-        name = f"{code}{i}"
+    names = [
+        "Army men",
+        "B-Daman",
+        "Bakugan",
+        "Digital pet",
+        "Evel Knievel",
+        "Funko",
+        "G.I. Joe",
+        "Gumby",
+        "He-Man",
+        "Jumping Jack",
+        "Kenner Star Wars",
+        "Lara",
+        "Little People",
+        "Monster",
+        "Playmobil",
+        "Pokémon",
+        "Power Rangers",
+        "The Smurfs",
+        "Stretch Armstrong",
+        "TMNT",
+        "Toy soldier",
+        "Transformers",
+        "Weebles",
+    ]
+    for name in names:
         brand = random.choice(Brand.objects.all())
-        price = random.choice([i for i in range(20, 200)])
+        # price = random.choice([i for i in range(20, 200)])
         number_of_attributes = random.randint(2, 7)
         attributes = set()
 
         while len(attributes) < number_of_attributes:
             attributes.add(random.choice(Attribute.objects.all()))
 
-        product = Product.objects.create(name=name, brand=brand, price=price)
+        product = Product.objects.create(name=name, brand=brand)
 
         for attribute in attributes:
             product.attributes.add(attribute)
             product.save()
+
+
+def create_nomenclatures():
+    product_code = 100
+    size_code = 10
+    products = Product.objects.all()
+
+    for product in products:
+        number_of_nomenclatures = random.randint(2, 5)
+        price = random.randint(10, 200)
+        for _ in range(1, number_of_nomenclatures):
+            nomenclature = Nomenclature.objects.create(
+                code=f"{product_code}{size_code}", product=product, price=price
+            )
+            size_code += 1
+        product_code += 1
 
 
 def creade_product_images():
@@ -456,9 +495,9 @@ def create_shipping_address():
 
 def create_order():
     for i in range(100, 121):
-        number = f"KT{i}"
+        code = f"KT{i}"
         Order.objects.create(
-            number=number,
+            code=code,
             user=random.choice(User.objects.all()),
             shipping_address=random.choice(ShippingAddress.objects.all()),
         )
@@ -471,11 +510,11 @@ def create_order_items():
         number_of_products = random.randint(1, 5)
 
         for i in range(1, number_of_products + 1):
-            product = random.choice(Product.objects.all())
+            nomenclature = random.choice(Nomenclature.objects.all())
             quantity = random.randint(1, 4)
             OrderItem.objects.create(
                 order=order,
-                product=product,
+                nomenclature=nomenclature,
                 quantity=quantity,
             )
 
@@ -487,6 +526,7 @@ create_attributes(attr_names, attr_values)
 create_brands(brands)
 create_images()
 create_products()
+create_nomenclatures()
 creade_product_images()
 create_shipping_address()
 create_order()

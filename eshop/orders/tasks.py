@@ -6,7 +6,7 @@ from faker import Faker
 
 from eshop.celery import app
 from .models import Order, OrderItem, ShippingAddress
-from products.models import Product
+from products.models import Product, Nomenclature
 
 faker = Faker()
 
@@ -47,7 +47,7 @@ def create_order():
         order = Order.objects.create(
             shipping_address=address,
             user=user,
-            number=f"KT{random.randint(100000, 999999)}",
+            code=f"KT{random.randint(100000, 999999)}",
         )
     except Exception as e:
         return None
@@ -56,16 +56,16 @@ def create_order():
 
 
 def create_order_items(order: Order):
-    number_of_poducts = random.randint(1, 15)
-    products = set()
+    number_of_nomenclatures = random.randint(1, 15)
+    nomenclatures = set()
     order_items = []
 
-    while len(products) < number_of_poducts:
-        products.add(random.choice(Product.objects.all()))
+    while len(nomenclatures) < number_of_nomenclatures:
+        nomenclatures.add(random.choice(Nomenclature.objects.all()))
 
-    for product in products:
+    for nomenclature in nomenclatures:
         order_item = OrderItem.objects.create(
-            order=order, product=product, quantity=random.randint(1, 5)
+            order=order, nomenclature=nomenclature, quantity=random.randint(1, 5)
         )
         order_items.append(model_to_dict(order_item))
 
