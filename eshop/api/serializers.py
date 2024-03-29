@@ -78,7 +78,7 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = (
             "id",
-            "number",
+            "code",
             "user",
             "shipping_address",
             "created_at",

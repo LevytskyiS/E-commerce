@@ -50,4 +50,4 @@ class OrderItem(models.Model):
         return self.quantity * self.nomenclature.price
 
     def __str__(self):
-        return f"Order {self.order}: Nomenclature {self.nomenclature.code} - ({self.quantity} units)"
+        return f"Order Item of the order {self.order}: Nomenclature {self.nomenclature.code} - ({self.quantity} units)"
