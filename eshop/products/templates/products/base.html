@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'products/css/main.css' %}" type="text/css"/>
+    <title>Document</title>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <nav>
+                <ul class="nav-ul">
+                    <li class="nav-li">
+                        <a href="{% url 'products:index' %}">Home</a>
+                    </li>
+                    <li class="nav-li">
+                        <a href="#">About Us</a>
+                    </li>
+                    <li class="nav-li">
+                        <a href="#">Services</a>
+                    </li>
+                    <li class="nav-li">
+                        <a href="#">My Orders</a>
+                    </li>
+                    <li class="nav-li">
+                        <a href="#">My Profile</a>
+                    </li>
+                </ul>
+
+                <ul class="test-ul">
+                    <li class="test-li">
+                        <a href="#">Registration</a>
+                    </li>
+                    <li class="test-li">
+                        <a href="#">Login</a>
+                    </li>
+                </ul>
+
+            </nav>
+        </header>
+
+        <main class="main">
+        {% block content %}
+        {% endblock %}
+        </main>
+
+        <footer class="footer">
+            <p>All rights reserved</p>
+        </footer>
+    </div>
+</body>
+</html>
