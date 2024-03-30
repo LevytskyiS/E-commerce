@@ -56,19 +56,19 @@ body {
 }
 
 nav {
-    background-color: blueviolet;
+    /* background-color: blueviolet; */
     display: flex;
     justify-content: space-between;
     height: 50px;
 }
 
 ul.nav-ul {
-    background-color: yellow; /* задаем черный цвет фона для списка с классом nav-ul */
+    /* background-color: yellow; */
     margin-left: 10%;
     display: flex;
 }
 ul.test-ul {
-    background-color: yellow; /* задаем черный цвет фона для списка с классом nav-ul */
+    /* background-color: yellow; */
     margin-right: 10%;
     display: flex;
 }
@@ -77,27 +77,62 @@ li.nav-li {
     margin-top: auto;
     margin-right: 40px;
     margin-bottom: auto;
-    background-color: greenyellow;
+    /* background-color: greenyellow; */
 }
 
 li.test-li {
     margin-left: 40px;
     margin-top: auto;
     margin-bottom: auto;
-    background-color: greenyellow;
+    /* background-color: greenyellow; */
 }
 
 .main {
     flex: 1 1 auto;
     margin-left: 10%;
     margin-right: 10%;
-    background-color: chartreuse;
+    /* background-color: chartreuse; */
+}
+
+.adv-list {
+    /* background-color: rgb(0, 166, 255); */
+    margin-left: 10%;
+    display: flex;
+}
+
+.adv-items {
+    margin: auto;
+    /* background-color: rgb(203, 47, 255); */
+}
+
+.explore {
+    /* background-color: beige; */
+    text-align: center;
+}
+
+.explore a {
+    font-size: 40px; /* размер шрифта */
+    margin: 0; /* убираем внешние отступы */
+    /* background-color: blueviolet; */
+}
+
+.brands-list {
+    display: flex;
+}
+
+.brands-item {
+    margin: auto;
+}
+
+.brands-img {
+    height: 400px;
+    width: 120px;
 }
 
 /* Стили для футера */
 .footer {
-    background-color: black; /* черный фон */
-    color: gold; /* золотой цвет текста */
+    /* background-color: black; */
+    /* color: gold; */
     padding: 20px; /* добавляем немного внутреннего отступа для контента */
     text-align: center; /* выравниваем текст по центру */
 }
