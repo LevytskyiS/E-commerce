@@ -11,7 +11,7 @@ from django.views.generic import (
     DeleteView,
 )
 
-from .models import Brand
+from .models import Brand, Product
 
 
 class IndexView(View):
@@ -33,3 +33,19 @@ class BrandListView(ListView):
 
     def get_queryset(self) -> QuerySet[Brand]:
         return Brand.objects.all()
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "products/product_detail.html"
+    context_object_name = "product"
+
+
+class ProductListView(ListView):
+    model = Product
+    template_name = "products/product_list.html"
+    context_object_name = "products"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Product]:
+        return Product.objects.all()

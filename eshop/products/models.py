@@ -70,6 +70,12 @@ class Product(models.Model):
     brand = models.ForeignKey(Brand, related_name="product", on_delete=models.CASCADE)
     attributes = models.ManyToManyField(Attribute, related_name="products")
 
+    def get_nomenclatures(self):
+        return self.nomenclatures.all()
+
+    def get_absolute_url(self):
+        return reverse("products:product_detail", kwargs={"pk": self.pk})
+
     def __str__(self):
         return self.name
 
