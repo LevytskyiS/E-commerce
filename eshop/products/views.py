@@ -29,7 +29,7 @@ class BrandListView(ListView):
     model = Brand
     template_name = "products/brand_list.html"
     context_object_name = "brands"
-    paginate_by = 10
+    # paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Brand]:
         return Brand.objects.all()
