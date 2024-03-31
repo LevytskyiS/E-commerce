@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.urls import reverse
 
 
 class AttributeName(models.Model):
@@ -37,6 +38,12 @@ class Attribute(models.Model):
 
 class Brand(models.Model):
     name = models.CharField(max_length=30, unique=True)
+
+    def get_products(self):
+        return self.product.all()
+
+    def get_absolute_url(self):
+        return reverse("products:brand_detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return self.name

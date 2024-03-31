@@ -1,0 +1,14 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+
+{{ brand }}<br/>
+<p>PRODUCTS</p>
+{% for product in brand.get_products %}
+
+    {{ product.name }} <br/>
+
+{% endfor %}
+
+{% endblock %}

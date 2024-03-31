@@ -1,0 +1,13 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    {% for brand in brands %}
+
+        {{ brand }}
+        <a href="{{ brand.get_absolute_url }}">See products</a> <br/>
+
+    {% endfor %}
+
+{% endblock %}
