@@ -48,13 +48,13 @@ body {
   text-rendering: optimizeSpeed;
   line-height: 1.5;
 }
-
+/* Index Page */
 .page {
     min-height: 100%;
     display: flex;
     flex-direction: column;
 }
-
+/* Navbar */
 nav {
     background-color: blueviolet;
     display: flex;
@@ -86,7 +86,7 @@ li.test-li {
     margin-bottom: auto;
     background-color: greenyellow;
 }
-
+/* Main Index Page */
 .main {
     flex: 1 1 auto;
     margin-left: 10%;
@@ -127,6 +127,50 @@ li.test-li {
 .brands-img {
     height: 400px;
     width: 120px;
+}
+
+/* Brand list page + Product list page */
+div.brands-wrapper {
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: lightcoral;
+}
+
+ul.brands-sublist {
+    margin: 3%;
+    display: flex;
+    background-color: bisque;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+div.brand-detail-wrapper {
+    background-color: bisque;
+}
+
+div.brands-li-wrapper {
+    background-color: aqua;
+    height: 200px;
+    width: 280px;
+}
+
+li.brands-sublist-item {
+    background-color: burlywood;
+}
+
+/* Brand detail page */
+div.brand-detail-rapper {
+    background-color: aqua;
+}
+
+div.brand-detail {
+    text-align: center;
+    background-color:blueviolet;
+}
+
+h2.brand-title {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 50px;
 }
 
 /* Стили для футера */

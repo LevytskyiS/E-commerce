@@ -32,7 +32,9 @@ class BrandListView(ListView):
     # paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Brand]:
-        return Brand.objects.all()
+        brands = Brand.objects.all()
+        sublists = [brands[i : i + 3] for i in range(0, len(brands), 3)]
+        return sublists
 
 
 class ProductDetailView(DetailView):
@@ -48,4 +50,6 @@ class ProductListView(ListView):
     # paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Product]:
-        return Product.objects.all()
+        products = Product.objects.all()
+        sublists = [products[i : i + 3] for i in range(0, len(products), 3)]
+        return sublists

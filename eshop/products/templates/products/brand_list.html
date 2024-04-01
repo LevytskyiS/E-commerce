@@ -3,11 +3,18 @@
 
 {% block content %}
 
-    {% for brand in brands %}
-
-        {{ brand }}
-        <a href="{{ brand.get_absolute_url }}">See products</a> <br/>
-
+<div class="brands-wrapper">
+    {% for sublist in brands %}
+        <ul class="brands-sublist">
+        {% for brand in sublist %}
+        <div class="brands-li-wrapper">
+            <li class="brands-sublist-item">
+                <a href="{{ brand.get_absolute_url }}">{{ brand.name }}</a>
+            </li>
+        </div>
+        {% endfor %}
+        </ul>
     {% endfor %}
+</div>
 
 {% endblock %}

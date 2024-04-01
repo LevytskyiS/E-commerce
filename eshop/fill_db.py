@@ -519,15 +519,22 @@ def create_order_items():
             )
 
 
-create_users()
-create_attribute_names(attr_names)
-create_attribute_values(attr_values)
-create_attributes(attr_names, attr_values)
-create_brands(brands)
-create_images()
-create_products()
-create_nomenclatures()
-creade_product_images()
-create_shipping_address()
-create_order()
-create_order_items()
+# create_users()
+# create_attribute_names(attr_names)
+# create_attribute_values(attr_values)
+# create_attributes(attr_names, attr_values)
+# create_brands(brands)
+# create_images()
+# create_products()
+# create_nomenclatures()
+# creade_product_images()
+# create_shipping_address()
+# create_order()
+# create_order_items()
+
+original_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+# Разбиваем список на подсписки по три элемента в каждом
+sublists = [original_list[i : i + 3] for i in range(0, len(original_list), 3)]
+
+print(sublists)

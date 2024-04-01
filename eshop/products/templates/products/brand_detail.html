@@ -3,10 +3,23 @@
 
 {% block content %}
 
-{{ brand }}<br/>
-<p>PRODUCTS</p><br/>
-{% for product in brand.get_products %}
-    <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br/>
-{% endfor %}
+<div class="brand-detail-rapper">
+    <div class="brand-detail">
+        <h2 class="brand-title">{{ brand.name }}</h2>
+    </div>
+    <div class="brands-wrapper">
+        {% for sublist in brand.get_products %}
+            <ul class="brands-sublist">
+            {% for product in sublist %}
+            <div class="brands-li-wrapper">
+                <li class="brands-sublist-item">
+                    <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                </li>
+            </div>
+            {% endfor %}
+            </ul>
+        {% endfor %}  
+    </div>
+</div>
 
 {% endblock %}

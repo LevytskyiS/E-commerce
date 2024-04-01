@@ -40,7 +40,9 @@ class Brand(models.Model):
     name = models.CharField(max_length=30, unique=True)
 
     def get_products(self):
-        return self.product.all()
+        products = self.product.all()
+        sublists = [products[i : i + 3] for i in range(0, len(products), 3)]
+        return sublists
 
     def get_absolute_url(self):
         return reverse("products:brand_detail", kwargs={"pk": self.pk})
