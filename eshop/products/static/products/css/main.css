@@ -5,17 +5,10 @@
   box-sizing: border-box;
 }
 
-/* Убираем внутренние отступы и маркеры */
+/* Убираем внутренние отступы */
 ul[class],
 ol[class] {
   padding: 0;
-  list-style-type: none;
-}
-
-/* Убираем подчеркивание у тега а */
-
-a {
-    text-decoration: none;
 }
 
 /* Убираем внешние отступы */
@@ -48,136 +41,82 @@ body {
   text-rendering: optimizeSpeed;
   line-height: 1.5;
 }
-/* Index Page */
-.page {
+
+.wrapper {
     min-height: 100%;
+    width: 1400px;
     display: flex;
     flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: cyan;
 }
-/* Navbar */
-nav {
-    background-color: blueviolet;
+
+/* Удаляем стандартную стилизацию для всех ul и il, у которых есть атрибут class*/
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+/* Убираем подчеркивание у тега а */
+a {
+    text-decoration: none;
+}
+
+/* Упрощаем работу с изображениями */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Указываем понятную периодичность в потоке данных у article*/
+article > * + * {
+  margin-top: 1em;
+}
+
+/* Наследуем шрифты для инпутов и кнопок */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* HEADER */
+.nav {
     display: flex;
     justify-content: space-between;
-    height: 50px;
 }
 
-ul.nav-ul {
-    background-color: yellow;
-    margin-left: 10%;
+.nav div {
+    background-color: blanchedalmond;
+}
+
+.nav ul {
     display: flex;
-}
-ul.test-ul {
-    background-color: yellow;
-    margin-right: 10%;
-    display: flex;
+    background-color: orange;
+    justify-content: flex-end;
 }
 
-li.nav-li {
-    margin-top: auto;
-    margin-right: 40px;
-    margin-bottom: auto;
-    background-color: greenyellow;
+/* .nav-li { */
+    /* background-color: bisque; */
+    /* margin-left: 5%; */
+/* } */
+
+.nav img {
+    height: 60px;
 }
 
-li.test-li {
-    margin-left: 40px;
-    margin-top: auto;
-    margin-bottom: auto;
-    background-color: greenyellow;
-}
-/* Main Index Page */
+/* MAIN */
 .main {
     flex: 1 1 auto;
-    margin-left: 10%;
-    margin-right: 10%;
-    background-color: chartreuse;
 }
 
-.adv-list {
-    background-color: rgb(0, 166, 255);
-    margin-left: 10%;
-    display: flex;
-}
-
-.adv-items {
-    margin: auto;
-    background-color: rgb(203, 47, 255);
-}
-
-.explore {
-    background-color: beige;
-    text-align: center;
-}
-
-.explore a {
-    font-size: 40px; /* размер шрифта */
-    margin: 0; /* убираем внешние отступы */
-    background-color: blueviolet;
-}
-
-.brands-list {
-    display: flex;
-}
-
-.brands-item {
-    margin: auto;
-}
-
-.brands-img {
-    height: 400px;
-    width: 120px;
-}
-
-/* Brand list page + Product list page */
-div.brands-wrapper {
-    margin-left: 10%;
-    margin-right: 10%;
-    background-color: lightcoral;
-}
-
-ul.brands-sublist {
-    margin: 3%;
-    display: flex;
-    background-color: bisque;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-}
-
-div.brand-detail-wrapper {
-    background-color: bisque;
-}
-
-div.brands-li-wrapper {
-    background-color: aqua;
-    height: 200px;
-    width: 280px;
-}
-
-li.brands-sublist-item {
-    background-color: burlywood;
-}
-
-/* Brand detail page */
-div.brand-detail-rapper {
-    background-color: aqua;
-}
-
-div.brand-detail {
-    text-align: center;
-    background-color:blueviolet;
-}
-
-h2.brand-title {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 50px;
-}
-
-/* Стили для футера */
+/* FOOTER */
 .footer {
     background-color: black;
     color: gold;
-    padding: 20px; /* добавляем немного внутреннего отступа для контента */
+    padding: 20px;
     text-align: center; /* выравниваем текст по центру */
 }
 

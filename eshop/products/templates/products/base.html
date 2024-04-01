@@ -8,12 +8,17 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="page">
-        <header>
-            <nav>
+    <div class="wrapper">
+        <header class="header">
+            <nav class="nav">
+                <div class="nav-icon">
+                    <a class="nav-a" href="{% url 'products:index' %}">
+                        <img src="https://www.svgrepo.com/show/383779/online-gift.svg" alt="Company Logo">
+                    </a>
+                </div>
                 <ul class="nav-ul">
                     <li class="nav-li">
-                        <a href="{% url 'products:index' %}">Home</a>
+                        <a class="nav-a" href="{% url 'products:index' %}">Home</a>
                     </li>
                     <li class="nav-li">
                         <a href="{% url 'products:brand_list' %}">Brands</a>
@@ -22,7 +27,7 @@
                         <a href="{% url 'products:product_list' %}">Products</a>
                     </li>
                     <li class="nav-li">
-                        <a href="#">About Us</a>
+                        <a href="#">About</a>
                     </li>
                     <li class="nav-li">
                         <a href="#">Services</a>
@@ -33,17 +38,13 @@
                     <li class="nav-li">
                         <a href="#">My Profile</a>
                     </li>
-                </ul>
-
-                <ul class="test-ul">
-                    <li class="test-li">
-                        <a href="#">Registration</a>
+                    <li class="nav-li">
+                        <a class="test-a" href="#">Registration</a>
                     </li>
-                    <li class="test-li">
+                    <li class="nav-li">
                         <a href="#">Login</a>
                     </li>
                 </ul>
-
             </nav>
         </header>
 
