@@ -153,6 +153,7 @@ cython_debug/
 
 # Project files
 steps.txt
+kek.css
 eshop/db
 eshop/redis
 eshop/celerybeat-schedule.bak
