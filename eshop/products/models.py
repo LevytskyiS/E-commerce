@@ -29,15 +29,19 @@ class Attribute(models.Model):
         return f"{self.attribute_name} - {self.attribute_value}"
 
 
-# class Category(models.Model):
-#     name = models.CharField(max_length=30, unique=True)
+class Category(models.Model):
+    name = models.CharField(max_length=30, unique=True)
 
-#     def __str__(self):
-#         return self.name
+    def __str__(self):
+        return self.name
 
 
 class Brand(models.Model):
     name = models.CharField(max_length=30, unique=True)
+    category = models.ManyToManyField(
+        Category,
+        related_name="brand",
+    )
 
     def get_products(self):
         return self.product.all()
@@ -68,6 +72,9 @@ class Brand(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=30, unique=True)
     brand = models.ForeignKey(Brand, related_name="product", on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        Category, related_name="product", on_delete=models.CASCADE
+    )
     attributes = models.ManyToManyField(Attribute, related_name="products")
 
     def get_nomenclatures(self):
