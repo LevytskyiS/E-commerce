@@ -36,12 +36,24 @@ class Category(models.Model):
         return self.name
 
 
-class Brand(models.Model):
+class Subcategory(models.Model):
     name = models.CharField(max_length=30, unique=True)
     category = models.ManyToManyField(
         Category,
+        related_name="subcategory",
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class Brand(models.Model):
+    name = models.CharField(max_length=30, unique=True)
+    subcategory = models.ManyToManyField(
+        Subcategory,
         related_name="brand",
     )
+    category = models.ManyToManyField(Category, related_name="brand")
 
     def get_products(self):
         return self.product.all()
@@ -53,27 +65,14 @@ class Brand(models.Model):
         return self.name
 
 
-# class Subcategory(models.Model):
-#     name = models.CharField(max_length=30, unique=True)
-#     category = models.ForeignKey(
-#         Category,
-#         related_name="subcategory",
-#         on_delete=models.CASCADE,
-#     )
-#     brand = models.ManyToManyField(
-#         Brand,
-#         related_name="subcategory",
-#     )
-
-#     def __str__(self):
-#         return self.name
-
-
 class Product(models.Model):
     name = models.CharField(max_length=30, unique=True)
     brand = models.ForeignKey(Brand, related_name="product", on_delete=models.CASCADE)
     category = models.ForeignKey(
         Category, related_name="product", on_delete=models.CASCADE
+    )
+    subcategory = models.ForeignKey(
+        Subcategory, related_name="product", on_delete=models.CASCADE
     )
     attributes = models.ManyToManyField(Attribute, related_name="products")
 

@@ -340,12 +340,12 @@ def create_users():
     admin.set_password("admin")
     admin.save()
 
-    for name in names:
-        email = faker.email()
-        password = faker.password()
-        user = User.objects.create(username=name, email=email)
-        user.set_password(password)
-        user.save()
+    # for name in names:
+    #     email = faker.email()
+    #     password = faker.password()
+    #     user = User.objects.create(username=name, email=email)
+    #     user.set_password(password)
+    #     user.save()
 
 
 def create_attribute_names(names):
@@ -520,14 +520,14 @@ def create_order_items():
 
 
 create_users()
-create_attribute_names(attr_names)
-create_attribute_values(attr_values)
-create_attributes(attr_names, attr_values)
-create_brands(brands)
-create_images()
-create_products()
-create_nomenclatures()
-creade_product_images()
-create_shipping_address()
-create_order()
-create_order_items()
+# create_attribute_names(attr_names)
+# create_attribute_values(attr_values)
+# create_attributes(attr_names, attr_values)
+# create_brands(brands)
+# create_images()
+# create_products()
+# create_nomenclatures()
+# creade_product_images()
+# create_shipping_address()
+# create_order()
+# create_order_items()
