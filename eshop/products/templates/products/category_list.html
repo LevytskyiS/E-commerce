@@ -1,0 +1,12 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    {% for categorie in categories %}
+
+        {{ categorie }}
+
+    {% endfor %}
+
+{% endblock %}

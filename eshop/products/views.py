@@ -11,12 +11,23 @@ from django.views.generic import (
     DeleteView,
 )
 
-from .models import Brand, Product
+from .models import Brand, Product, Category, Subcategory
 
 
 class IndexView(View):
     def get(self, request):
         return render(request, "products/index.html")
+
+
+# Category
+class CategoryListView(ListView):
+    model = Category
+    template_name = "products/category_list.html"
+    context_object_name = "categories"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Category]:
+        return Category.objects.all()
 
 
 class BrandDetailView(DetailView):
