@@ -30,6 +30,18 @@ class CategoryListView(ListView):
         return Category.objects.all()
 
 
+# Category
+class SubcategoryListView(ListView):
+    model = Subcategory
+    template_name = "products/subcategory_list.html"
+    context_object_name = "subcategories"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Subcategory]:
+        return Subcategory.objects.all()
+
+
+# Brand
 class BrandDetailView(DetailView):
     model = Brand
     template_name = "products/brand_detail.html"
@@ -46,6 +58,7 @@ class BrandListView(ListView):
         return Brand.objects.all()
 
 
+# Product
 class ProductDetailView(DetailView):
     model = Product
     template_name = "products/product_detail.html"
