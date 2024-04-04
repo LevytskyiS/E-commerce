@@ -80,7 +80,6 @@ class GentsHikingProductListView(ListView):
     # paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Product]:
-        print(len(Product.objects.filter(subcategory__name="hiking")))
         return (
             Product.objects.filter(subcategory__name="hiking")
             .filter(sex="M")
