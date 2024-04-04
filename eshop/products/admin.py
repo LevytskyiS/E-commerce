@@ -53,7 +53,7 @@ class BrandAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "brand", "category", "subcategory")
+    list_display = ("id", "name", "sex", "brand", "category", "subcategory")
     list_filter = ("brand", "category", "subcategory")
     raw_id_fields = ("attributes",)
     search_fields = ("name",)

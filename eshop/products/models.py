@@ -67,6 +67,7 @@ class Brand(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=30, unique=True)
+    sex = models.CharField(max_length=1, choices=(("M", "Men"), ("W", "Women")))
     brand = models.ForeignKey(Brand, related_name="product", on_delete=models.CASCADE)
     category = models.ForeignKey(
         Category, related_name="product", on_delete=models.CASCADE

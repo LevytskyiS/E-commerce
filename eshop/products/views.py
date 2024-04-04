@@ -19,28 +19,6 @@ class IndexView(View):
         return render(request, "products/index.html")
 
 
-# Category
-class CategoryListView(ListView):
-    model = Category
-    template_name = "products/category_list.html"
-    context_object_name = "categories"
-    # paginate_by = 10
-
-    def get_queryset(self) -> QuerySet[Category]:
-        return Category.objects.all()
-
-
-# Category
-class SubcategoryListView(ListView):
-    model = Subcategory
-    template_name = "products/subcategory_list.html"
-    context_object_name = "subcategories"
-    # paginate_by = 10
-
-    def get_queryset(self) -> QuerySet[Subcategory]:
-        return Subcategory.objects.all()
-
-
 # Brand
 class BrandDetailView(DetailView):
     model = Brand
@@ -73,3 +51,53 @@ class ProductListView(ListView):
 
     def get_queryset(self) -> QuerySet[Product]:
         return Product.objects.all()
+
+
+class GentsProductListView(ListView):
+    model = Product
+    template_name = "products/gents_product_list.html"
+    context_object_name = "products"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Product]:
+        return Product.objects.filter(sex="M")
+
+
+class LadiesProductListView(ListView):
+    model = Product
+    template_name = "products/ladies_product_list.html"
+    context_object_name = "products"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Product]:
+        return Product.objects.filter(sex="W")
+
+
+class GentsHikingProductListView(ListView):
+    model = Product
+    template_name = "products/gents_hiking_product_list.html"
+    context_object_name = "products"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Product]:
+        print(len(Product.objects.filter(subcategory__name="hiking")))
+        return (
+            Product.objects.filter(subcategory__name="hiking")
+            .filter(sex="M")
+            .order_by("name")
+        )
+
+
+class LadiesHikingProductListView(ListView):
+    model = Product
+    template_name = "products/ladies_hiking_product_list.html"
+    context_object_name = "products"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Product]:
+        print(len(Product.objects.filter(subcategory__name="hiking")))
+        return (
+            Product.objects.filter(subcategory__name="hiking")
+            .filter(sex="W")
+            .order_by("name")
+        )
