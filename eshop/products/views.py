@@ -55,7 +55,7 @@ class ProductListView(ListView):
 
 class GentsProductListView(ListView):
     model = Product
-    template_name = "products/gents_product_list.html"
+    template_name = "products/product_list.html"
     context_object_name = "products"
     # paginate_by = 10
 
@@ -65,7 +65,7 @@ class GentsProductListView(ListView):
 
 class LadiesProductListView(ListView):
     model = Product
-    template_name = "products/ladies_product_list.html"
+    template_name = "products/product_list.html"
     context_object_name = "products"
     # paginate_by = 10
 
@@ -75,7 +75,7 @@ class LadiesProductListView(ListView):
 
 class GentsHikingProductListView(ListView):
     model = Product
-    template_name = "products/gents_hiking_product_list.html"
+    template_name = "products/product_list.html"
     context_object_name = "products"
     # paginate_by = 10
 
@@ -89,7 +89,7 @@ class GentsHikingProductListView(ListView):
 
 class LadiesHikingProductListView(ListView):
     model = Product
-    template_name = "products/ladies_hiking_product_list.html"
+    template_name = "products/product_list.html"
     context_object_name = "products"
     # paginate_by = 10
 
@@ -97,6 +97,34 @@ class LadiesHikingProductListView(ListView):
         print(len(Product.objects.filter(subcategory__name="hiking")))
         return (
             Product.objects.filter(subcategory__name="hiking")
+            .filter(sex="W")
+            .order_by("name")
+        )
+
+
+class GentsRunningProductListView(ListView):
+    model = Product
+    template_name = "products/product_list.html"
+    context_object_name = "products"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Product]:
+        return (
+            Product.objects.filter(subcategory__name="running")
+            .filter(sex="M")
+            .order_by("name")
+        )
+
+
+class LadiesRunningProductListView(ListView):
+    model = Product
+    template_name = "products/product_list.html"
+    context_object_name = "products"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Product]:
+        return (
+            Product.objects.filter(subcategory__name="running")
             .filter(sex="W")
             .order_by("name")
         )

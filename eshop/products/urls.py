@@ -31,5 +31,15 @@ urlpatterns = [
         views.LadiesHikingProductListView.as_view(),
         name="ladies_hiking_product_list",
     ),
+    path(
+        "gents-running-products/",
+        views.GentsRunningProductListView.as_view(),
+        name="gents_hiking_product_list",
+    ),
+    path(
+        "ladies-running-products/",
+        views.LadiesRunningProductListView.as_view(),
+        name="ladies_hiking_product_list",
+    ),
     path("products/<int:pk>", views.ProductDetailView.as_view(), name="product_detail"),
 ]
