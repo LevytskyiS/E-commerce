@@ -19,6 +19,8 @@ from products.models import (
     AttributeName,
     AttributeValue,
     Attribute,
+    Category,
+    Subcategory,
     Brand,
     Product,
     Image,
@@ -308,6 +310,8 @@ attr_values = [
         ]
     },
 ]
+categories = ["gents", "ladies"]
+subcategories = ["hiking", "running", "gym", "outdoor"]
 brands = [
     "Nike",
     "Abibas",
@@ -384,9 +388,48 @@ def create_attributes(names, values):
                 attribute.save()
 
 
+def create_categories(categories):
+    for category in categories:
+        Category.objects.create(name=category)
+
+
+def create_subcategories(subcategories):
+    categories = Category.objects.all()
+
+    for subcategory in subcategories:
+        obj = Subcategory.objects.create(name=subcategory)
+
+        for category in categories:
+            obj.category.add(category)
+            obj.save()
+
+
 def create_brands(brands):
+    categories = Category.objects.all()
+    subcategories = Subcategory.objects.all()
+
     for brand in brands:
-        Brand.objects.create(name=brand)
+        obj = Brand.objects.create(name=brand)
+
+        number_of_cats = random.randint(1, len(categories))
+        number_of_subcats = random.randint(1, len(subcategories))
+
+        celected_cats = set()
+        celected_subcats = set()
+
+        while len(celected_cats) < number_of_cats:
+            celected_cats.add(random.choice(categories))
+
+        for cat in celected_cats:
+            obj.category.add(cat)
+            obj.save()
+
+        while len(celected_subcats) < number_of_subcats:
+            celected_subcats.add(random.choice(subcategories))
+
+        for subcat in celected_subcats:
+            obj.subcategory.add(subcat)
+            obj.save()
 
 
 def create_images():
@@ -420,7 +463,6 @@ def create_products():
         "Little People",
         "Monster",
         "Playmobil",
-        "Pokémon",
         "Power Rangers",
         "The Smurfs",
         "Stretch Armstrong",
@@ -430,7 +472,14 @@ def create_products():
         "Weebles",
     ]
     for name in names:
+        sex = random.choice(["M", "W"])
         brand = random.choice(Brand.objects.all())
+        if sex == "M":
+            category = Category.objects.get(name="gents")
+        else:
+            category = Category.objects.get(name="ladies")
+        subcategory = random.choice(Subcategory.objects.all())
+
         # price = random.choice([i for i in range(20, 200)])
         number_of_attributes = random.randint(2, 7)
         attributes = set()
@@ -438,7 +487,9 @@ def create_products():
         while len(attributes) < number_of_attributes:
             attributes.add(random.choice(Attribute.objects.all()))
 
-        product = Product.objects.create(name=name, brand=brand)
+        product = Product.objects.create(
+            name=name, sex=sex, brand=brand, category=category, subcategory=subcategory
+        )
 
         for attribute in attributes:
             product.attributes.add(attribute)
@@ -519,22 +570,17 @@ def create_order_items():
             )
 
 
-# create_users()
-# create_attribute_names(attr_names)
-# create_attribute_values(attr_values)
-# create_attributes(attr_names, attr_values)
-# create_brands(brands)
-# create_images()
-# create_products()
-# create_nomenclatures()
-# creade_product_images()
-# create_shipping_address()
-# create_order()
-# create_order_items()
-
-original_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-
-# Разбиваем список на подсписки по три элемента в каждом
-sublists = [original_list[i : i + 3] for i in range(0, len(original_list), 3)]
-
-print(sublists)
+create_users()
+create_attribute_names(attr_names)
+create_attribute_values(attr_values)
+create_attributes(attr_names, attr_values)
+create_categories(categories)
+create_subcategories(subcategories)
+create_brands(brands)
+create_images()
+create_products()
+create_nomenclatures()
+creade_product_images()
+create_shipping_address()
+create_order()
+create_order_items()

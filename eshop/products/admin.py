@@ -4,6 +4,8 @@ from .models import (
     AttributeName,
     AttributeValue,
     Attribute,
+    Category,
+    Subcategory,
     Brand,
     Product,
     Nomenclature,
@@ -29,16 +31,30 @@ class AttributeAdmin(admin.ModelAdmin):
     list_filter = ("attribute_name", "attribute_value")
 
 
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+    search_fields = ("name",)
+
+
+@admin.register(Subcategory)
+class SubcategoryAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+    raw_id_fields = ("category",)
+    search_fields = ("name",)
+
+
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
+    raw_id_fields = ("subcategory", "category")
     search_fields = ("name",)
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "brand")
-    list_filter = ("brand",)
+    list_display = ("id", "name", "sex", "brand", "category", "subcategory")
+    list_filter = ("brand", "category", "subcategory")
     raw_id_fields = ("attributes",)
     search_fields = ("name",)
 

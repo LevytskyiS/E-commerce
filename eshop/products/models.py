@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.urls import reverse
+from django_extensions.db.fields import AutoSlugField
+
+from .utils import my_slugify_function
 
 
 class AttributeName(models.Model):
@@ -29,54 +32,66 @@ class Attribute(models.Model):
         return f"{self.attribute_name} - {self.attribute_value}"
 
 
-# class Category(models.Model):
-#     name = models.CharField(max_length=30, unique=True)
-
-#     def __str__(self):
-#         return self.name
-
-
-class Brand(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=30, unique=True)
-
-    def get_products(self):
-        products = self.product.all()
-        sublists = [products[i : i + 3] for i in range(0, len(products), 3)]
-        return sublists
-
-    def get_absolute_url(self):
-        return reverse("products:brand_detail", kwargs={"pk": self.pk})
+    slug = AutoSlugField(populate_from="name", slugify_function=my_slugify_function)
 
     def __str__(self):
         return self.name
 
 
-# class Subcategory(models.Model):
-#     name = models.CharField(max_length=30, unique=True)
-#     category = models.ForeignKey(
-#         Category,
-#         related_name="subcategory",
-#         on_delete=models.CASCADE,
-#     )
-#     brand = models.ManyToManyField(
-#         Brand,
-#         related_name="subcategory",
-#     )
+class Subcategory(models.Model):
+    name = models.CharField(max_length=30, unique=True)
+    slug = AutoSlugField(populate_from="name", slugify_function=my_slugify_function)
+    category = models.ManyToManyField(
+        Category,
+        related_name="subcategory",
+    )
 
-#     def __str__(self):
-#         return self.name
+    def __str__(self):
+        return self.name
+
+
+class Brand(models.Model):
+    name = models.CharField(max_length=30, unique=True)
+    slug = AutoSlugField(populate_from="name", slugify_function=my_slugify_function)
+    subcategory = models.ManyToManyField(
+        Subcategory,
+        related_name="brand",
+    )
+    category = models.ManyToManyField(Category, related_name="brand")
+
+    def get_products(self):
+        return self.product.all()
+
+    def get_absolute_url(self):
+        return reverse("products:brand_detail", kwargs={"slug": self.slug})
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
     name = models.CharField(max_length=30, unique=True)
+    slug = AutoSlugField(populate_from="name", slugify_function=my_slugify_function)
+    sex = models.CharField(max_length=1, choices=(("M", "Men"), ("W", "Women")))
     brand = models.ForeignKey(Brand, related_name="product", on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        Category, related_name="product", on_delete=models.CASCADE
+    )
+    subcategory = models.ForeignKey(
+        Subcategory, related_name="product", on_delete=models.CASCADE
+    )
     attributes = models.ManyToManyField(Attribute, related_name="products")
 
     def get_nomenclatures(self):
         return self.nomenclatures.all()
 
     def get_absolute_url(self):
-        return reverse("products:product_detail", kwargs={"pk": self.pk})
+        return reverse(
+            "products:product_detail",
+            kwargs={"slug": self.brand.slug, "product_slug": self.slug},
+        )
 
     def __str__(self):
         return self.name

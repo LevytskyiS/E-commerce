@@ -1,0 +1,27 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="brands">
+    <ul class="brands-list">
+        <li class="brands-item">
+            <a href="{% url 'products:ladies_hiking_product_list' %}">Ladies Hiking</a>
+        </li>
+        <li class="brands-item">
+            <a href="{% url 'products:ladies_running_product_list' %}">Ladies Running</a>
+        </li>
+        <li class="brands-item">
+            <a href="{% url 'products:ladies_gym_product_list' %}">Ladies Gym</a>
+        </li>
+        <li class="brands-item">
+            <a href="{% url 'products:ladies_outdoor_product_list' %}">Ladies Outdoor</a>
+        </li>
+    </ul>
+</div>
+
+{% for product in products %}
+    <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br/>
+{% endfor %}
+
+{% endblock %}
