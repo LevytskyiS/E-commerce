@@ -11,16 +11,19 @@ urlpatterns = [
     path("brands/<int:pk>", views.BrandDetailView.as_view(), name="brand_detail"),
     # Product
     path("products/", views.ProductListView.as_view(), name="product_list"),
+    # Gents
     path(
         "gents-products/",
         views.GentsProductListView.as_view(),
         name="gents_product_list",
     ),
+    # Ladies
     path(
         "ladies-products/",
         views.LadiesProductListView.as_view(),
         name="ladies_product_list",
     ),
+    # Hiking
     path(
         "gents-hiking-products/",
         views.GentsHikingProductListView.as_view(),
@@ -31,15 +34,27 @@ urlpatterns = [
         views.LadiesHikingProductListView.as_view(),
         name="ladies_hiking_product_list",
     ),
+    # Running
     path(
         "gents-running-products/",
         views.GentsRunningProductListView.as_view(),
-        name="gents_hiking_product_list",
+        name="gents_running_product_list",
     ),
     path(
         "ladies-running-products/",
         views.LadiesRunningProductListView.as_view(),
-        name="ladies_hiking_product_list",
+        name="ladies_running_product_list",
+    ),
+    # Gym
+    path(
+        "gents-gym-products/",
+        views.GentsGymProductListView.as_view(),
+        name="gents_gym_product_list",
+    ),
+    path(
+        "ladies-gym-products/",
+        views.LadiesGymProductListView.as_view(),
+        name="ladies_gym_product_list",
     ),
     path("products/<int:pk>", views.ProductDetailView.as_view(), name="product_detail"),
 ]
