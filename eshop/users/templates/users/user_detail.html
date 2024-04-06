@@ -4,5 +4,14 @@
 {% block content %}
 
 {{ user }}
+<br><br>
+<h1>ORDERS</h1>
 
+<br>
+{% for order in user.orders.all %}
+    Order: {{ order }}
+    Total cost: {{ order.total_price }}
+   
+
+{% endfor %}
 {% endblock %}

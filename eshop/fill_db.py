@@ -27,7 +27,8 @@ from products.models import (
     ProductImage,
 )
 from orders.models import Order, OrderItem, ShippingAddress, Nomenclature
-from users.models import Profile
+
+# from users.models import Profile
 
 faker = Faker()
 attr_names = ["color", "certificate", "details"]
@@ -344,7 +345,7 @@ def create_users():
     admin.set_password("admin")
     admin.save()
 
-    Profile.objects.create(user=admin)
+    # Profile.objects.create(user=admin)
 
     for name in names:
         email = faker.email()
@@ -352,7 +353,7 @@ def create_users():
         user = User.objects.create(username=name, email=email)
         user.set_password(password)
         user.save()
-        Profile.objects.create(user=user)
+        # Profile.objects.create(user=user)
 
 
 def create_attribute_names(names):

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+
 
 from products.models import Nomenclature
 
@@ -34,6 +36,9 @@ class Order(models.Model):
 
     def __str__(self):
         return self.code
+
+    def get_absolute_url(self):
+        return reverse("orders:order_detail", kwargs={"slug": self.code})
 
     def total_price(self):
         return sum(item.total_price() for item in self.items.all())
