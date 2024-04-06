@@ -11,7 +11,7 @@ from django.views.generic import (
     DeleteView,
 )
 
-from .models import Brand, Product, Category, Subcategory
+from .models import Brand, Product
 
 
 class IndexView(View):
