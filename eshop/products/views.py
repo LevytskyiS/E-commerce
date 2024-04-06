@@ -156,3 +156,31 @@ class LadiesGymProductListView(ListView):
             .filter(sex="W")
             .order_by("name")
         )
+
+
+class GentsOutdoorProductListView(ListView):
+    model = Product
+    template_name = "products/product_list.html"
+    context_object_name = "products"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Product]:
+        return (
+            Product.objects.filter(subcategory__name="outdoor")
+            .filter(sex="M")
+            .order_by("name")
+        )
+
+
+class LadiesOutdoorProductListView(ListView):
+    model = Product
+    template_name = "products/product_list.html"
+    context_object_name = "products"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Product]:
+        return (
+            Product.objects.filter(subcategory__name="outdoor")
+            .filter(sex="W")
+            .order_by("name")
+        )

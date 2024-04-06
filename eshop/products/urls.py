@@ -56,5 +56,16 @@ urlpatterns = [
         views.LadiesGymProductListView.as_view(),
         name="ladies_gym_product_list",
     ),
+    # Outdoor
+    path(
+        "gents-outdoor-products/",
+        views.GentsOutdoorProductListView.as_view(),
+        name="gents_outdoor_product_list",
+    ),
+    path(
+        "ladies-outdoor-products/",
+        views.LadiesOutdoorProductListView.as_view(),
+        name="ladies_outdoor_product_list",
+    ),
     path("products/<int:pk>", views.ProductDetailView.as_view(), name="product_detail"),
 ]
