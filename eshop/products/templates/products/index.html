@@ -18,6 +18,7 @@
 <div class="explore">
     <a href="#">Explore</a>
 </div>
+<h1 style="text-align: center;">CATEGORIES</h1>
 <div class="brands">
     <ul class="brands-list">
         <li class="brands-item">
@@ -37,6 +38,20 @@
             <a href="{% url 'products:gents_hiking_product_list' %}">Gents Hiking</a>
         </li>
         <li class="brands-item">
+            <a href="{% url 'products:ladies_hiking_product_list' %}">Ladies Hiking</a>
+        </li>
+    </ul>
+</div>
+<h1 style="text-align: center;">SUBCATEGORIES</h1>
+<div class="brands">
+    <ul class="brands-list">
+        <li class="brands-item">
+            <a href="{% url 'products:gents_hiking_product_list' %}">Gents Hiking</a>
+        </li>
+        <li class="brands-item">
+            <a href="{% url 'products:ladies_hiking_product_list' %}">Ladies Hiking</a>
+        </li>
+        <li class="brands-item">
             <a href="{% url 'products:gents_running_product_list' %}">Gents Running</a>
         </li>
         <li class="brands-item">
@@ -54,15 +69,6 @@
         <li class="brands-item">
             <a href="{% url 'products:ladies_outdoor_product_list' %}">Ladies Outdoor</a>
         </li>
-        <!-- <li class="brands-item">
-            <img class="brands-img" src="https://www.svgrepo.com/show/303339/adidas-9-logo.svg" alt="">
-        </li>
-        <li class="brands-item">
-            <img class="brands-img" src="https://www.svgrepo.com/show/303470/puma-logo-logo.svg" alt="">
-        </li>
-        <li class="brands-item">
-            <img class="brands-img" src="https://www.svgrepo.com/show/303155/under-armour-logo.svg" alt="">
-        </li> -->
     </ul>
 </div>
 {% endblock %}
