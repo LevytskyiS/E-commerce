@@ -67,5 +67,9 @@ urlpatterns = [
         views.LadiesOutdoorProductListView.as_view(),
         name="ladies_outdoor_product_list",
     ),
-    path("products/<int:pk>", views.ProductDetailView.as_view(), name="product_detail"),
+    path(
+        "<slug:slug>/<slug:product_slug>/",
+        views.ProductDetailView.as_view(),
+        name="product_detail",
+    ),
 ]

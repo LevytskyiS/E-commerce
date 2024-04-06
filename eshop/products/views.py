@@ -39,6 +39,7 @@ class BrandListView(ListView):
 # Product
 class ProductDetailView(DetailView):
     model = Product
+    slug_url_kwarg = "product_slug"
     template_name = "products/product_detail.html"
     context_object_name = "product"
 

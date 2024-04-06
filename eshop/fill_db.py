@@ -463,7 +463,6 @@ def create_products():
         "Little People",
         "Monster",
         "Playmobil",
-        "Pokémon",
         "Power Rangers",
         "The Smurfs",
         "Stretch Armstrong",
@@ -475,7 +474,10 @@ def create_products():
     for name in names:
         sex = random.choice(["M", "W"])
         brand = random.choice(Brand.objects.all())
-        category = random.choice(Category.objects.all())
+        if sex == "M":
+            category = Category.objects.get(name="gents")
+        else:
+            category = Category.objects.get(name="ladies")
         subcategory = random.choice(Subcategory.objects.all())
 
         # price = random.choice([i for i in range(20, 200)])

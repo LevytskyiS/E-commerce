@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.urls import reverse
+from django_extensions.db.fields import AutoSlugField
+
+from .utils import my_slugify_function
 
 
 class AttributeName(models.Model):
@@ -31,6 +34,7 @@ class Attribute(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=30, unique=True)
+    slug = AutoSlugField(populate_from="name", slugify_function=my_slugify_function)
 
     def __str__(self):
         return self.name
@@ -38,6 +42,7 @@ class Category(models.Model):
 
 class Subcategory(models.Model):
     name = models.CharField(max_length=30, unique=True)
+    slug = AutoSlugField(populate_from="name", slugify_function=my_slugify_function)
     category = models.ManyToManyField(
         Category,
         related_name="subcategory",
@@ -49,6 +54,7 @@ class Subcategory(models.Model):
 
 class Brand(models.Model):
     name = models.CharField(max_length=30, unique=True)
+    slug = AutoSlugField(populate_from="name", slugify_function=my_slugify_function)
     subcategory = models.ManyToManyField(
         Subcategory,
         related_name="brand",
@@ -67,6 +73,7 @@ class Brand(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=30, unique=True)
+    slug = AutoSlugField(populate_from="name", slugify_function=my_slugify_function)
     sex = models.CharField(max_length=1, choices=(("M", "Men"), ("W", "Women")))
     brand = models.ForeignKey(Brand, related_name="product", on_delete=models.CASCADE)
     category = models.ForeignKey(
@@ -81,7 +88,10 @@ class Product(models.Model):
         return self.nomenclatures.all()
 
     def get_absolute_url(self):
-        return reverse("products:product_detail", kwargs={"pk": self.pk})
+        return reverse(
+            "products:product_detail",
+            kwargs={"slug": self.brand.slug, "product_slug": self.slug},
+        )
 
     def __str__(self):
         return self.name
