@@ -4,4 +4,11 @@ from . import views
 
 
 app_name = "users"
-urlpatterns = []
+
+urlpatterns = [
+    path(
+        "profile/<int:pk>/",
+        views.UserDetailView.as_view(),
+        name="user_detail",
+    ),
+]
