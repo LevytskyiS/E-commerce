@@ -24,9 +24,11 @@
                     <li class="nav-li">
                         <a href="#">My Orders</a>
                     </li>
+                    {% if request.user.is_authenticated %}
                     <li class="nav-li">
-                        <a href="#">My Profile</a>
+                        <a href="{% url 'users:profile' username=request.user.username %}">My Profile</a>
                     </li>
+                    {% endif %}
                 </ul>
 
                 <ul class="test-ul">
