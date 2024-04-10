@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django_extensions.db.fields import AutoSlugField
 
+from products.utils import my_slugify_function
 from products.models import Nomenclature
 
 
@@ -28,12 +31,16 @@ class Order(models.Model):
         ShippingAddress, related_name="orders", on_delete=models.CASCADE
     )
     code = models.CharField(max_length=10, unique=True)
+    slug = AutoSlugField(populate_from="code", slugify_function=my_slugify_function)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
 
     def __str__(self):
         return self.code
+
+    def get_absolute_url(self):
+        return reverse("orders:order_detail", kwargs={"slug": self.slug})
 
     def total_price(self):
         return sum(item.total_price() for item in self.items.all())

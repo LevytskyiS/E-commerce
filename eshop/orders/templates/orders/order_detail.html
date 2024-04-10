@@ -1,0 +1,30 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+<a href="{% url 'users:profile' username=request.user.username %}">Back</a>
+<br/><br/>
+
+{{ order }}<br/><br/>
+<p>List of ordered goods:</p><br/>
+{% for orderitem in order.items.all %}
+    <a href="{{ orderitem.nomenclature.product.get_absolute_url }}">{{ orderitem.nomenclature.product }}</a>, {{ orderitem.quantity }} pcs, Price/piece: {{ orderitem.nomenclature.price }}, total price: {{ orderitem.total_price }}<br/>
+{% endfor %}
+<br/><br/>
+TOTAL PRICE:<br/> 
+{{ order.total_price }}
+<br/><br/>
+Delivery address:<br/>
+{{ order.shipping_address.city }}<br/>
+{{ order.shipping_address.street }} avenue<br/>
+{{ order.shipping_address.house_number }}/{{ order.shipping_address.apartment }}<br/>
+Post code: {{ order.shipping_address.country_code }}-{{ order.shipping_address.zipcode }}<br/>
+{% endblock %}
+
+
+    city = models.CharField(max_length=256)
+    street = models.CharField(max_length=256)
+    house_number = models.IntegerField()
+    apartment = models.CharField(max_length=10)
+    country_code = models.CharField(max_length=2)
+    zipcode = models.CharField(max_length=8)
