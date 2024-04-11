@@ -1,0 +1,25 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<br>
+<a href="{% url 'users:profile' username=request.user.username %}">BACK</a>
+<br>
+<br>
+Shipping Addresses:
+<br>
+<br>
+
+{% for address in addresses %}
+
+    City: {{ address.city }}<br/>
+    Street: {{ address.street }}<br/>
+    House Number: {{ address.house_number }}<br/>
+    Apartment: {{ address.apartment }}<br/>
+    Country Code: {{ address.country_code }}<br/>
+    Postal Code: {{ address.zipcode }}<br/><br/>
+
+{% endfor %}
+
+{% endblock %}

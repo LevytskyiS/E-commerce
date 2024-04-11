@@ -10,7 +10,7 @@ from django.views.generic import (
     DeleteView,
 )
 
-from .models import Order
+from .models import Order, ShippingAddress
 
 
 # Order
@@ -27,3 +27,13 @@ class OrderListView(ListView):
 
     def get_queryset(self) -> QuerySet[Order]:
         return Order.objects.filter(user=self.request.user).order_by("created_at")
+
+
+# Shipping Address
+class ShippingAddressListView(ListView):
+    model = ShippingAddress
+    template_name = "orders/shipping_address_list.html"
+    context_object_name = "addresses"
+
+    def get_queryset(self) -> QuerySet[ShippingAddress]:
+        return ShippingAddress.objects.filter(user=self.request.user).order_by("city")
