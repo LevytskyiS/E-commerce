@@ -1,0 +1,17 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<br>
+<a href="{% url 'users:profile' username=request.user.username %}">BACK</a>
+<br>
+{% for order in orders %}
+    Order:<br>
+    <a href="{{ order.get_absolute_url }}">{{ order.code }}</a><br>
+    Total cost: {{ order.total_price }}<br><br>
+   
+
+{% endfor %}
+
+{% endblock %}
