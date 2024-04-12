@@ -43,7 +43,7 @@ class Order(models.Model):
         return reverse("orders:order_detail", kwargs={"slug": self.slug})
 
     def total_price(self):
-        return sum(item.total_price() for item in self.items.all())
+        return sum([item.total_price() for item in self.items.all()])
 
 
 class OrderItem(models.Model):

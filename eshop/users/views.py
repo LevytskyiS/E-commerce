@@ -14,7 +14,7 @@ from django.views.generic import (
 )
 from django.contrib.auth.models import User
 
-# from .models import Profile
+from orders.models import Order
 
 
 # Create your views here.
@@ -26,4 +26,8 @@ class ProfileDetailView(DetailView):
         # получаем пользователя по username если он существует
         user = get_object_or_404(User, username=username)
         # передаем его в шаблон как profile
-        return render(request, self.template_name, {"profile": user})
+        orders = Order.objects.filter(user=user)
+        turnover = sum([order.total_price() for order in orders])
+        return render(
+            request, self.template_name, {"profile": user, "turnover": turnover}
+        )
