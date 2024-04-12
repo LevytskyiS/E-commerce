@@ -107,6 +107,7 @@ class Nomenclature(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(0, "The price must be equal or greater than 0.")],
     )
+    quantity_available = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.code

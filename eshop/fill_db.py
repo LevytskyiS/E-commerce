@@ -339,7 +339,9 @@ def create_users():
         name = faker.first_name()
         names.add(name)
 
-    admin = User.objects.create(username="admin", email="lol@gmail.com")
+    admin = User.objects.create(
+        username="admin", email="lol@gmail.com", first_name=faker.first_name()
+    )
     admin.is_staff = True
     admin.is_superuser = True
     admin.set_password("admin")
@@ -350,7 +352,7 @@ def create_users():
     for name in names:
         email = faker.email()
         password = faker.password()
-        user = User.objects.create(username=name, email=email)
+        user = User.objects.create(username=name, email=email, first_name=name)
         user.set_password(password)
         user.save()
         # Profile.objects.create(user=user)
@@ -510,7 +512,10 @@ def create_nomenclatures():
         price = random.randint(10, 200)
         for _ in range(1, number_of_nomenclatures):
             nomenclature = Nomenclature.objects.create(
-                code=f"{product_code}{size_code}", product=product, price=price
+                code=f"{product_code}{size_code}",
+                product=product,
+                price=price,
+                quantity_available=random.randint(1, 999),
             )
             size_code += 1
         product_code += 1
@@ -528,8 +533,8 @@ def creade_product_images():
 
 
 def create_shipping_address():
-    for _ in range(10):
-        user = random.choice(User.objects.all())
+    users = User.objects.all()
+    for user in users:
         city = faker.city()
         street = faker.street_name()
         house_number = int(faker.building_number())
@@ -551,11 +556,15 @@ def create_shipping_address():
 def create_order():
     for i in range(100, 121):
         code = f"MM{i}"
-        Order.objects.create(
-            code=code,
-            user=random.choice(User.objects.all()),
-            shipping_address=random.choice(ShippingAddress.objects.all()),
-        )
+        user = random.choice(User.objects.all())
+        if user.shipping_addresses.all():
+            Order.objects.create(
+                code=code,
+                user=user,
+                shipping_address=random.choice(user.shipping_addresses.all()),
+            )
+        else:
+            continue
 
 
 def create_order_items():

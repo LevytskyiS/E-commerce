@@ -21,10 +21,10 @@
                     <li class="nav-li">
                         <a href="#">Services</a>
                     </li>
-                    <li class="nav-li">
-                        <a href="#">My Orders</a>
-                    </li>
                     {% if request.user.is_authenticated %}
+                    <li class="nav-li">
+                        <a href="{% url 'orders:order_list' %}">My Orders</a>
+                    </li>
                     <li class="nav-li">
                         <a href="{% url 'users:profile' username=request.user.username %}">My Profile</a>
                     </li>
