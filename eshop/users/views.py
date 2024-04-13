@@ -3,6 +3,7 @@ from typing import Any
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.views import View
 from django.views.generic import (
     ListView,
@@ -31,3 +32,13 @@ class ProfileDetailView(DetailView):
         return render(
             request, self.template_name, {"profile": user, "turnover": turnover}
         )
+
+
+class ProfileUpdateView(UpdateView):
+    model = User
+    context_object_name = "user"
+    fields = ["first_name", "last_name", "email"]
+    template_name = "users/user_update_form.html"
+
+    def get_success_url(self):
+        return reverse("users:profile", kwargs={"username": self.object.username})

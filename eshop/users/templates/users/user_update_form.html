@@ -1,0 +1,13 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<form method="post" action="{% url 'users:update_profile' pk=user.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update">
+</form>
+
+
+{% endblock %}
