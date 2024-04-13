@@ -3,7 +3,7 @@ from typing import Any
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import (
     ListView,
@@ -13,9 +13,16 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
+from django.contrib.auth.views import (
+    LoginView,
+    PasswordResetView,
+    LogoutView,
+    PasswordResetConfirmView,
+)
 from django.contrib.auth.models import User
+from django.contrib.messages.views import SuccessMessageMixin
 
-from .forms import RegisterUserForm
+from .forms import RegisterUserForm, LoginUserForm
 from orders.models import Order
 
 
@@ -34,6 +41,30 @@ class RegisterUser(CreateView):
         user = form.save()
         user.save()
         return redirect("users:registration_confirmation")
+
+
+# Log in
+class LoginUser(LoginView):
+    form_class = LoginUserForm
+    template_name = "users/login.html"
+
+
+# Log out
+class LogOutUser(LogoutView):
+    # Logging out via GET requests to the built-in logout view is deprecated. Use POST requests instead.
+    next_page = "/"
+
+
+# Password reset
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = "users/password_reset.html"
+    email_template_name = "users/password_reset_email.html"
+    html_email_template_name = "users/password_reset_email.html"
+    success_url = reverse_lazy("users:password_reset_done")
+    success_message = (
+        "An email with instructions to reset your password has been sent to %(email)s."
+    )
+    subject_template_name = "users/password_reset_subject.txt"
 
 
 class ProfileDetailView(DetailView):
