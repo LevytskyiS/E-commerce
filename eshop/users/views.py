@@ -2,7 +2,7 @@ from typing import Any
 
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import (
@@ -15,11 +15,27 @@ from django.views.generic import (
 )
 from django.contrib.auth.models import User
 
+from .forms import RegisterUserForm
 from orders.models import Order
 
 
 # Create your views here.
 # User
+def registration_confirmation(request):
+    return render(request, "users/registration_confirmation.html")
+
+
+# Registration
+class RegisterUser(CreateView):
+    form_class = RegisterUserForm
+    template_name = "users/registration.html"
+
+    def form_valid(self, form):
+        user = form.save()
+        user.save()
+        return redirect("users:registration_confirmation")
+
+
 class ProfileDetailView(DetailView):
     template_name = "users/user_detail.html"
 
