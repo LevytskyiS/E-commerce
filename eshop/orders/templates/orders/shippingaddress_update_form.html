@@ -1,0 +1,13 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<form method="post" action="{% url 'orders:update_shipping_address' pk=shipping_address.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update">
+</form>
+
+
+{% endblock %}

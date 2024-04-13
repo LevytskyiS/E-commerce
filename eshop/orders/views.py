@@ -1,6 +1,7 @@
 from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render
+from django.urls import reverse
 from django.views.generic import (
     ListView,
     CreateView,
@@ -37,3 +38,14 @@ class ShippingAddressListView(ListView):
 
     def get_queryset(self) -> QuerySet[ShippingAddress]:
         return ShippingAddress.objects.filter(user=self.request.user).order_by("city")
+
+
+class ShippingAddressUpdateView(UpdateView):
+    model = ShippingAddress
+    context_object_name = "shipping_address"
+    fields = ["address", "city", "country", "postal_code", "is_active", "is_default"]
+    template_name_suffix = "_update_form"
+
+    def get_success_url(self) -> str:
+        print(self.__dict__)
+        return reverse("orders:shipping_address_list")

@@ -17,7 +17,9 @@ Shipping Addresses:
     City: {{ address.city }}<br/>
     Country: {{ address.country }}<br/>
     Postal Code: {{ address.postal_code }}<br/>
-
+    Active: {{ address.is_active }}<br/>
+    Default: {{ address.is_default }}<br/>
+    <a href="{% url 'orders:update_shipping_address' pk=address.id %}">Update SA</a><br/>
 
 {% endfor %}
 

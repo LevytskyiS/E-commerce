@@ -18,6 +18,9 @@ class ShippingAddress(models.Model):
     is_default = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
+    # def get_absolute_url(self):
+    #     return reverse("orders:order_detail", kwargs={"pk": self.pk})
+
     def __str__(self):
         return f"{self.user.username} - {self.address}, {self.city}, {self.country}"
 
