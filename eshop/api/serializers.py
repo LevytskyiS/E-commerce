@@ -37,7 +37,7 @@ class BrandSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Brand
-        fields = ("id", "name")
+        fields = ("id", "name", "subcategory", "category")
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -107,7 +107,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ("id", "order", "product", "quantity", "total_price")
+        fields = ("id", "order", "nomenclature", "quantity", "total_price")
 
     def get_total_price(self, obj: OrderItem):
         return obj.total_price()

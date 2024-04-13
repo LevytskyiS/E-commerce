@@ -15,16 +15,8 @@ TOTAL PRICE:<br/>
 {{ order.total_price }}
 <br/><br/>
 Delivery address:<br/>
+{{ order.shipping_address.address }}<br/>
 {{ order.shipping_address.city }}<br/>
-{{ order.shipping_address.street }} avenue<br/>
-{{ order.shipping_address.house_number }}/{{ order.shipping_address.apartment }}<br/>
-Post code: {{ order.shipping_address.country_code }}-{{ order.shipping_address.zipcode }}<br/>
+{{ order.shipping_address.country }}<br/>
+{{ order.shipping_address.postal_code }}<br/>
 {% endblock %}
-
-
-    city = models.CharField(max_length=256)
-    street = models.CharField(max_length=256)
-    house_number = models.IntegerField()
-    apartment = models.CharField(max_length=10)
-    country_code = models.CharField(max_length=2)
-    zipcode = models.CharField(max_length=8)

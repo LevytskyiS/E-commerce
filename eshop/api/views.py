@@ -41,8 +41,8 @@ class AttributeNameGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
 class AttributeNameListAPIView(generics.ListAPIView):
     queryset = AttributeName.objects.all()
     serializer_class = AttributeNameSerializer
-    # For testing
-    permission_classes = [IsAuthenticated]
+    # For testing token
+    # permission_classes = [IsAuthenticated]
 
 
 # AttributeValue
