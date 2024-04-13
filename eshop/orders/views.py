@@ -10,8 +10,11 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
+from django.http import HttpRequest
+from django.contrib.auth.models import User
 
 from .models import Order, ShippingAddress
+from .forms import CreateShippingAddressForm
 
 
 # Order
@@ -31,13 +34,46 @@ class OrderListView(ListView):
 
 
 # Shipping Address
+class CreateShippingAddressView(CreateView):
+    model = ShippingAddress
+    form_class = CreateShippingAddressForm
+    template_name = "orders/create_shipping_address.html"
+    request = HttpRequest()
+
+    def form_valid(self, form):
+        user = User.objects.get(id=self.request.user.id)
+        form.instance.user = user
+        self.object = form.save()
+        return super().form_valid(form)
+
+    def get_success_url(self) -> str:
+        return reverse("users:profile", kwargs={"username": self.object.user.username})
+
+
 class ShippingAddressListView(ListView):
     model = ShippingAddress
     template_name = "orders/shipping_address_list.html"
     context_object_name = "addresses"
 
     def get_queryset(self) -> QuerySet[ShippingAddress]:
-        return ShippingAddress.objects.filter(user=self.request.user).order_by("city")
+        return (
+            ShippingAddress.objects.filter(user=self.request.user)
+            .filter(is_active=True)
+            .order_by("city")
+        )
+
+
+class ShippingAddressInactiveListView(ListView):
+    model = ShippingAddress
+    template_name = "orders/shipping_address_inactive_list.html"
+    context_object_name = "addresses"
+
+    def get_queryset(self) -> QuerySet[ShippingAddress]:
+        return (
+            ShippingAddress.objects.filter(user=self.request.user)
+            .filter(is_active=False)
+            .order_by("city")
+        )
 
 
 class ShippingAddressUpdateView(UpdateView):
@@ -47,5 +83,4 @@ class ShippingAddressUpdateView(UpdateView):
     template_name_suffix = "_update_form"
 
     def get_success_url(self) -> str:
-        print(self.__dict__)
         return reverse("orders:shipping_address_list")

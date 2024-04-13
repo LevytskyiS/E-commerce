@@ -21,7 +21,11 @@ Registered: {{ user.date_joined }}
 <a href="{% url 'orders:order_list' %}">Orders</a>
 <br>
 <br>
-<a href="{% url 'orders:shipping_address_list' %}">Shipping Addresses</a>
+<a href="{% url 'orders:create_shipping_address' %}">Add shipping address</a>
+<br>
+<a href="{% url 'orders:shipping_address_list' %}">Shipping Addresses (Active)</a>
+<br>
+<a href="{% url 'orders:shipping_address_inactive_list' %}">Shipping Addresses (Deactivated)</a>
 <br>
 <br>
 Total Turnover: 
