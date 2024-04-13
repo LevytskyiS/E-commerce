@@ -11,21 +11,18 @@ class ShippingAddress(models.Model):
     user = models.ForeignKey(
         User, related_name="shipping_addresses", on_delete=models.CASCADE
     )
-    city = models.CharField(max_length=256)
-    street = models.CharField(max_length=256)
-    house_number = models.IntegerField()
-    apartment = models.CharField(max_length=10)
-    country_code = models.CharField(max_length=2)
-    zipcode = models.CharField(max_length=8)
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=20)
+    is_default = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.address}, {self.city}, {self.country}"
 
 
 class Order(models.Model):
-    # STATUS_CHOICES = (
-    #     ("pending", "Pending"),
-    # ("processing", "Processing"),
-    #     ("completed", "Completed"),
-    #     ("cancelled", "Cancelled"),
-    # )
     user = models.ForeignKey(User, related_name="orders", on_delete=models.CASCADE)
     shipping_address = models.ForeignKey(
         ShippingAddress, related_name="orders", on_delete=models.CASCADE
@@ -34,7 +31,6 @@ class Order(models.Model):
     slug = AutoSlugField(populate_from="code", slugify_function=my_slugify_function)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
 
     def __str__(self):
         return self.code

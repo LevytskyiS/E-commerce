@@ -340,7 +340,10 @@ def create_users():
         names.add(name)
 
     admin = User.objects.create(
-        username="admin", email="lol@gmail.com", first_name=faker.first_name()
+        username="admin",
+        email="lol@gmail.com",
+        first_name=faker.first_name(),
+        last_name=faker.last_name(),
     )
     admin.is_staff = True
     admin.is_superuser = True
@@ -352,7 +355,9 @@ def create_users():
     for name in names:
         email = faker.email()
         password = faker.password()
-        user = User.objects.create(username=name, email=email, first_name=name)
+        user = User.objects.create(
+            username=name, email=email, first_name=name, last_name=faker.last_name()
+        )
         user.set_password(password)
         user.save()
         # Profile.objects.create(user=user)
@@ -535,26 +540,23 @@ def creade_product_images():
 def create_shipping_address():
     users = User.objects.all()
     for user in users:
+        address = (
+            f"{faker.street_name()} {faker.building_number()}/{faker.building_number()}"
+        )
         city = faker.city()
-        street = faker.street_name()
-        house_number = int(faker.building_number())
-        apartment = faker.building_number()
-        country_code = faker.country_code()
-        zipcode = faker.postcode()
+        postal_code = faker.postcode()
 
         ShippingAddress.objects.create(
             user=user,
+            address=address,
             city=city,
-            street=street,
-            house_number=house_number,
-            apartment=apartment,
-            country_code=country_code,
-            zipcode=zipcode,
+            country="Czech Republic",
+            postal_code=postal_code,
         )
 
 
 def create_order():
-    for i in range(100, 121):
+    for i in range(100, 201):
         code = f"MM{i}"
         user = random.choice(User.objects.all())
         if user.shipping_addresses.all():
