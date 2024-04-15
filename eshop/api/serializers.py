@@ -70,6 +70,8 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 class ShippingAddressSerializer(serializers.ModelSerializer):
 
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = ShippingAddress
         fields = "__all__"
@@ -77,6 +79,7 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
 
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     total_price = serializers.SerializerMethodField()
     order_item_ids = serializers.SerializerMethodField()
 

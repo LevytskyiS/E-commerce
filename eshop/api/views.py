@@ -1,6 +1,6 @@
 from rest_framework import generics
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from products.models import (
     AttributeName,
@@ -26,6 +26,7 @@ from .serializers import (
     OrderItemSerializer,
     ShippingAddressSerializer,
 )
+from .permissions import IsOrderCreatorOrAdminUser
 
 
 # AttributeName
@@ -148,6 +149,7 @@ class ProductImageListAPIView(generics.ListAPIView):
 # ShippingAddress
 class ShippingAddressCreateAPIView(generics.CreateAPIView):
     serializer_class = ShippingAddressSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class ShippingAddressGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -163,11 +165,13 @@ class ShippingAddressListAPIView(generics.ListAPIView):
 # Order
 class OrderCreateAPIView(generics.CreateAPIView):
     serializer_class = OrderSerializer
+    permission_classes = [IsAdminUser]
 
 
 class OrderGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    permission_classes = [IsOrderCreatorOrAdminUser]
 
 
 class OrderListAPIView(generics.ListAPIView):
