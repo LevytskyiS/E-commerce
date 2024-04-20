@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.forms.models import model_to_dict
 
 from products.models import (
     AttributeName,
@@ -13,17 +14,47 @@ from orders.models import Order, OrderItem, ShippingAddress, Nomenclature
 
 
 class AttributeNameSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
 
     class Meta:
         model = AttributeName
         fields = ("id", "name")
 
+    def create(self, validated_data):
+        instance_id = validated_data.get("id")
+
+        try:
+            instance = AttributeName.objects.get(id=instance_id)
+            if model_to_dict(instance) == validated_data:
+                return instance
+            instance.name = validated_data.get("name", instance.name)
+            instance.save()
+            return instance
+        except AttributeName.DoesNotExist as e:
+            return AttributeName.objects.create(**validated_data)
+
 
 class AttributeValueSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    value = serializers.CharField()
 
     class Meta:
         model = AttributeValue
         fields = ("id", "value")
+
+    def create(self, validated_data):
+        instance_id = validated_data.get("id")
+
+        try:
+            instance = AttributeValue.objects.get(id=instance_id)
+            if model_to_dict(instance) == validated_data:
+                return instance
+            instance.value = validated_data.get("value", instance.value)
+            instance.save()
+            return instance
+        except AttributeValue.DoesNotExist as e:
+            return AttributeValue.objects.create(**validated_data)
 
 
 class AttributeSerializer(serializers.ModelSerializer):
