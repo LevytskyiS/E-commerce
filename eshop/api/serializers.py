@@ -134,15 +134,32 @@ class ProductSerializer(serializers.ModelSerializer):
             instance.save()
             return instance
         except Product.DoesNotExist as e:
-            print("NEW", model_to_dict(instance) == validated_data)
             return Product.objects.create(**validated_data)
 
 
 class NomenclatureSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    code = serializers.CharField()
 
     class Meta:
         model = Nomenclature
         fields = "__all__"
+
+    def create(self, validated_data):
+        instance_id = validated_data.get("id")
+
+        try:
+            instance = Nomenclature.objects.get(id=instance_id)
+            instance.code = validated_data.get("code", instance.code)
+            instance.product = validated_data.get("product", instance.product)
+            instance.price = validated_data.get("price", instance.price)
+            instance.quantity_available = validated_data.get(
+                "quantity_available", instance.quantity_available
+            )
+            instance.save()
+            return instance
+        except Nomenclature.DoesNotExist as e:
+            return Nomenclature.objects.create(**validated_data)
 
 
 class ImageSerializer(serializers.ModelSerializer):
