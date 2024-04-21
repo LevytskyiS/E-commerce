@@ -85,6 +85,7 @@ class AttributeSerializer(serializers.ModelSerializer):
 
 class BrandSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField()
+    name = serializers.CharField()
 
     class Meta:
         model = Brand
@@ -95,8 +96,6 @@ class BrandSerializer(serializers.ModelSerializer):
 
         try:
             instance = Brand.objects.get(id=instance_id)
-            if model_to_dict(instance) == validated_data:
-                return instance
             instance.name = validated_data.get("name", instance.name)
             instance.subcategory.set(
                 validated_data.get("subcategory", instance.subcategory)
@@ -109,10 +108,34 @@ class BrandSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
 
     class Meta:
         model = Product
         fields = "__all__"
+
+    def create(self, validated_data):
+        instance_id = validated_data.get("id")
+
+        try:
+            instance = Product.objects.get(id=instance_id)
+            instance.name = validated_data.get("name", instance.name)
+            instance.brand = validated_data.get("brand", instance.brand)
+            instance.sex = validated_data.get("sex", instance.sex)
+            instance.brand = validated_data.get("brand", instance.brand)
+            instance.category = validated_data.get("category", instance.category)
+            instance.subcategory = validated_data.get(
+                "subcategory", instance.subcategory
+            )
+            instance.attributes.set(
+                validated_data.get("attributes", instance.attributes)
+            )
+            instance.save()
+            return instance
+        except Product.DoesNotExist as e:
+            print("NEW", model_to_dict(instance) == validated_data)
+            return Product.objects.create(**validated_data)
 
 
 class NomenclatureSerializer(serializers.ModelSerializer):
