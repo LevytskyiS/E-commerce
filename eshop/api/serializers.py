@@ -58,17 +58,54 @@ class AttributeValueSerializer(serializers.ModelSerializer):
 
 
 class AttributeSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
 
     class Meta:
         model = Attribute
         fields = ("id", "attribute_name", "attribute_value")
 
+    def create(self, validated_data):
+        instance_id = validated_data.get("id")
+
+        try:
+            instance = Attribute.objects.get(id=instance_id)
+            if model_to_dict(instance) == validated_data:
+                return instance
+            instance.attribute_name = validated_data.get(
+                "attribute_name", instance.attribute_name
+            )
+            instance.attribute_value = validated_data.get(
+                "attribute_value", instance.attribute_value
+            )
+            instance.save()
+            return instance
+        except Attribute.DoesNotExist as e:
+            return Attribute.objects.create(**validated_data)
+
 
 class BrandSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
 
     class Meta:
         model = Brand
         fields = ("id", "name", "subcategory", "category")
+
+    def create(self, validated_data):
+        instance_id = validated_data.get("id")
+
+        try:
+            instance = Brand.objects.get(id=instance_id)
+            if model_to_dict(instance) == validated_data:
+                return instance
+            instance.name = validated_data.get("name", instance.name)
+            instance.subcategory.set(
+                validated_data.get("subcategory", instance.subcategory)
+            )
+            instance.category.set(validated_data.get("category", instance.category))
+            instance.save()
+            return instance
+        except Brand.DoesNotExist as e:
+            return Brand.objects.create(**validated_data)
 
 
 class ProductSerializer(serializers.ModelSerializer):
