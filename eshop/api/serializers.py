@@ -186,14 +186,28 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
 
     class Meta:
         model = ProductImage
         fields = "__all__"
 
+    def create(self, validated_data):
+        instance_id = validated_data.get("id")
+        try:
+            instance = ProductImage.objects.get(id=instance_id)
+            if model_to_dict(instance) == validated_data:
+                return instance
+            instance.name = validated_data.pop("name", instance.name)
+            instance.product = validated_data.get("product", instance.product)
+            instance.image = validated_data.get("image", instance.image)
+            instance.save()
+            return instance
+        except ProductImage.DoesNotExist as e:
+            return ProductImage.objects.create(**validated_data)
+
 
 class ShippingAddressSerializer(serializers.ModelSerializer):
-
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:

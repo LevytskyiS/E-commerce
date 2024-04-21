@@ -81,7 +81,7 @@ class ImportAPIView(APIView):
         return Response(
             {
                 "data": {
-                    "saved": saved_models,
+                    "saved_or_updated": saved_models,
                     "invalid": invalid_models,
                     "unknown": unknown_models,
                 }
