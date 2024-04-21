@@ -163,10 +163,26 @@ class NomenclatureSerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    image = serializers.URLField()
 
     class Meta:
         model = Image
         fields = "__all__"
+
+    def create(self, validated_data):
+        instance_id = validated_data.get("id")
+
+        try:
+            instance = Image.objects.get(id=instance_id)
+            if model_to_dict(instance) == validated_data:
+                return instance
+            instance.name = validated_data.get("name", instance.name)
+            instance.image = validated_data.get("image", instance.image)
+            instance.save()
+            return instance
+        except Image.DoesNotExist as e:
+            return Image.objects.create(**validated_data)
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
