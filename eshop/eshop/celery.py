@@ -21,7 +21,7 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     "task1": {
         "task": "orders.tasks.place_order",
-        "schedule": crontab(minute="*", hour="8-19"),
+        "schedule": crontab(minute="*/30", hour="8-19"),
     },
     # "task2": {
     #     "task": "orders.tasks.add_shipping_address",
