@@ -32,7 +32,7 @@ from .serializers import (
     ShippingAddressSerializer,
 )
 
-from .permissions import IsOrderCreatorOrAdminUser
+from .permissions import IsOrderCreatorOrAdminUser, IsShippingAddressCreatorOrAdminUser
 from .utils import get_app_models, get_serializer_model
 
 app_models = [model.__name__ for model in get_app_models()]
@@ -93,118 +93,139 @@ class ImportAPIView(APIView):
 # AttributeName
 class AttributeNameCreateAPIView(generics.CreateAPIView):
     serializer_class = AttributeNameSerializer
+    permission_classes = [IsAdminUser]
 
 
 class AttributeNameGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = AttributeName.objects.all()
     serializer_class = AttributeNameSerializer
+    permission_classes = [IsAdminUser]
 
 
 class AttributeNameListAPIView(generics.ListAPIView):
     queryset = AttributeName.objects.all()
     serializer_class = AttributeNameSerializer
-    # For testing token
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
 
 # AttributeValue
 class AttributeValueCreateAPIView(generics.CreateAPIView):
     serializer_class = AttributeValueSerializer
+    permission_classes = [IsAdminUser]
 
 
 class AttributeValueGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = AttributeValue.objects.all()
     serializer_class = AttributeValueSerializer
+    permission_classes = [IsAdminUser]
 
 
 class AttributeValueListAPIView(generics.ListAPIView):
     queryset = AttributeValue.objects.all()
     serializer_class = AttributeValueSerializer
+    permission_classes = [IsAuthenticated]
 
 
 # Attribute + ModelViewSet for RUD requests
 class AttributeCreateAPIView(generics.CreateAPIView):
     serializer_class = AttributeSerializer
+    permission_classes = [IsAdminUser]
 
 
 class AttributeAPIViewSet(viewsets.ModelViewSet):
     queryset = Attribute.objects.all()
     serializer_class = AttributeSerializer
+    # Переделать, что читать могут все, а удалять - админ
 
 
 # Brand
 class BrandCreateAPIView(generics.CreateAPIView):
     serializer_class = BrandSerializer
+    permission_classes = [IsAdminUser]
 
 
 class BrandGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
+    permission_classes = [IsAdminUser]
 
 
 class BrandListAPIView(generics.ListAPIView):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
+    permission_classes = [IsAuthenticated]
 
 
 # Product
 class ProductCreateAPIView(generics.CreateAPIView):
     serializer_class = ProductSerializer
+    permission_classes = [IsAdminUser]
 
 
 class ProductGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [IsAdminUser]
 
 
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
 
 
 # Nomenclature
 class NomenclatureCreateAPIView(generics.CreateAPIView):
     serializer_class = NomenclatureSerializer
+    permission_classes = [IsAdminUser]
 
 
 class NomenclatureGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Nomenclature.objects.all()
     serializer_class = NomenclatureSerializer
+    permission_classes = [IsAdminUser]
 
 
 class NomenclatureListAPIView(generics.ListAPIView):
     queryset = Nomenclature.objects.all()
     serializer_class = NomenclatureSerializer
+    permission_classes = [IsAuthenticated]
 
 
 # Image
 class ImageCreateAPIView(generics.CreateAPIView):
     serializer_class = ImageSerializer
+    permission_classes = [IsAdminUser]
 
 
 class ImageGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
+    permission_classes = [IsAdminUser]
 
 
 class ImageListAPIView(generics.ListAPIView):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
+    permission_classes = [IsAuthenticated]
 
 
 # ProductImage
 class ProductImageCreateAPIView(generics.CreateAPIView):
     serializer_class = ProductImageSerializer
+    permission_classes = [IsAdminUser]
 
 
 class ProductImageGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
+    permission_classes = [IsAdminUser]
 
 
 class ProductImageListAPIView(generics.ListAPIView):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
+    permission_classes = [IsAuthenticated]
 
 
 # ShippingAddress
@@ -216,17 +237,21 @@ class ShippingAddressCreateAPIView(generics.CreateAPIView):
 class ShippingAddressGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = ShippingAddress.objects.all()
     serializer_class = ShippingAddressSerializer
+    permission_classes = [IsShippingAddressCreatorOrAdminUser]
 
 
 class ShippingAddressListAPIView(generics.ListAPIView):
-    queryset = ShippingAddress.objects.all().order_by("id")
     serializer_class = ShippingAddressSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return ShippingAddress.objects.filter(user=self.request.user)
 
 
 # Order
 class OrderCreateAPIView(generics.CreateAPIView):
     serializer_class = OrderSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
 
 class OrderGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -236,20 +261,28 @@ class OrderGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class OrderListAPIView(generics.ListAPIView):
-    queryset = Order.objects.all().order_by("id")
     serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user).order_by("created_at")
 
 
 # OrderItem
 class OrderItemCreateAPIView(generics.CreateAPIView):
     serializer_class = OrderItemSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class OrderItemGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = OrderItem.objects.all().order_by("id")
     serializer_class = OrderItemSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class OrderItemListAPIView(generics.ListAPIView):
-    queryset = OrderItem.objects.all().order_by("id")
     serializer_class = OrderItemSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return OrderItem.objects.filter(order__user=self.request.user)
