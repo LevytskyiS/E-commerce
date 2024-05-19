@@ -44,7 +44,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Subcategory)
 class SubcategoryAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
+    list_display = (
+        "id",
+        "name",
+    )
+    list_filter = ("category",)
     raw_id_fields = ("category",)
     search_fields = ("name",)
 
@@ -53,6 +57,10 @@ class SubcategoryAdmin(admin.ModelAdmin):
 class BrandAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
     raw_id_fields = ("subcategory", "category")
+    list_filter = (
+        "category",
+        "subcategory",
+    )
     search_fields = ("name",)
 
 
