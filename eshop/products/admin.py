@@ -18,11 +18,16 @@ from .models import (
 class AttributeNameAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
     search_fields = ("name",)
+    list_filter = ("name",)
+    ordering = ("id",)
 
 
 @admin.register(AttributeValue)
 class AttributeValueAdmin(admin.ModelAdmin):
     list_display = ("id", "value")
+    search_fields = ("value",)
+    list_filter = ("value",)
+    ordering = ("id",)
 
 
 @admin.register(Attribute)

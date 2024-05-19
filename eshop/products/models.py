@@ -12,12 +12,20 @@ class AttributeName(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Attribute Name"
+        verbose_name_plural = "Attribute Names"
+
 
 class AttributeValue(models.Model):
     value = models.CharField(max_length=256, unique=True)
 
     def __str__(self):
         return self.value
+
+    class Meta:
+        verbose_name = "Attribute Value"
+        verbose_name_plural = "Attribute Values"
 
 
 class Attribute(models.Model):
@@ -31,6 +39,10 @@ class Attribute(models.Model):
     def __str__(self):
         return f"{self.attribute_name} - {self.attribute_value}"
 
+    class Meta:
+        verbose_name = "Attribute"
+        verbose_name_plural = "Attributes"
+
 
 class Category(models.Model):
     name = models.CharField(max_length=30, unique=True)
@@ -38,6 +50,10 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
 
 
 class Subcategory(models.Model):
@@ -50,6 +66,10 @@ class Subcategory(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "Subcategory"
+        verbose_name_plural = "Subcategories"
 
 
 class Brand(models.Model):
@@ -69,6 +89,10 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "Brand"
+        verbose_name_plural = "Brands"
 
 
 class Product(models.Model):
@@ -96,6 +120,10 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Product"
+        verbose_name_plural = "Products"
+
 
 class Nomenclature(models.Model):
     code = models.CharField(max_length=15, unique=True)
@@ -112,6 +140,10 @@ class Nomenclature(models.Model):
     def __str__(self):
         return self.code
 
+    class Meta:
+        verbose_name = "Nomenclature"
+        verbose_name_plural = "Nomenclatures"
+
 
 class Image(models.Model):
     name = models.CharField(max_length=256)
@@ -121,6 +153,10 @@ class Image(models.Model):
         if self.name:
             return self.name
         return self.image
+
+    class Meta:
+        verbose_name = "Image"
+        verbose_name_plural = "Images"
 
 
 class ProductImage(models.Model):
@@ -134,3 +170,7 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Product Image of {self.product}"
+
+    class Meta:
+        verbose_name = "Product Image"
+        verbose_name_plural = "Product Images"

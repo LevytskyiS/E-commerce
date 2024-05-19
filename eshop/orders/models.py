@@ -25,6 +25,10 @@ class ShippingAddress(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.address}, {self.city}, {self.country}"
 
+    class Meta:
+        verbose_name = "Shipping Address"
+        verbose_name_plural = "Shipping Addresses"
+
 
 class Order(models.Model):
     user = models.ForeignKey(User, related_name="orders", on_delete=models.CASCADE)
@@ -45,6 +49,10 @@ class Order(models.Model):
     def total_price(self):
         return sum([item.total_price() for item in self.items.all()])
 
+    class Meta:
+        verbose_name = "Order"
+        verbose_name_plural = "Orders"
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
@@ -58,3 +66,7 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"Order Item of the order {self.order}: Nomenclature {self.nomenclature.code} - ({self.quantity} units)"
+
+    class Meta:
+        verbose_name = "Order Item"
+        verbose_name_plural = "Order Items"
