@@ -1,9 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.urls import reverse
-from django_extensions.db.fields import AutoSlugField
 
-from .utils import my_slugify_function
 from .mixins import AttributesBase, NameSlugModel
 
 

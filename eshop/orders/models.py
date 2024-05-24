@@ -4,6 +4,7 @@ from django.urls import reverse
 from django_extensions.db.fields import AutoSlugField
 
 from .utils import generate_order_number
+from .mixins import TimeStampedModel
 from products.utils import my_slugify_function
 from products.models import Nomenclature
 
@@ -30,15 +31,13 @@ class ShippingAddress(models.Model):
         verbose_name_plural = "Shipping Addresses"
 
 
-class Order(models.Model):
+class Order(TimeStampedModel):
     user = models.ForeignKey(User, related_name="orders", on_delete=models.CASCADE)
     shipping_address = models.ForeignKey(
         ShippingAddress, related_name="orders", on_delete=models.CASCADE
     )
     code = models.CharField(max_length=10, default=generate_order_number, unique=True)
     slug = AutoSlugField(populate_from="code", slugify_function=my_slugify_function)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.code
