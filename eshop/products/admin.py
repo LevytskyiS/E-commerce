@@ -76,6 +76,7 @@ class ProductAdmin(admin.ModelAdmin):
 class NomenclatureAdmin(admin.ModelAdmin):
     list_display = ("id", "code", "product", "price")
     list_filter = ("product",)
+    search_fields = ("nomeclature",)
 
 
 @admin.register(Image)
