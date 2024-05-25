@@ -43,6 +43,15 @@ class ProductDetailView(DetailView):
     template_name = "products/product_detail.html"
     context_object_name = "product"
 
+    def get_queryset(self):
+        return Product.objects.select_related(
+            "brand", "category", "subcategory"
+        ).prefetch_related(
+            "attributes__attribute_name",
+            "attributes__attribute_value",
+            # "product_image__image",
+        )
+
 
 class ProductListView(ListView):
     model = Product
@@ -51,7 +60,7 @@ class ProductListView(ListView):
     # paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Product]:
-        return Product.objects.all()
+        return Product.objects.all().select_related("brand", "category", "subcategory")
 
 
 class GentsProductListView(ListView):
@@ -61,7 +70,9 @@ class GentsProductListView(ListView):
     # paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Product]:
-        return Product.objects.filter(sex="M")
+        return Product.objects.filter(sex="M").select_related(
+            "brand", "category", "subcategory"
+        )
 
 
 class LadiesProductListView(ListView):
@@ -71,7 +82,9 @@ class LadiesProductListView(ListView):
     # paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Product]:
-        return Product.objects.filter(sex="W")
+        return Product.objects.filter(sex="W").select_related(
+            "brand", "category", "subcategory"
+        )
 
 
 class GentsHikingProductListView(ListView):
@@ -84,6 +97,7 @@ class GentsHikingProductListView(ListView):
         return (
             Product.objects.filter(subcategory__name="hiking")
             .filter(sex="M")
+            .select_related("brand", "category", "subcategory")
             .order_by("name")
         )
 
@@ -99,6 +113,7 @@ class LadiesHikingProductListView(ListView):
         return (
             Product.objects.filter(subcategory__name="hiking")
             .filter(sex="W")
+            .select_related("brand", "category", "subcategory")
             .order_by("name")
         )
 
@@ -113,6 +128,7 @@ class GentsRunningProductListView(ListView):
         return (
             Product.objects.filter(subcategory__name="running")
             .filter(sex="M")
+            .select_related("brand", "category", "subcategory")
             .order_by("name")
         )
 
@@ -127,6 +143,7 @@ class LadiesRunningProductListView(ListView):
         return (
             Product.objects.filter(subcategory__name="running")
             .filter(sex="W")
+            .select_related("brand", "category", "subcategory")
             .order_by("name")
         )
 
@@ -141,6 +158,7 @@ class GentsGymProductListView(ListView):
         return (
             Product.objects.filter(subcategory__name="gym")
             .filter(sex="M")
+            .select_related("brand", "category", "subcategory")
             .order_by("name")
         )
 
@@ -155,6 +173,7 @@ class LadiesGymProductListView(ListView):
         return (
             Product.objects.filter(subcategory__name="gym")
             .filter(sex="W")
+            .select_related("brand", "category", "subcategory")
             .order_by("name")
         )
 
@@ -169,6 +188,7 @@ class GentsOutdoorProductListView(ListView):
         return (
             Product.objects.filter(subcategory__name="outdoor")
             .filter(sex="M")
+            .select_related("brand", "category", "subcategory")
             .order_by("name")
         )
 
@@ -183,5 +203,6 @@ class LadiesOutdoorProductListView(ListView):
         return (
             Product.objects.filter(subcategory__name="outdoor")
             .filter(sex="W")
+            .select_related("brand", "category", "subcategory")
             .order_by("name")
         )

@@ -74,7 +74,12 @@ class ProfileDetailView(DetailView):
         # получаем пользователя по username если он существует
         user = get_object_or_404(User, username=username)
         # передаем его в шаблон как profile
-        orders = Order.objects.filter(user=user)
+        orders = (
+            Order.objects.filter(user=user)
+            .select_related("user", "shipping_address")
+            .prefetch_related("items__nomenclature")
+            .order_by("created_at")
+        )
         turnover = sum([order.total_price() for order in orders])
         return render(
             request, self.template_name, {"profile": user, "turnover": turnover}

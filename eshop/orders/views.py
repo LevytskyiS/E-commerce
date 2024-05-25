@@ -30,7 +30,13 @@ class OrderListView(ListView):
     context_object_name = "orders"
 
     def get_queryset(self) -> QuerySet[Order]:
-        return Order.objects.filter(user=self.request.user).order_by("created_at")
+        # return Order.objects.filter(user=self.request.user).order_by("created_at")
+        return (
+            Order.objects.filter(user=self.request.user)
+            .select_related("user", "shipping_address")
+            .prefetch_related("items__nomenclature")
+            .order_by("created_at")
+        )
 
 
 # Shipping Address
@@ -59,6 +65,7 @@ class ShippingAddressListView(ListView):
         return (
             ShippingAddress.objects.filter(user=self.request.user)
             .filter(is_active=True)
+            .select_related("user")
             .order_by("city")
         )
 
@@ -72,6 +79,7 @@ class ShippingAddressInactiveListView(ListView):
         return (
             ShippingAddress.objects.filter(user=self.request.user)
             .filter(is_active=False)
+            .select_related("user")
             .order_by("city")
         )
 
