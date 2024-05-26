@@ -36,12 +36,6 @@ class AttributeAdmin(admin.ModelAdmin):
     list_filter = ("attribute_name", "attribute_value")
 
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
-    search_fields = ("name",)
-
-
 @admin.register(Subcategory)
 class SubcategoryAdmin(admin.ModelAdmin):
     list_display = (
@@ -51,6 +45,13 @@ class SubcategoryAdmin(admin.ModelAdmin):
     list_filter = ("category",)
     raw_id_fields = ("category",)
     search_fields = ("name",)
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+    search_fields = ("name",)
+    list_filter = ("name",)
 
 
 @admin.register(Brand)
@@ -74,7 +75,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Nomenclature)
 class NomenclatureAdmin(admin.ModelAdmin):
-    list_display = ("id", "code", "product", "price")
+    list_display = ("id", "code", "quantity_available", "price", "product")
     list_filter = ("product",)
     search_fields = ("nomeclature",)
 

@@ -215,10 +215,23 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class OrderItemSerializer(serializers.ModelSerializer):
+
+    total_price = serializers.SerializerMethodField()
+
+    class Meta:
+        model = OrderItem
+        fields = ("id", "order", "nomenclature", "quantity", "total_price")
+
+    def get_total_price(self, obj: OrderItem):
+        return obj.total_price()
+
+
 class OrderSerializer(serializers.ModelSerializer):
 
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     total_price = serializers.SerializerMethodField()
+    # order_item_ids = OrderItemSerializer(many=True)
     order_item_ids = serializers.SerializerMethodField()
 
     class Meta:
@@ -235,20 +248,30 @@ class OrderSerializer(serializers.ModelSerializer):
             "total_price",
         )
 
+    def create(self, validated_data: dict):
+        context = self.context
+        request = context.get("request")
+        items_data = request.data.get("order_item_ids")
+        print(items_data)
+        user = self.context["request"].user
+        order = Order.objects.create(**validated_data)
+        for item in items_data:
+            nomenclature: Nomenclature = Nomenclature.objects.get(
+                id=item.get("nomenclature")
+            )
+            quantity = item["quantity"]
+            item["order"] = order
+            item["nomenclature"] = nomenclature
+            if quantity <= nomenclature.quantity_available:
+                nomenclature.quantity_available = (
+                    nomenclature.quantity_available - quantity
+                )
+                nomenclature.save()
+                order_item = OrderItem.objects.create(**item)
+        return order
+
     def get_total_price(self, obj: Order):
         return obj.total_price()
 
     def get_order_item_ids(self, obj: Order):
         return [item.id for item in obj.items.all()]
-
-
-class OrderItemSerializer(serializers.ModelSerializer):
-
-    total_price = serializers.SerializerMethodField()
-
-    class Meta:
-        model = OrderItem
-        fields = ("id", "order", "nomenclature", "quantity", "total_price")
-
-    def get_total_price(self, obj: OrderItem):
-        return obj.total_price()

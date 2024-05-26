@@ -52,6 +52,9 @@ class ProductDetailView(DetailView):
             # "product_image__image",
         )
 
+        # select_related - предзагружает поля, которые являются FK
+        # prefetch_related - предзагружает дочерние объекты поля
+
 
 class ProductListView(ListView):
     model = Product
