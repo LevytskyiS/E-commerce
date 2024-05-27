@@ -165,3 +165,6 @@ eshop/flower_db.dir
 eshop/flower.bak
 eshop/flower.dat
 eshop/flower.dir
+company_addresses_and_orders.pdf
+mypdf.py
+eshop/invoices
