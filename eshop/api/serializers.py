@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.forms.models import model_to_dict
+from rest_framework.exceptions import ValidationError
+from django.db import transaction, IntegrityError
 
 from products.models import (
     AttributeName,
@@ -252,22 +254,45 @@ class OrderSerializer(serializers.ModelSerializer):
         context = self.context
         request = context.get("request")
         items_data = request.data.get("order_item_ids")
-        print(items_data)
         user = self.context["request"].user
-        order = Order.objects.create(**validated_data)
-        for item in items_data:
-            nomenclature: Nomenclature = Nomenclature.objects.get(
-                id=item.get("nomenclature")
+
+        try:
+
+            with transaction.atomic():
+                order = Order.objects.create(**validated_data)
+
+                for item in items_data:
+                    try:
+                        item_id = item.get("nomenclature")
+                        nomenclature: Nomenclature = Nomenclature.objects.get(
+                            id=item_id
+                            # code=item.get("nomenclature")
+                        )
+                    except Nomenclature.DoesNotExist:
+                        raise ValidationError(
+                            {"error": f"Product with ID {item_id} does not exist"}
+                        )
+
+                    quantity = item["quantity"]
+                    item["order"] = order
+                    item["nomenclature"] = nomenclature
+
+                    if quantity > nomenclature.quantity_available:
+                        raise ValidationError(
+                            {"error": f"Not enough stock for product ID {item_id}"}
+                        )
+
+                    nomenclature.quantity_available -= quantity
+                    nomenclature.save()
+                    order_item = OrderItem.objects.create(**item)
+
+        except IntegrityError:
+            raise ValidationError(
+                {
+                    "error": "An error occurred while processing your order. Please try again."
+                }
             )
-            quantity = item["quantity"]
-            item["order"] = order
-            item["nomenclature"] = nomenclature
-            if quantity <= nomenclature.quantity_available:
-                nomenclature.quantity_available = (
-                    nomenclature.quantity_available - quantity
-                )
-                nomenclature.save()
-                order_item = OrderItem.objects.create(**item)
+
         return order
 
     def get_total_price(self, obj: Order):

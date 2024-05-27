@@ -35,7 +35,7 @@ class OrderListView(ListView):
             Order.objects.filter(user=self.request.user)
             .select_related("user", "shipping_address")
             .prefetch_related("items__nomenclature")
-            .order_by("created_at")
+            .order_by("-created_at")
         )
 
 
