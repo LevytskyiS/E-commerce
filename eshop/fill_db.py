@@ -1,11 +1,8 @@
 import os
 import random
-import math
-import uuid
 
 import django
 import requests
-
 from django.conf import settings
 from faker import Faker
 
