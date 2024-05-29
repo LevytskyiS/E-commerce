@@ -1,6 +1,8 @@
+from collections import defaultdict
+
 from rest_framework import serializers
-from django.forms.models import model_to_dict
 from rest_framework.exceptions import ValidationError
+from django.forms.models import model_to_dict
 from django.db import transaction, IntegrityError
 
 from products.models import (
@@ -255,6 +257,30 @@ class OrderSerializer(serializers.ModelSerializer):
         request = context.get("request")
         items_data = request.data.get("order_item_ids")
         user = self.context["request"].user
+
+        # Обработка данных для объединения дублирующихся номенклатур
+        consolidated_items = defaultdict(int)
+
+        if not items_data:
+            raise ValidationError(
+                {
+                    "error": f"The nomenclatures to be ordered and their quantities are not provided"
+                }
+            )
+
+        try:
+            for item in items_data:
+                consolidated_items[item["nomenclature"]] += item["quantity"]
+        except KeyError:
+            raise ValidationError(
+                {"error": f"'nomenclature' or 'quantity' is missing. Chech the body"}
+            )
+
+        # Преобразование consolidated_items обратно в список словарей
+        items_data = [
+            {"nomenclature": k, "quantity": v} for k, v in consolidated_items.items()
+        ]
+        print(items_data)
 
         try:
 
