@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django_extensions.db.fields import AutoSlugField
 
+from .utils import generate_order_number
+from .mixins import TimeStampedModel
 from products.utils import my_slugify_function
 from products.models import Nomenclature
 
@@ -11,30 +13,41 @@ class ShippingAddress(models.Model):
     user = models.ForeignKey(
         User, related_name="shipping_addresses", on_delete=models.CASCADE
     )
-    city = models.CharField(max_length=256)
-    street = models.CharField(max_length=256)
-    house_number = models.IntegerField()
-    apartment = models.CharField(max_length=10)
-    country_code = models.CharField(max_length=2)
-    zipcode = models.CharField(max_length=8)
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=20)
+    is_default = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    # def get_absolute_url(self):
+    #     return reverse("orders:order_detail", kwargs={"pk": self.pk})
+
+    def __str__(self):
+        return f"{self.user.username} - {self.address}, {self.city}, {self.country}"
+
+    class Meta:
+        verbose_name = "Shipping Address"
+        verbose_name_plural = "Shipping Addresses"
 
 
-class Order(models.Model):
-    # STATUS_CHOICES = (
-    #     ("pending", "Pending"),
-    # ("processing", "Processing"),
-    #     ("completed", "Completed"),
-    #     ("cancelled", "Cancelled"),
-    # )
+class Order(TimeStampedModel):
+
+    STATUS_CHOICE = {
+        "pending": "Pending",
+        "completed": "Completed",
+        "shipped": "Shipped",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled",
+    }  # key - actual value, value - human readable name
+
     user = models.ForeignKey(User, related_name="orders", on_delete=models.CASCADE)
     shipping_address = models.ForeignKey(
         ShippingAddress, related_name="orders", on_delete=models.CASCADE
     )
-    code = models.CharField(max_length=10, unique=True)
+    code = models.CharField(max_length=10, default=generate_order_number, unique=True)
+    status = models.CharField(max_length=9, choices=STATUS_CHOICE, default="pending")
     slug = AutoSlugField(populate_from="code", slugify_function=my_slugify_function)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    # status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
 
     def __str__(self):
         return self.code
@@ -43,7 +56,11 @@ class Order(models.Model):
         return reverse("orders:order_detail", kwargs={"slug": self.slug})
 
     def total_price(self):
-        return sum(item.total_price() for item in self.items.all())
+        return sum([item.total_price() for item in self.items.all()])
+
+    class Meta:
+        verbose_name = "Order"
+        verbose_name_plural = "Orders"
 
 
 class OrderItem(models.Model):
@@ -58,3 +75,7 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"Order Item of the order {self.order}: Nomenclature {self.nomenclature.code} - ({self.quantity} units)"
+
+    class Meta:
+        verbose_name = "Order Item"
+        verbose_name_plural = "Order Items"

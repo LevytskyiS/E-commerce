@@ -40,8 +40,9 @@ faker = Faker()
 
 
 def create_order():
-    address = random.choice(ShippingAddress.objects.all())
+    # address = random.choice(ShippingAddress.objects.all())
     user = random.choice(User.objects.all())
+    address = user.shipping_addresses.all()[0]
 
     try:
         order = Order.objects.create(

@@ -32,23 +32,31 @@
                     <li class="nav-li">
                         <a href="#">Services</a>
                     </li>
-                    <li class="nav-li">
-                        <a href="#">My Orders</a>
-                    </li>
                     {% if request.user.is_authenticated %}
+                    <li class="nav-li">
+                        <a href="{% url 'orders:order_list' %}">My Orders</a>
+                    </li>
                     <li class="nav-li">
                         <a href="{% url 'users:profile' username=request.user.username %}">My Profile</a>
                     </li>
                     {% endif %}
                 </ul>
-
                 <ul class="test-ul">
+                    {% if not request.user.is_authenticated %}
                     <li class="test-li">
-                        <a href="#">Registration</a>
+                        <a href="{% url 'users:registration' %}">Registration</a>
                     </li>
-                    <li class="nav-li">
-                        <a href="#">Login</a>
+                    <li class="test-li">
+                        <a href="{% url 'users:login' %}">Login</a>
                     </li>
+                    {% else %}
+                    <li class="test-li">
+                        <form method="post" action="{% url 'users:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">logout</button>
+                        </form> 
+                    </li>
+                    {% endif %}
                 </ul>
             </nav>
         </header>

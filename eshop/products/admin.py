@@ -18,11 +18,16 @@ from .models import (
 class AttributeNameAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
     search_fields = ("name",)
+    list_filter = ("name",)
+    ordering = ("id",)
 
 
 @admin.register(AttributeValue)
 class AttributeValueAdmin(admin.ModelAdmin):
     list_display = ("id", "value")
+    search_fields = ("value",)
+    list_filter = ("value",)
+    ordering = ("id",)
 
 
 @admin.register(Attribute)
@@ -31,23 +36,32 @@ class AttributeAdmin(admin.ModelAdmin):
     list_filter = ("attribute_name", "attribute_value")
 
 
+@admin.register(Subcategory)
+class SubcategoryAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+    )
+    list_filter = ("category",)
+    raw_id_fields = ("category",)
+    search_fields = ("name",)
+
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
     search_fields = ("name",)
-
-
-@admin.register(Subcategory)
-class SubcategoryAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
-    raw_id_fields = ("category",)
-    search_fields = ("name",)
+    list_filter = ("name",)
 
 
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
     raw_id_fields = ("subcategory", "category")
+    list_filter = (
+        "category",
+        "subcategory",
+    )
     search_fields = ("name",)
 
 
@@ -61,8 +75,9 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Nomenclature)
 class NomenclatureAdmin(admin.ModelAdmin):
-    list_display = ("id", "code", "product", "price")
+    list_display = ("id", "code", "quantity_available", "price", "product")
     list_filter = ("product",)
+    search_fields = ("nomeclature",)
 
 
 @admin.register(Image)

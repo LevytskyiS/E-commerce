@@ -8,7 +8,26 @@ from rest_framework.test import APIClient
 from rest_framework import status
 
 from products.models import AttributeName
-from orders.models import OrderItem, Order
+from orders.models import OrderItem, Order, ShippingAddress
+
+
+SHIPPING_ADDRESS = {
+    "user": 1,
+    "address": "Kek Street",
+    "city": "West Alexis Crystal",
+    "country": "Czech Republic",
+    "postal_code": "1234",
+    "is_default": False,
+    "is_active": False,
+}
+
+USER = {
+    "username": "admin",
+    "password": "admin",
+    "email": "admin@gmail.com",
+    "is_staff": True,
+    "is_superuser": True,
+}
 
 
 class AttributeNameAPITest(TestCase):
@@ -100,15 +119,17 @@ class AttributeNameAPITest(TestCase):
 
 class OrderAPITest(TestCase):
     def setUp(self) -> None:
-        Order.objects.create(number="KT987654")
+        self.user = User.objects.create(**USER)
+        self.shipping_address = ShippingAddress.objects.create(**SHIPPING_ADDRESS)
+        Order.objects.create(user=self.user, shipping_address=self.shipping_address)
         self.client = APIClient()
 
-    def perform_patch(self, data, id):
-        url = f"/api/v1/order/{id}/"
-        response = self.client.patch(
-            url, data=json.dumps(data), content_type="application/json"
-        )
-        return response
+    # def perform_patch(self, data, id):
+    #     url = f"/api/v1/order/{id}/"
+    #     response = self.client.patch(
+    #         url, data=json.dumps(data), content_type="application/json"
+    #     )
+    #     return response
 
     # def test_update(self):
     #     order = Order.objects.first()
@@ -128,7 +149,7 @@ class OrderAPITest(TestCase):
 class OrderItemAPITest(TestCase):
     def setUp(self) -> None:
         AttributeName.objects.create(name="color")
-        self.user = User.objects.create(username="admin", email="lol@gmail.com")
+        self.user = User.objects.create(**USER)
         self.user.set_password("admin")
         self.user.save()
         self.client = APIClient()

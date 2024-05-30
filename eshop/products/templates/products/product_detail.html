@@ -10,7 +10,7 @@
 {% endfor %}<br/>
 
 {% for nomenclature in product.get_nomenclatures %}
-    {{ nomenclature.code }}: {{ nomenclature.price }}<br/><br/>
+    {{ nomenclature.code }}: {{ nomenclature.price }} | Available: {{ nomenclature.quantity_available }}<br/><br/>
 {% endfor %}
 
 {% endblock %}

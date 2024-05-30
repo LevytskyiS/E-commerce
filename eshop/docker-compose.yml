@@ -22,7 +22,8 @@ services:
   #     - postgres
   #   # command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
   #   # FOR DOCKER
-  #   command: ["bash", "-c", "sleep 5 && python manage.py migrate && python fill_db.py && python manage.py runserver 0.0.0.0:8000"]
+  #   command: ["bash", "-c", "sleep 30 && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+
 
   # redis:
   #   image: redis
@@ -36,6 +37,8 @@ services:
   #   restart: always
   #   build:
   #     context: ./
+  #   volumes:
+  #     - ./invoices:/app/invoices # Почему-то биндится папка invoices именно в контейнере worker, а не webapp
   #   depends_on:
   #     - webapp
   #   # FOR DOCKER

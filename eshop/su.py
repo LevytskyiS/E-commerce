@@ -1,10 +1,5 @@
 import os
-import random
-import math
-
 import django
-import requests
-
 from django.conf import settings
 from faker import Faker
 
@@ -13,8 +8,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "eshop.settings")
 django.setup()
 
 from django.contrib.auth.models import User
-
-from users.models import Profile
 
 faker = Faker()
 
@@ -25,8 +18,6 @@ def create_admin():
     admin.is_superuser = True
     admin.set_password("admin")
     admin.save()
-
-    Profile.objects.create(user=admin)
 
 
 create_admin()

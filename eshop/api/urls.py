@@ -73,4 +73,6 @@ urlpatterns = [
     path("orderitem/", views.OrderItemCreateAPIView.as_view()),
     path("orderitem/<int:pk>/", views.OrderItemGetUpdateDestroyAPIView.as_view()),
     path("orderitems/", views.OrderItemListAPIView.as_view()),
+    # Import
+    path("import/", views.ImportAPIView.as_view()),
 ]

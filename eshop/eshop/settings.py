@@ -36,6 +36,10 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
 
 # Application definition
 
@@ -57,6 +61,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_celery_results",
     "django_celery_beat",
+    "debug_toolbar",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
@@ -67,6 +73,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # Installed packages
 ]
 
 ROOT_URLCONF = "eshop.urls"
@@ -130,10 +138,17 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    # "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
 
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Basic": {"type": "basic"},
+        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"},
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -177,10 +192,13 @@ PIXABAY_API_KEY = env("PIXABAY_API_KEY")
 
 # Вместо 127... поменять на redis, когда буду запускать приложение в dockere тоже
 CELERY_CACHE_BACKEND = "django-cache"
+
 CELERY_BROKER_URL = "redis://redis:6379/0"
-# CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 CELERY_RESULT_BACKEND = "redis://redis:6379/0"
+
+# CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 # CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+
 # CELERY_RESULT_BACKEND = "django-db"
 
 CACHES = {

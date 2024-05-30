@@ -13,11 +13,23 @@ Username: {{ user.username }}
 <br>
 Email: {{ user.email }}
 <br>
+Registered: {{ user.date_joined }}
+<br>
+<br>
+<a href="{% url 'users:update_profile' pk=user.id %}">Update PROFILE</a><br/>
 <br>
 <a href="{% url 'orders:order_list' %}">Orders</a>
 <br>
 <br>
-<a href="{% url 'orders:shipping_address_list' %}">Shipping Address</a>
+<a href="{% url 'orders:create_shipping_address' %}">Add shipping address</a>
 <br>
+<a href="{% url 'orders:shipping_address_list' %}">Shipping Addresses (Active)</a>
+<br>
+<a href="{% url 'orders:shipping_address_inactive_list' %}">Shipping Addresses (Deactivated)</a>
+<br>
+<br>
+Total Turnover: 
+<br>
+<p>{{ turnover }}</p>
 
 {% endblock %}
