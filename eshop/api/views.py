@@ -37,7 +37,11 @@ from .serializers import (
 )
 from .tasks import send_invoice
 
-from .permissions import IsOrderCreatorOrAdminUser, IsShippingAddressCreatorOrAdminUser
+from .permissions import (
+    IsOrderCreatorOrAdminUser,
+    IsShippingAddressCreatorOrAdminUser,
+    IsInvoiceUserOrAdminUser,
+)
 from .utils import get_app_models, get_serializer_model
 
 app_models = [model.__name__ for model in get_app_models()]
@@ -305,7 +309,7 @@ class OrderItemListAPIView(generics.ListAPIView):
 class InvoiceDetailAPIView(generics.RetrieveAPIView):
     """Accept GET request and return invoice details by its model id."""
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsInvoiceUserOrAdminUser]
 
     def get(self, request: HttpRequest, pk: int, format="json") -> Response:
         model = get_object_or_404(Invoice, id=pk)
