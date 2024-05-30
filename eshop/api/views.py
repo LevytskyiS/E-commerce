@@ -307,7 +307,7 @@ class InvoiceDetailAPIView(generics.RetrieveAPIView):
 
     permission_classes = [IsAuthenticated]
 
-    def get(self, pk: int, format="json") -> Response:
+    def get(self, request: HttpRequest, pk: int, format="json") -> Response:
         model = get_object_or_404(Invoice, id=pk)
         serialized_data = InvoiceSerializer(model).data
         return Response(serialized_data)
