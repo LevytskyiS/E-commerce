@@ -14,7 +14,7 @@ from products.models import (
     Image,
     ProductImage,
 )
-from orders.models import Order, OrderItem, ShippingAddress, Nomenclature
+from orders.models import Order, OrderItem, ShippingAddress, Nomenclature, Invoice
 
 
 class AttributeNameSerializer(serializers.ModelSerializer):
@@ -326,3 +326,10 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_order_item_ids(self, obj: Order):
         return [item.id for item in obj.items.all()]
+
+
+class InvoiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Invoice
+        fields = ("id", "order", "number")

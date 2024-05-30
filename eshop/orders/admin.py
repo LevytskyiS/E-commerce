@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ShippingAddress, Order, OrderItem
+from .models import ShippingAddress, Order, OrderItem, Invoice
 
 
 @admin.register(ShippingAddress)
@@ -65,3 +65,11 @@ class OrderItemAdmin(admin.ModelAdmin):
     search_fields = ("order__code", "nomenclature__code")
     list_filter = ("order", "nomenclature")
     autocomplete_fields = ("nomenclature", "order")
+
+
+@admin.register(Invoice)
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = ("id", "order", "number")
+    search_fields = ("order__code", "number")
+    # list_filter = ("order", "nomenclature")
+    autocomplete_fields = ("order",)

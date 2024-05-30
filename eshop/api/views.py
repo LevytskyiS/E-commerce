@@ -6,6 +6,9 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 from django.db import IntegrityError
+from django.shortcuts import get_object_or_404
+from django.http import HttpRequest
+from django.forms.models import model_to_dict
 
 from products.models import (
     AttributeName,
@@ -17,7 +20,7 @@ from products.models import (
     Image,
     ProductImage,
 )
-from orders.models import Order, OrderItem, ShippingAddress
+from orders.models import Order, OrderItem, ShippingAddress, Invoice
 from .serializers import (
     AttributeNameSerializer,
     AttributeValueSerializer,
@@ -30,6 +33,7 @@ from .serializers import (
     OrderSerializer,
     OrderItemSerializer,
     ShippingAddressSerializer,
+    InvoiceSerializer,
 )
 from .tasks import send_invoice
 
@@ -295,3 +299,15 @@ class OrderItemListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         return OrderItem.objects.filter(order__user=self.request.user)
+
+
+# Invoice
+class InvoiceDetailAPIView(generics.RetrieveAPIView):
+    """Accept GET request and return invoice details by its model id."""
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, pk: int, format="json") -> Response:
+        model = get_object_or_404(Invoice, id=pk)
+        serialized_data = InvoiceSerializer(model).data
+        return Response(serialized_data)

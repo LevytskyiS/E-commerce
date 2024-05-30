@@ -7,4 +7,4 @@ def generate_order_number():
 
 
 def generate_invoice_number():
-    return str(uuid.uuid1())[:11]
+    return str(uuid.uuid1())[:10].upper()

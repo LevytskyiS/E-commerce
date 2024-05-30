@@ -86,3 +86,6 @@ class Invoice(models.Model):
     number = models.CharField(
         max_length=10, default=generate_invoice_number, unique=True
     )
+
+    def __str__(self):
+        return self.number
