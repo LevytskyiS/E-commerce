@@ -36,6 +36,22 @@ class ShippingAddress(models.Model):
         verbose_name_plural = "Shipping Addresses"
 
 
+class PaymentMethod(models.Model):
+    PAYMENT_METHOD_CHOICE = {
+        "AP": "Advanced Payment",
+        "PP": "Post Payment",
+        "CC": "Credit Card",
+    }
+    name = models.CharField(max_length=2, choices=PAYMENT_METHOD_CHOICE, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+    class Meta:
+        verbose_name = "Payment Method"
+        verbose_name_plural = "Payment Methods"
+
+
 class Order(TimeStampedModel):
 
     STATUS_CHOICE = {
@@ -53,6 +69,12 @@ class Order(TimeStampedModel):
     code = models.CharField(max_length=10, default=generate_order_number, unique=True)
     status = models.CharField(max_length=9, choices=STATUS_CHOICE, default="pending")
     slug = AutoSlugField(populate_from="code", slugify_function=my_slugify_function)
+    payment_method = models.ForeignKey(
+        PaymentMethod,
+        on_delete=models.CASCADE,
+        related_name="orders",
+        default=1,
+    )
 
     def __str__(self):
         return self.code
