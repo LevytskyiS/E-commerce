@@ -1,7 +1,12 @@
+import io
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django_extensions.db.fields import AutoSlugField
+from django.core.files.base import ContentFile
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
 
 from .utils import generate_order_number, generate_invoice_number
 from .mixins import TimeStampedModel
@@ -86,6 +91,34 @@ class Invoice(models.Model):
     number = models.CharField(
         max_length=10, default=generate_invoice_number, unique=True
     )
+    file = models.FileField(upload_to="invoices/", blank=True, null=True)
 
     def __str__(self):
         return self.number
+
+    def generate_invoice_file(self):
+        # Создаем буфер для хранения PDF
+        buffer = io.BytesIO()
+
+        # Создаем PDF-документ с ReportLab
+        p = canvas.Canvas(buffer, pagesize=A4)
+        p.drawString(100, 750, f"Invoice Number: {self.number}")
+        p.drawString(100, 730, f"Order Code: {self.order.code}")
+        p.drawString(
+            100, 710, f"Order Date: {self.order.created_at.strftime('%Y-%m-%d')}"
+        )
+
+        # Добавьте сюда больше информации, как нужно
+        p.showPage()
+        p.save()
+
+        # Получаем содержимое буфера
+        pdf = buffer.getvalue()
+        buffer.close()
+
+        return ContentFile(pdf, f"invoice_{self.number}.pdf")
+
+    def save(self, *args, **kwargs):
+        if not self.file:
+            self.file = self.generate_invoice_file()
+        super().save(*args, **kwargs)
