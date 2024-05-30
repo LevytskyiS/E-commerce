@@ -258,9 +258,7 @@ class OrderCreateAPIView(generics.CreateAPIView):
         serializer = OrderSerializer(data=request.data, context={"request": request})
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user)
-            print("PRE-TASK")
             # send_invoice.delay(serializer.data.get("id"))
-            print("API")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

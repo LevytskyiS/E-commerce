@@ -244,6 +244,7 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "code",
+            "status",
             "user",
             "shipping_address",
             "created_at",
@@ -280,7 +281,6 @@ class OrderSerializer(serializers.ModelSerializer):
         items_data = [
             {"nomenclature": k, "quantity": v} for k, v in consolidated_items.items()
         ]
-        print(items_data)
 
         try:
 

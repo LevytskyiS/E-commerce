@@ -32,11 +32,21 @@ class ShippingAddress(models.Model):
 
 
 class Order(TimeStampedModel):
+
+    STATUS_CHOICE = {
+        "pending": "Pending",
+        "completed": "Completed",
+        "shipped": "Shipped",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled",
+    }  # key - actual value, value - human readable name
+
     user = models.ForeignKey(User, related_name="orders", on_delete=models.CASCADE)
     shipping_address = models.ForeignKey(
         ShippingAddress, related_name="orders", on_delete=models.CASCADE
     )
     code = models.CharField(max_length=10, default=generate_order_number, unique=True)
+    status = models.CharField(max_length=9, choices=STATUS_CHOICE, default="pending")
     slug = AutoSlugField(populate_from="code", slugify_function=my_slugify_function)
 
     def __str__(self):
