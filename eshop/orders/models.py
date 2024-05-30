@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django_extensions.db.fields import AutoSlugField
 
-from .utils import generate_order_number
+from .utils import generate_order_number, generate_invoice_number
 from .mixins import TimeStampedModel
 from products.utils import my_slugify_function
 from products.models import Nomenclature
@@ -79,3 +79,10 @@ class OrderItem(models.Model):
     class Meta:
         verbose_name = "Order Item"
         verbose_name_plural = "Order Items"
+
+
+class Invoice(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="invoices")
+    number = models.CharField(
+        max_length=10, default=generate_invoice_number, unique=True
+    )
