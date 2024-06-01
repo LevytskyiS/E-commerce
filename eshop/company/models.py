@@ -5,7 +5,6 @@ from django.core.validators import EmailValidator
 from .mixins import MixinsModel
 
 
-# Create your models here.
 class Company(MixinsModel):
     address = models.CharField(max_length=100, null=False)
     city = models.CharField(max_length=30, unique=True, null=False)
@@ -33,12 +32,25 @@ class Bank(MixinsModel):
 
 
 class BankAccount(models.Model):
-    bank = models.ForeignKey(Bank, on_delete=models.CASCADE, related_name="accounts")
     account_number = models.CharField(max_length=20, unique=True, null=False)
-    company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, related_name="accounts"
-    )
 
     class Meta:
         verbose_name = "Bank Account"
         verbose_name_plural = "Bank Accounts"
+
+    def __str__(self) -> str:
+        return self.account_number
+
+
+class CompanyBankAccount(models.Model):
+    bank = models.ForeignKey(Bank, on_delete=models.CASCADE, related_name="accounts")
+    company = models.ForeignKey(
+        Company, on_delete=models.CASCADE, related_name="accounts"
+    )
+    bank_account = models.ForeignKey(
+        BankAccount, on_delete=models.CASCADE, related_name="accounts"
+    )
+
+    class Meta:
+        verbose_name = "Company Bank Account"
+        verbose_name_plural = "Company Bank Accounts"

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Company, Bank, BankAccount
+from .models import MixinsModel, Company, Bank, BankAccount, CompanyBankAccount
 
 
 @admin.register(Company)
@@ -28,5 +28,10 @@ class BankAdmin(admin.ModelAdmin):
 
 @admin.register(BankAccount)
 class BankAccountAdmin(admin.ModelAdmin):
-    list_display = ("id", "bank", "account_number", "company")
-    list_filter = ("bank", "company")
+    list_display = ("id", "account_number")
+
+
+@admin.register(CompanyBankAccount)
+class CompanyBankAccountAdmin(admin.ModelAdmin):
+    list_display = ("id", "bank", "company", "bank_account")
+    list_filter = ("bank", "company", "bank_account")
