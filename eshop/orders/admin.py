@@ -1,6 +1,12 @@
 from django.contrib import admin
 
-from .models import ShippingAddress, Order, OrderItem
+from .models import (
+    ShippingAddress,
+    Order,
+    OrderItem,
+    Invoice,
+    PaymentMethod,
+)
 
 
 @admin.register(ShippingAddress)
@@ -30,7 +36,7 @@ class OrderItemInline(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
-        "id",
+        "payment_method",
         "user",
         "total_order_price",
         "shipping_address",
@@ -65,3 +71,16 @@ class OrderItemAdmin(admin.ModelAdmin):
     search_fields = ("order__code", "nomenclature__code")
     list_filter = ("order", "nomenclature")
     autocomplete_fields = ("nomenclature", "order")
+
+
+@admin.register(Invoice)
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = ("id", "order", "number")
+    search_fields = ("order__code", "number")
+    # list_filter = ("order", "nomenclature")
+    autocomplete_fields = ("order",)
+
+
+@admin.register(PaymentMethod)
+class PaymentMethodAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")

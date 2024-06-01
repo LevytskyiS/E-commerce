@@ -1,9 +1,14 @@
+import io
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django_extensions.db.fields import AutoSlugField
+from django.core.files.base import ContentFile
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
 
-from .utils import generate_order_number
+from .utils import generate_order_number, generate_invoice_number
 from .mixins import TimeStampedModel
 from products.utils import my_slugify_function
 from products.models import Nomenclature
@@ -31,6 +36,22 @@ class ShippingAddress(models.Model):
         verbose_name_plural = "Shipping Addresses"
 
 
+class PaymentMethod(models.Model):
+    PAYMENT_METHOD_CHOICE = {
+        "AP": "Advanced Payment",
+        "PP": "Post Payment",
+        "CC": "Credit Card",
+    }
+    name = models.CharField(max_length=2, choices=PAYMENT_METHOD_CHOICE, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+    class Meta:
+        verbose_name = "Payment Method"
+        verbose_name_plural = "Payment Methods"
+
+
 class Order(TimeStampedModel):
 
     STATUS_CHOICE = {
@@ -48,6 +69,12 @@ class Order(TimeStampedModel):
     code = models.CharField(max_length=10, default=generate_order_number, unique=True)
     status = models.CharField(max_length=9, choices=STATUS_CHOICE, default="pending")
     slug = AutoSlugField(populate_from="code", slugify_function=my_slugify_function)
+    payment_method = models.ForeignKey(
+        PaymentMethod,
+        on_delete=models.CASCADE,
+        related_name="orders",
+        default=1,
+    )
 
     def __str__(self):
         return self.code
@@ -79,3 +106,41 @@ class OrderItem(models.Model):
     class Meta:
         verbose_name = "Order Item"
         verbose_name_plural = "Order Items"
+
+
+class Invoice(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="invoices")
+    number = models.CharField(
+        max_length=10, default=generate_invoice_number, unique=True
+    )
+    file = models.FileField(upload_to="invoices/", blank=True, null=True)
+
+    def __str__(self):
+        return self.number
+
+    def generate_invoice_file(self):
+        # Создаем буфер для хранения PDF
+        buffer = io.BytesIO()
+
+        # Создаем PDF-документ с ReportLab
+        p = canvas.Canvas(buffer, pagesize=A4)
+        p.drawString(100, 750, f"Invoice Number: {self.number}")
+        p.drawString(100, 730, f"Order Code: {self.order.code}")
+        p.drawString(
+            100, 710, f"Order Date: {self.order.created_at.strftime('%Y-%m-%d')}"
+        )
+
+        # Добавьте сюда больше информации, как нужно
+        p.showPage()
+        p.save()
+
+        # Получаем содержимое буфера
+        pdf = buffer.getvalue()
+        buffer.close()
+
+        return ContentFile(pdf, f"invoice_{self.number}.pdf")
+
+    def save(self, *args, **kwargs):
+        if not self.file:
+            self.file = self.generate_invoice_file()
+        super().save(*args, **kwargs)

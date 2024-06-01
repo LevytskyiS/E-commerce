@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "products",
     "orders",
     "users",
+    "company",
     # installed packages
     "rest_framework",
     "django_extensions",

@@ -24,7 +24,7 @@ from products.models import (
     Image,
     ProductImage,
 )
-from orders.models import Order, OrderItem, ShippingAddress, Nomenclature
+from orders.models import Order, OrderItem, ShippingAddress, Nomenclature, PaymentMethod
 
 # from users.models import Profile
 
@@ -553,6 +553,10 @@ def create_shipping_address():
         )
 
 
+def create_payment_methos():
+    PaymentMethod.objects.create(name="AP")
+
+
 def create_order():
     for i in range(100, 201):
         code = f"MM{i}"
@@ -595,5 +599,6 @@ create_products()
 create_nomenclatures()
 creade_product_images()
 create_shipping_address()
+create_payment_methos()
 create_order()
 create_order_items()
