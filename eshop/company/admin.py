@@ -3,6 +3,10 @@ from django.contrib import admin
 from .models import MixinsModel, Company, Bank, BankAccount, CompanyBankAccount
 
 
+class CompanyBankAccountInline(admin.TabularInline):
+    model = CompanyBankAccount
+
+
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
     list_display = (
@@ -18,6 +22,7 @@ class CompanyAdmin(admin.ModelAdmin):
     )
     list_filter = ("is_legal_address",)
     search_fields = ("name",)
+    inlines = [CompanyBankAccountInline]
 
 
 @admin.register(Bank)
@@ -29,6 +34,7 @@ class BankAdmin(admin.ModelAdmin):
 @admin.register(BankAccount)
 class BankAccountAdmin(admin.ModelAdmin):
     list_display = ("id", "account_number")
+    search_fields = ("account_number",)
 
 
 @admin.register(CompanyBankAccount)
