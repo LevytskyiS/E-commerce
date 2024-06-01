@@ -89,7 +89,7 @@ class ProfileDetailView(DetailView):
 class ProfileUpdateView(UpdateView):
     model = User
     context_object_name = "user"
-    fields = ["first_name", "last_name", "email"]
+    fields = ["first_name", "last_name", "username", "email"]
     template_name = "users/user_update_form.html"
 
     def get_success_url(self):

@@ -37,9 +37,3 @@ class RegisterUserForm(UserCreationForm):
 class LoginUserForm(AuthenticationForm):
     username = CharField(label="Login", widget=TextInput())
     password = CharField(label="Password", widget=PasswordInput())
-
-
-# class UpdateUserProfileForm(ModelForm):
-#     class Meta:
-#         model = Profile
-#         exclude = ["user", "is_client", "is_coach", "coach", "clients"]
