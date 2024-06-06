@@ -1,0 +1,134 @@
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+*,*:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* убираеют обводки */
+:focus, :active {outline: none;}
+a:focus, a:active {outline: none;}
+
+/* делаем блочными */
+nav, footer, header, aside {display: block;}
+
+/* уравнивают поведение шрифтов и элементов для разных браузеров */
+html, body {
+    height: 100%;
+    width: 100%;
+    font-size: 100%;
+    line-height: 1;
+    font-size: 14px;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* наследовать семейство шрифта */
+input, button, textarea {font-family: inherit;}
+
+input::-ms-clear {display: none;}
+button {cursor: pointer;}
+button::-moz-focus-inner {padding: 0; border: 0;}
+a, a:visited {text-decoration: none;}
+a:hover{text-decoration: none;}
+ul li { text-decoration: none;}
+ul, ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+img {vertical-align: top;}
+
+/* обнуляем заголовки */
+h1, h2, h3, h4, h5, h6 {font-size: inherit; font-weight: 400;}
+
+body {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.wrapper {
+    min-height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.content {
+    flex: 1 1 auto;
+}
+
+.container {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.menu {
+    background-color: black;
+    padding: 5px 0;
+}
+    
+.menu__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+.menu__image {
+    width: 35px;
+}
+
+.menu__image img {
+    width: 100%;
+}
+
+.menu__body {
+    color: gold;
+    /* background-color: beige; */
+}
+.menu__list {
+    display: flex;
+    align-items: center;
+}
+
+.menu__list li {
+    margin-left: 15px;
+}
+
+.menu__list li:first-child {
+    margin-left: 0px;
+}
+
+.menu__list a {
+    font-size: 13px;
+    color: white;
+}
+
+/* .menu__form {
+
+} */
+
+.menu__btn {
+    background-color: black;
+    color: white;
+    font-size: 13px;
+}
+
+.footer {
+    background-color: black;
+}
+.footer__row {
+    display: flex;
+    height: 65px;
+    justify-content: center;
+    align-items: center;
+}
+.footer_text {
+    font-size: 12;
+    letter-spacing: 0.3px;
+    color: white;
+}
