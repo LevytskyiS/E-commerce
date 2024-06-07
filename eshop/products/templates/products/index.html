@@ -2,67 +2,78 @@
 {% load static %}
 
 {% block content %}
-<div class="advantages">
-    <ul class="adv-list">
-        <li class="adv-items">
-            <p>Free delivery on orders over 599 euros</p>
-        </li>
-        <li class="adv-items">
-            <p>Delivery within 2-3 working days</p>
-        </li>
-        <li class="adv-items">
-            <p>Better prices for our members</p>
-        </li>
-    </ul>
+
+<div class="subject">
+    <div class="container">
+        <div class="subject__row">
+            <div class="subject__title">
+                <h2>New Outwear Collection</h2>
+            </div>
+            <div class="subject__novelty">
+                <div class="subject__link">
+                    <a href="{% url 'products:product_list' %}">Shop Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="explore">
-    <a href="#">Explore</a>
+<div class="categories-section">
+    <div class="container">
+        <div class="categories-section__row">
+            <div class="categories-section__title">
+                <h2>Categories</h2>
+            </div>
+            <div class="categories-sections__body">
+                <div class="categories-section__columns">
+                    <div class="categories-section__column">
+                        <div class="categories-section__image">
+                            <a class="link-overlay" href="{% url 'products:brand_list' %}">Brands</a>
+                            <img src="../../static/products/img/categories_1.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="categories-section__column">
+                        <div class="categories-section__image">
+                            <a class="link-overlay" href="{% url 'products:product_list' %}">Products</a>
+                            <img src="../../static/products/img/categories_4.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="categories-section__column">
+                        <div class="categories-section__image">
+                            <a class="link-overlay" href="{% url 'products:gents_product_list' %}">Gents</a>
+                            <img src="../../static/products/img/categories_3.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="categories-section__column">
+                        <div class="categories-section__image">
+                            <a class="link-overlay" href="{% url 'products:ladies_product_list' %}">Ladies</a>
+                            <img src="../../static/products/img/categories_2.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<h1 style="text-align: center;">CATEGORIES</h1>
-<div class="brands">
-    <ul class="brands-list">
-        <li class="brands-item">
-            <!-- <img class="brands-img" src="https://www.svgrepo.com/show/303214/nike-4-logo.svg" alt=""> -->
-            <a href="{% url 'products:brand_list' %}">Brands</a>
-        </li>
-        <li class="brands-item">
-            <a href="{% url 'products:product_list' %}">Products</a>
-        </li>
-        <li class="brands-item">
-            <a href="{% url 'products:gents_product_list' %}">Gents</a>
-        </li>
-        <li class="brands-item">
-            <a href="{% url 'products:ladies_product_list' %}">Ladies</a>
-        </li>
-    </ul>
-</div>
-<h1 style="text-align: center;">SUBCATEGORIES</h1>
-<div class="brands">
-    <ul class="brands-list">
-        <li class="brands-item">
-            <a href="{% url 'products:gents_hiking_product_list' %}">Gents Hiking</a>
-        </li>
-        <li class="brands-item">
-            <a href="{% url 'products:ladies_hiking_product_list' %}">Ladies Hiking</a>
-        </li>
-        <li class="brands-item">
-            <a href="{% url 'products:gents_running_product_list' %}">Gents Running</a>
-        </li>
-        <li class="brands-item">
-            <a href="{% url 'products:ladies_running_product_list' %}">Ladies Running</a>
-        </li>
-        <li class="brands-item">
-            <a href="{% url 'products:gents_gym_product_list' %}">Gents Gym</a>
-        </li>
-        <li class="brands-item">
-            <a href="{% url 'products:ladies_gym_product_list' %}">Ladies Gym</a>
-        </li>
-        <li class="brands-item">
-            <a href="{% url 'products:gents_outdoor_product_list' %}">Gents Outdoor</a>
-        </li>
-        <li class="brands-item">
-            <a href="{% url 'products:ladies_outdoor_product_list' %}">Ladies Outdoor</a>
-        </li>
-    </ul>
+<div class="advantage">
+    <div class="container">
+        <div class="advantage__row">
+            <div class="advantage__title">
+                <h2>Why Choose Us?</h2>
+            </div>
+            <div class="advanatage__body">
+                <ul class="advanatage__list">
+                    <li>
+                        <img src="../../static/products/icons/support.svg" alt="Customer Support"><p>Customer Support</p>
+                    </li>
+                    <li>
+                        <img src="../../static/products/icons/quality.svg" alt="Premium Quality"><p>Premium Quality</p>
+                    </li>
+                    <li>
+                        <img src="../../static/products/icons/price_tag.svg" alt="Competitive Prices"><p>Competitive Prices</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

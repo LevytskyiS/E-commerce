@@ -14,15 +14,26 @@
                 <div class="container">
                     <div class="menu__row">
                         <div class="menu__image">
-                            <img src="../../static/products/img/company_logo.png" alt="Company Logo">
+                            <a href="{% url 'products:index' %}">
+                                <img src="../../static/products/img/company_logo.png" alt="Company Logo">
+                            </a>
                         </div>
                         <div class="menu__body">
                             <ul class="menu__list">
                                 <li>
-                                    <a href="{% url 'products:index' %}">About Us</a>
+                                    <a href="{% url 'products:index' %}">Home</a>
+                                </li>
+                                <li>
+                                    <a href="#">About</a>
                                 </li>
                                 <li>
                                     <a href="#">Services</a>
+                                </li>
+                                <li>
+                                    <a href="#">Blog</a>
+                                </li>
+                                <li>
+                                    <a href="#">Contacts</a>
                                 </li>
                                 {% if request.user.is_authenticated %}
                                 <li>
@@ -37,20 +48,26 @@
                                     <a href="{% url 'users:registration' %}">Registration</a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'users:login' %}">Login</a>
+                                    <a href="{% url 'users:login' %}">Log In</a>
+                                </li>
+                                {% else %}
+                                <li>
+                                    <form class="menu__form" method="post" action="{% url 'users:logout' %}">
+                                        {% csrf_token %}
+                                        <!-- <button type="submit">Log Out</button> -->
+                                        <button type="submit"><img src="../../static/products/icons/logout.svg" alt="" height="20"></button>
+                                    </form> 
                                 </li>
                                 {% endif %}
                             </ul>
                         </div>
-                        <div class="menu__form">
-                            <form class="menu__form" method="post" action="{% url 'users:logout' %}">
-                                {% csrf_token %}
-                                <button class="menu__btn" type="submit">Logout</button>
-                            </form> 
-                        </div>
                     </div>
                 </div>
             </div>
+            
+            {% block content %}
+            {% endblock %}
+
         </div>
         <footer class="footer">
             <div class="container">
