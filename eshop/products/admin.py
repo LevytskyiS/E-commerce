@@ -91,3 +91,4 @@ class ProductImageAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "product", "image")
     list_filter = ("product", "image")
     search_fields = ("name",)
+    raw_id_fields = ("product",)

@@ -2,72 +2,93 @@
 {% load static %}
 <html lang="en">
 <head>
+    <title>Fashion Fusion</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'products/css/main.css' %}" type="text/css"/>
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="{% static 'products/css/style.css' %}" type="text/css"/>
+    <link type="image/x-icon" href="{% static 'products/icons/favicon.png' %}" rel="shortcut icon">
+    <link type="Image/x-icon" href="{% static 'products/icons/favicon.png' %}" rel="icon">
 </head>
 <body>
     <div class="wrapper">
-        <header class="header">
-            <nav class="nav">
-                <div class="nav-icon">
-                    <a class="nav-a" href="{% url 'products:index' %}">
-                        <img src="https://www.svgrepo.com/show/383779/online-gift.svg" alt="Company Logo">
-                    </a>
+        <div class="content">
+            <div class="menu">
+                <div class="container">
+                    <div class="menu__row">
+                        <div class="menu__image">
+                            <a href="{% url 'products:index' %}">
+                                <img src="{% static 'products/img/company_logo.png' %}" alt="Company Logo">
+                            </a>
+                        </div>
+                        <div class="menu__body">
+                            <ul class="menu__list">
+                                <li>
+                                    <a href="{% url 'products:index' %}">Home</a>
+                                </li>
+                                <li>
+                                    <a href="#">About</a>
+                                </li>
+                                <li>
+                                    <a href="#">Services</a>
+                                </li>
+                                <li>
+                                    <a href="#">Blog</a>
+                                </li>
+                                <li>
+                                    <a href="#">Contacts</a>
+                                </li>
+                                {% if request.user.is_authenticated %}
+                                <li>
+                                    <a href="{% url 'orders:order_list' %}">My Orders</a>
+                                </li>
+                                <li>
+                                <a href="{% url 'users:profile' username=request.user.username %}">My Profile</a>
+                                </li>
+                                {% endif %}
+                                {% if not request.user.is_authenticated %}
+                                <li>
+                                    <a href="{% url 'users:registration' %}">Registration</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'users:login' %}">Log In</a>
+                                </li>
+                                {% else %}
+                                <li>
+                                    <form class="menu__form" method="post" action="{% url 'users:logout' %}">
+                                        {% csrf_token %}
+                                        <!-- <button type="submit">Log Out</button> -->
+                                        <button type="submit"><img src="{% static 'products/icons/logout.svg' %}" alt="" height="20"></button>
+                                    </form>                         
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <ul class="nav-ul">
-                    <li class="nav-li">
-                        <a class="nav-a" href="{% url 'products:index' %}">Home</a>
-                    </li>
-                    <li class="nav-li">
-                        <a href="{% url 'products:brand_list' %}">Brands</a>
-                    </li>
-                    <li class="nav-li">
-                        <a href="{% url 'products:product_list' %}">Products</a>
-                    </li>
-                    <li class="nav-li">
-                        <a href="#">About</a>
-                    </li>
-                    <li class="nav-li">
-                        <a href="#">Services</a>
-                    </li>
-                    {% if request.user.is_authenticated %}
-                    <li class="nav-li">
-                        <a href="{% url 'orders:order_list' %}">My Orders</a>
-                    </li>
-                    <li class="nav-li">
-                        <a href="{% url 'users:profile' username=request.user.username %}">My Profile</a>
-                    </li>
-                    {% endif %}
-                </ul>
-                <ul class="test-ul">
-                    {% if not request.user.is_authenticated %}
-                    <li class="test-li">
-                        <a href="{% url 'users:registration' %}">Registration</a>
-                    </li>
-                    <li class="test-li">
-                        <a href="{% url 'users:login' %}">Login</a>
-                    </li>
-                    {% else %}
-                    <li class="test-li">
-                        <form method="post" action="{% url 'users:logout' %}">
-                        {% csrf_token %}
-                        <button type="submit">logout</button>
-                        </form> 
-                    </li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </header>
-
-        <main class="main">
+            </div>
+            <div class="nav">
+                <div class="container">
+                    <div class="nav__row">
+                        <ul class="nav__list">
+                            <li><a href="{% url 'products:outdoor_product_list' %}">Outdoor</a></li>
+                            <li><a href="{% url 'products:gym_product_list' %}">Gym</a></li>
+                            <li><a href="{% url 'products:running_product_list' %}">Running</a></li>
+                            <li><a href="{% url 'products:hiking_product_list' %}">Hiking</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
             {% block content %}
             {% endblock %}
-        </main>
 
+        </div>
         <footer class="footer">
-            <p>All rights reserved</p>
+            <div class="container">
+                <div class="footer__row">
+                    <div class="footer_text">Fashion Fusion. All rights reserverd®</div>
+                </div>
+            </div>
         </footer>
     </div>
 </body>

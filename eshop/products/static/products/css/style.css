@@ -1,0 +1,503 @@
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+*,*:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* убираеют обводки */
+:focus, :active {outline: none;}
+a:focus, a:active {outline: none;}
+
+/* делаем блочными */
+nav, footer, header, aside {display: block;}
+
+/* уравнивают поведение шрифтов и элементов для разных браузеров */
+html, body {
+    height: 100%;
+    width: 100%;
+    font-size: 100%;
+    line-height: 1;
+    font-size: 14px;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* наследовать семейство шрифта */
+input, button, textarea {font-family: inherit;}
+
+input::-ms-clear {display: none;}
+button {
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    cursor: pointer;
+}
+button::-moz-focus-inner {padding: 0; border: 0;}
+a, a:visited {text-decoration: none;}
+a:hover{text-decoration: none;}
+ul li { text-decoration: none;}
+ul, ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+img {vertical-align: top;}
+
+/* обнуляем заголовки */
+h1, h2, h3, h4, h5, h6 {font-size: inherit; font-weight: 400;}
+
+body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+/* BASE.HTML */
+.wrapper {
+    min-height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.content {
+    flex: 1 1 auto;
+}
+
+.container {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.menu {
+    background-color: black;
+    padding: 5px 0;
+}
+    
+.menu__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    height: 35px;
+}
+.menu__image {
+    width: 30px;
+}
+
+.menu__image img {
+    width: 100%;
+}
+
+.menu__body {
+    color: gold;
+    /* background-color: beige; */
+}
+.menu__list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu__list li {
+    margin-left: 20px;
+}
+
+.menu__list li:first-child {
+    margin-left: 0px;
+}
+
+.menu__list a {
+    font-size: 15px;
+    color: white;
+}
+
+.menu__list a:hover {
+    color: beige;
+}
+
+.menu__form button {
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.menu__form button:hover {
+    color: beige;
+}
+
+/* INDEX.HTML */
+.subject {
+    padding: 30px 0;
+}
+
+.subject__row {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    align-items: flex-end;
+    justify-content: space-between;
+    background: url("../img/promo_index.jpg") no-repeat;
+    background-size: 100%;
+    /* padding: 0 80px; */
+    color: white;
+    border-radius: 15px;
+}
+
+.subject__title {
+    font-size: 45px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    letter-spacing: 1px;
+    height: 50%;
+    display: flex;
+    align-items: end;
+    padding-right: 50px;
+}
+
+.subject__novelty {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-right: 110px;
+}
+
+.subject__link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid white;
+    border-radius: 20px;
+    height: 50px;
+    width: 130px;
+    padding: 0 5px;
+    transition: 0.5s;
+}
+
+.subject__link:hover {
+    border-color: white;
+    background-color: rgb(59, 43, 8);
+    cursor: pointer;
+}
+
+.subject__novelty a {
+    font-size: 20px;
+    border: 2px;
+    color: white;
+}
+
+.advantage__row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* padding: 0px 16px; */
+    margin-bottom: 40px;
+}
+
+.advantage__title {
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.advanatage__body {
+    width: 100%;
+}
+
+.advanatage__list {
+    display: flex;
+    justify-content: space-around;
+    height: 150px;
+}
+
+.advanatage__list li {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    padding: 0 5px;
+}
+
+.advanatage__list li:hover {
+    box-shadow: 0px 0px 28px -10px;
+    border-radius: 50px;
+}
+
+.advantage__row p {
+    margin-top: 20px;
+    display: inline-block;
+    font-size: 22px;
+}
+
+.advantage__row img {
+    width: 50px;
+}
+
+.categories-section__row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 23px 0px 40px 0px;
+}
+
+.categories-section__title {
+    font-size: 60px;
+    display: flex;
+    margin-bottom: 50px;
+}
+
+.categories-section__columns {
+    display: flex;
+    margin-bottom: 50px;
+}
+
+.categories-section__column {
+    position: relative;
+    margin: 0 30px;
+}
+
+.link-overlay {
+    position: absolute;
+    color: white;
+    /* border: 1.5px solid white; */
+    border-radius: 30px;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    padding: 10px;
+    /* background-color: rgb(103, 74, 13); */
+    z-index: 1;
+    transition: 0.5s;
+
+}
+
+.link-overlay:hover {
+    background-color: rgb(47, 33, 4);
+}
+
+.categories-section__image img {
+    width: 250px;
+    height: 350px;
+    overflow: hidden;
+    transition: 1s; /* Время эффекта */
+    display: block; 
+    box-shadow: 0px 0px 28px -10px;
+    border-radius: 10px;
+}
+
+.categories-section__image img:hover {
+    transform: scale(1.03); /* Увеличиваем масштаб */
+}
+
+/* NAVBAR */
+.nav {
+    margin-top: 40px;
+    background-color: black;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav__list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    color: white;
+}
+
+.nav__list li {
+    margin: 0 15px;
+}
+
+.nav__list a {
+    color: white;
+}
+    
+/* PRODUCT LIST HTML */
+.product__row {
+    margin: 50px 0;
+    display: flex;
+}
+
+.product__filter {
+    width: 200px;
+    background-color: aqua;
+}
+
+.product__list {
+    width: 980px;
+    padding: 0 65px;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.product__info {
+    margin: 0px 16px 20px 16px;
+}
+
+.product__list img {
+    width: 180px;
+    height: 280px;
+    box-shadow: 0px 0px 28px -10px;
+    border-radius: 15px;
+}
+
+.product__url {
+    height: 40px;
+    padding-top: 15px;
+    width: 100%;
+}
+
+.product__url a {
+    color: grey;
+    font-size: 17px;
+    text-transform: uppercase;
+    transition: 1s;
+
+}
+    
+.product__url a:hover {
+    /* font-size: 16px; */
+    color: black;
+}
+
+/* PROFILE HTML */
+.profile__row {
+    display: flex;
+    padding-top: 30px;
+}
+
+.profile__menu {
+    width: 250px;
+}
+
+.profile__info {
+    width: 1030px;
+}
+
+.profile__card {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile__title {
+    font-weight: 700;
+    font-size: 30px;
+}
+
+.profile_overview {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile__data {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    height: 170px;
+    width: 375px;
+    border: 2px solid none;
+    border-radius: 15px;
+    padding-left: 20px;
+    background-color: black;
+    color: white;
+}
+
+.profile__keys {
+    margin-right: 40px;
+}
+
+.profile__key {
+    margin: 10px 0 0 0;
+    font-size: 18px;
+}
+
+.profile__key:first-child {
+    margin: 0;
+}
+
+/* .profile__values {
+} */
+
+.profile__value {
+    margin: 10px 0 0 0;
+    font-size: 18px;
+}
+
+.profile__value:first-child {
+    margin: 0;
+}
+
+.profile_stats {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    height: 170px;
+    width: 450px;
+    border: 2px solid none;
+    border-radius: 15px;
+    padding-left: 20px;
+    color: white;
+    font-size: 18px;
+}
+
+.profile_stats h2 {
+    margin-bottom: 15px;
+}
+
+.profile__orders {
+    background-color: black;
+    height: 170px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 2px solid none;
+    border-radius: 15px;
+}
+    
+.profile__turnover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: black;
+    height: 170px;
+    width: 200px;
+    margin-left: 30px;
+    border: 2px solid none;
+    border-radius: 15px;
+}
+
+.footer {
+    background-color: black;
+}
+.footer__row {
+    display: flex;
+    height: 65px;
+    justify-content: center;
+    align-items: center;
+}
+.footer_text {
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    color: white;
+}

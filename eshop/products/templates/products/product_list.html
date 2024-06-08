@@ -2,17 +2,26 @@
 {% load static %}
 
 {% block content %}
-<div class="brands-wrapper">
-    {% for sublist in products %}
-        <ul class="brands-sublist">
-        {% for product in sublist %}
-        <div class="brands-li-wrapper">
-            <li class="brands-sublist-item">
-                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
-            </li>
+
+<div class="product">
+    <div class="container">
+        <div class="product__row">
+            <div class="product__filter">
+                <p>FILTER</p>
+            </div>
+            <div class="product__list">
+                {% for product in products %}
+                <div class="product__info">
+                    <div class="product__photo">
+                        <img src="{{ product.product_image.all.0.image.image }}" alt="">
+                    </div>
+                    <div class="product__url">
+                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>            
         </div>
-        {% endfor %}
-        </ul>
-    {% endfor %}
+    </div>
 </div>
 {% endblock %}

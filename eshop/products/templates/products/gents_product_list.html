@@ -3,25 +3,25 @@
 
 {% block content %}
 
-<div class="brands">
-    <ul class="brands-list">
-        <li class="brands-item">
-            <a href="{% url 'products:gents_hiking_product_list' %}">Gents Hiking</a>
-        </li>
-        <li class="brands-item">
-            <a href="{% url 'products:gents_running_product_list' %}">Gents Running</a>
-        </li>
-        <li class="brands-item">
-            <a href="{% url 'products:gents_gym_product_list' %}">Gents Gym</a>
-        </li>
-        <li class="brands-item">
-            <a href="{% url 'products:gents_outdoor_product_list' %}">Gents Outdoor</a>
-        </li>
-    </ul>
+<div class="product">
+    <div class="container">
+        <div class="product__row">
+            <div class="product__filter">
+                <p>FILTER</p>
+            </div>
+            <div class="product__list">
+                {% for product in products %}
+                <div class="product__info">
+                    <div class="product__photo">
+                        <img src="{{ product.product_image.all.0.image.image }}" alt="">
+                    </div>
+                    <div class="product__url">
+                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>            
+        </div>
+    </div>
 </div>
-
-{% for product in products %}
-    <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br/>
-{% endfor %}
-
 {% endblock %}

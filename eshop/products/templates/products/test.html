@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'products/css/main.css' %}" type="text/css"/>
+    <title>E-comm</title>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <nav>
+                <ul class="nav-ul">
+                    <li class="nav-li">
+                        <a href="{% url 'products:index' %}">Home</a>
+                    </li>
+                    <li class="nav-li">
+                        <a href="#">About Us</a>
+                    </li>
+                    <li class="nav-li">
+                        <a href="#">Services</a>
+                    </li>
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-li">
+                        <a href="{% url 'orders:order_list' %}">My Orders</a>
+                    </li>
+                    <li class="nav-li">
+                        <a href="{% url 'users:profile' username=request.user.username %}">My Profile</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <ul class="test-ul">
+                    {% if not request.user.is_authenticated %}
+                    <li class="test-li">
+                        <a href="{% url 'users:registration' %}">Registration</a>
+                    </li>
+                    <li class="test-li">
+                        <a href="{% url 'users:login' %}">Login</a>
+                    </li>
+                    {% else %}
+                    <li class="test-li">
+                        <form method="post" action="{% url 'users:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">logout</button>
+                        </form> 
+                    </li>
+                    {% endif %}
+                </ul>
+
+            </nav>
+        </header>
+
+        <main class="main">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <footer class="footer">
+            <p>All rights reserved</p>
+        </footer>
+    </div>
+</body>
+</html>
