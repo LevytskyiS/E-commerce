@@ -90,6 +90,62 @@ class LadiesProductListView(ListView):
         )
 
 
+class HikingProductListView(ListView):
+    model = Product
+    template_name = "products/product_list.html"
+    context_object_name = "products"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Product]:
+        return (
+            Product.objects.filter(subcategory__name="hiking")
+            .select_related("brand", "category", "subcategory")
+            .order_by("name")
+        )
+
+
+class RunningProductListView(ListView):
+    model = Product
+    template_name = "products/product_list.html"
+    context_object_name = "products"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Product]:
+        return (
+            Product.objects.filter(subcategory__name="running")
+            .select_related("brand", "category", "subcategory")
+            .order_by("name")
+        )
+
+
+class GymProductListView(ListView):
+    model = Product
+    template_name = "products/product_list.html"
+    context_object_name = "products"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Product]:
+        return (
+            Product.objects.filter(subcategory__name="gym")
+            .select_related("brand", "category", "subcategory")
+            .order_by("name")
+        )
+
+
+class OutdoorProductListView(ListView):
+    model = Product
+    template_name = "products/product_list.html"
+    context_object_name = "products"
+    # paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[Product]:
+        return (
+            Product.objects.filter(subcategory__name="outdoor")
+            .select_related("brand", "category", "subcategory")
+            .order_by("name")
+        )
+
+
 class GentsHikingProductListView(ListView):
     model = Product
     template_name = "products/gents_product_list.html"

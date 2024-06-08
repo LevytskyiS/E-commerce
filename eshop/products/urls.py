@@ -23,6 +23,12 @@ urlpatterns = [
         views.LadiesProductListView.as_view(),
         name="ladies_product_list",
     ),
+    # Hiking All
+    path(
+        "hiking-products/",
+        views.HikingProductListView.as_view(),
+        name="hiking_product_list",
+    ),
     # Hiking
     path(
         "gents-hiking-products/",
@@ -33,6 +39,12 @@ urlpatterns = [
         "ladies-hiking-products/",
         views.LadiesHikingProductListView.as_view(),
         name="ladies_hiking_product_list",
+    ),
+    # Running All
+    path(
+        "running-products/",
+        views.RunningProductListView.as_view(),
+        name="running_product_list",
     ),
     # Running
     path(
@@ -45,6 +57,12 @@ urlpatterns = [
         views.LadiesRunningProductListView.as_view(),
         name="ladies_running_product_list",
     ),
+    # Gym All
+    path(
+        "gym-products/",
+        views.GymProductListView.as_view(),
+        name="gym_product_list",
+    ),
     # Gym
     path(
         "gents-gym-products/",
@@ -55,6 +73,12 @@ urlpatterns = [
         "ladies-gym-products/",
         views.LadiesGymProductListView.as_view(),
         name="ladies_gym_product_list",
+    ),
+    # Outdoor All
+    path(
+        "outdoor-products/",
+        views.OutdoorProductListView.as_view(),
+        name="outdoor_product_list",
     ),
     # Outdoor
     path(

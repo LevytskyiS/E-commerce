@@ -64,6 +64,18 @@
                     </div>
                 </div>
             </div>
+            <div class="nav">
+                <div class="container">
+                    <div class="nav__row">
+                        <ul class="nav__list">
+                            <li><a href="{% url 'products:outdoor_product_list' %}">Outdoor</a></li>
+                            <li><a href="{% url 'products:gym_product_list' %}">Gym</a></li>
+                            <li><a href="{% url 'products:running_product_list' %}">Running</a></li>
+                            <li><a href="{% url 'products:hiking_product_list' %}">Hiking</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             
             {% block content %}
             {% endblock %}
