@@ -378,6 +378,115 @@ body {
     color: black;
 }
 
+/* PROFILE HTML */
+.profile__row {
+    display: flex;
+    padding-top: 30px;
+}
+
+.profile__menu {
+    width: 250px;
+}
+
+.profile__info {
+    width: 1030px;
+}
+
+.profile__card {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile__title {
+    font-weight: 700;
+    font-size: 30px;
+}
+
+.profile_overview {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile__data {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    height: 170px;
+    width: 375px;
+    border: 2px solid none;
+    border-radius: 15px;
+    padding-left: 20px;
+    background-color: black;
+    color: white;
+}
+
+.profile__keys {
+    margin-right: 40px;
+}
+
+.profile__key {
+    margin: 10px 0 0 0;
+    font-size: 18px;
+}
+
+.profile__key:first-child {
+    margin: 0;
+}
+
+/* .profile__values {
+} */
+
+.profile__value {
+    margin: 10px 0 0 0;
+    font-size: 18px;
+}
+
+.profile__value:first-child {
+    margin: 0;
+}
+
+.profile_stats {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    height: 170px;
+    width: 450px;
+    border: 2px solid none;
+    border-radius: 15px;
+    padding-left: 20px;
+    color: white;
+    font-size: 18px;
+}
+
+.profile_stats h2 {
+    margin-bottom: 15px;
+}
+
+.profile__orders {
+    background-color: black;
+    height: 170px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 2px solid none;
+    border-radius: 15px;
+}
+    
+.profile__turnover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: black;
+    height: 170px;
+    width: 200px;
+    margin-left: 30px;
+    border: 2px solid none;
+    border-radius: 15px;
+}
+
 .footer {
     background-color: black;
 }
@@ -388,7 +497,7 @@ body {
     align-items: center;
 }
 .footer_text {
-    font-size: 13px;
+    font-size: 15px;
     letter-spacing: 0.3px;
     color: white;
 }

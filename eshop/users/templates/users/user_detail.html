@@ -3,7 +3,48 @@
 
 {% block content %}
 
-PERSONAL INFORMATION
+<div class="profile">
+    <div class="container">
+        <div class="profile__row">
+            <div class="profile__menu">Some data</div>
+            <div class="profile__info">
+                <div class="profile__card">
+                    <div class="profile__title">User details</div>
+                    <div class="profile_overview">
+                        <div class="profile__data">
+                            <div class="profile__keys">
+                                <div class="profile__key">First Name:</div>
+                                <div class="profile__key">Last Name:</div>
+                                <div class="profile__key">E-mail:</div>
+                                <div class="profile__key">Last login:</div>
+                                <div class="profile__key">Date joined:</div>
+                            </div>
+                            <div class="profile__values">
+                                <div class="profile__value">{{ user.first_name }}</div>
+                                <div class="profile__value">{{ user.last_name }}</div>
+                                <div class="profile__value">{{ user.email }}</div>
+                                <div class="profile__value">{{ user.last_login }}</div>
+                                <div class="profile__value">{{ user.date_joined }}</div>
+                            </div>
+                        </div>
+                        <div class="profile_stats">
+                            <div class="profile__orders">
+                                <h2>Total orders</h2>
+                                <div>{{ user.orders.all|length }}</div>
+                            </div>
+                            <div class="profile__turnover">
+                                <h2>Turnover</h2>
+                                <div>{{ turnover }} EUR</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PERSONAL INFORMATION
 <br><br>
 Name: {{ user.first_name }}
 <br>
@@ -30,6 +71,6 @@ Registered: {{ user.date_joined }}
 <br>
 Total Turnover: 
 <br>
-<p>{{ turnover }}</p>
+<p>{{ turnover }}</p> -->
 
 {% endblock %}

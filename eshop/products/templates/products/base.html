@@ -2,10 +2,12 @@
 {% load static %}
 <html lang="en">
 <head>
-    <title>E-comm</title>
+    <title>Fashion Fusion</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="{% static 'products/css/style.css' %}" type="text/css"/>
+    <link type="image/x-icon" href="{% static 'products/icons/favicon.png' %}" rel="shortcut icon">
+    <link type="Image/x-icon" href="{% static 'products/icons/favicon.png' %}" rel="icon">
 </head>
 <body>
     <div class="wrapper">
@@ -15,7 +17,7 @@
                     <div class="menu__row">
                         <div class="menu__image">
                             <a href="{% url 'products:index' %}">
-                                <img src="../../static/products/img/company_logo.png" alt="Company Logo">
+                                <img src="{% static 'products/img/company_logo.png' %}" alt="Company Logo">
                             </a>
                         </div>
                         <div class="menu__body">
@@ -55,8 +57,8 @@
                                     <form class="menu__form" method="post" action="{% url 'users:logout' %}">
                                         {% csrf_token %}
                                         <!-- <button type="submit">Log Out</button> -->
-                                        <button type="submit"><img src="../../static/products/icons/logout.svg" alt="" height="20"></button>
-                                    </form> 
+                                        <button type="submit"><img src="{% static 'products/icons/logout.svg' %}" alt="" height="20"></button>
+                                    </form>                         
                                 </li>
                                 {% endif %}
                             </ul>
@@ -84,7 +86,7 @@
         <footer class="footer">
             <div class="container">
                 <div class="footer__row">
-                    <div class="footer_text">E-commerce. All rights reserverd.</div>
+                    <div class="footer_text">Fashion Fusion. All rights reserverd®</div>
                 </div>
             </div>
         </footer>
