@@ -6,7 +6,20 @@
 <div class="profile">
     <div class="container">
         <div class="profile__row">
-            <div class="profile__menu">Some data</div>
+            <div class="profile__menu">
+                <div class="profile__url">
+                    <a href="{% url 'users:update_profile' pk=user.id %}">Edit profile</a>
+                </div>
+                <div class="profile__url">
+                    <a href="{% url 'orders:order_list' %}">Orders</a>
+                </div>    
+                <div class="profile__url">
+                    <a href="{% url 'orders:shipping_address_list' %}">Shipping addresses</a>
+                </div>
+                <div class="profile__url">
+                    <a href="{% url 'orders:create_shipping_address' %}">Add shipping address</a>
+                </div>
+            </div>
             <div class="profile__info">
                 <div class="profile__card">
                     <div class="profile__title">User details</div>
@@ -43,34 +56,4 @@
         </div>
     </div>
 </div>
-
-<!-- PERSONAL INFORMATION
-<br><br>
-Name: {{ user.first_name }}
-<br>
-Last Name: {{ user.last_name }}
-<br>
-Username: {{ user.username }}
-<br>
-Email: {{ user.email }}
-<br>
-Registered: {{ user.date_joined }}
-<br>
-<br>
-<a href="{% url 'users:update_profile' pk=user.id %}">Update PROFILE</a><br/>
-<br>
-<a href="{% url 'orders:order_list' %}">Orders</a>
-<br>
-<br>
-<a href="{% url 'orders:create_shipping_address' %}">Add shipping address</a>
-<br>
-<a href="{% url 'orders:shipping_address_list' %}">Shipping Addresses (Active)</a>
-<br>
-<a href="{% url 'orders:shipping_address_inactive_list' %}">Shipping Addresses (Deactivated)</a>
-<br>
-<br>
-Total Turnover: 
-<br>
-<p>{{ turnover }}</p> -->
-
 {% endblock %}
