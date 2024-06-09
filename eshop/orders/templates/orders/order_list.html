@@ -3,15 +3,22 @@
 
 {% block content %}
 
-<br>
-<a href="{% url 'users:profile' username=request.user.username %}">BACK</a>
-<br>
-{% for order in orders %}
-    Order:<br>
-    <a href="{{ order.get_absolute_url }}">{{ order.code }}</a><br>
-    Total cost: {{ order.total_price }}<br><br>
-   
-
-{% endfor %}
-
+<div class="orders">
+    <div class="container">
+        <div class="orders__row">
+            <div class="orders__backurl">
+                <a href="{% url 'users:profile' username=request.user.username %}">My profile</a>
+            </div>
+            <ul class="orders__list">
+                {% for order in orders %}
+                <li>
+                    <div class="orders__url"><a href="{{ order.get_absolute_url }}"> Order: {{ order.code }}</a></div>
+                    <div class="orders__cost">Total cost: {{ order.total_price }} EUR</div>
+                    <div class="orders__pieces">Ordered pieces: {{ order.total_pieces }}</div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}

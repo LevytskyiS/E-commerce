@@ -53,7 +53,6 @@ class PaymentMethod(models.Model):
 
 
 class Order(TimeStampedModel):
-
     STATUS_CHOICE = {
         "pending": "Pending",
         "completed": "Completed",
@@ -84,6 +83,9 @@ class Order(TimeStampedModel):
 
     def total_price(self):
         return sum([item.total_price() for item in self.items.all()])
+
+    def total_pieces(self):
+        return sum([item.quantity for item in self.items.all()])
 
     class Meta:
         verbose_name = "Order"
