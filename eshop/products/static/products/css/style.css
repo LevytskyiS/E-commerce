@@ -544,7 +544,39 @@ body {
     border-radius: 3px;
 }
 
+/* BRANDS */
+.brands__row {
+    padding-top: 50px;
+}
 
+.brands__title {
+    margin-bottom: 80px;
+    text-align: center;
+    font-size: 30px;
+    text-transform: uppercase;
+}
+
+.brands__list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 100px;
+    justify-content: space-between;
+}
+
+.brands__list li {
+    margin-bottom: 40px;
+}
+    
+.brands__list img {
+    width: 200px;
+    height: 200px;
+    padding: 10px;
+}
+
+.brands__list img:hover {
+    box-shadow: 0px 0px 10px -2px black;
+    border-radius: 20px;
+}
 
 /* FOOTER */
 

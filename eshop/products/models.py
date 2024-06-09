@@ -61,6 +61,7 @@ class Brand(NameSlugModel):
         related_name="brand",
     )
     category = models.ManyToManyField(Category, related_name="brand")
+    image = models.URLField(unique=True, null=True)
 
     def get_products(self):
         return self.product.all()

@@ -33,7 +33,7 @@ class BrandListView(ListView):
     # paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Brand]:
-        return Brand.objects.all()
+        return Brand.objects.order_by("name")
 
 
 # Product

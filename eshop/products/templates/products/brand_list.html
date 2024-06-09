@@ -3,11 +3,24 @@
 
 {% block content %}
 
-    {% for brand in brands %}
-
-        {{ brand }}
-        <a href="{{ brand.get_absolute_url }}">See products</a> <br/>
-
-    {% endfor %}
+<div class="brands">
+    <div class="container">
+        <div class="brands__row">
+            <div class="brands__title">
+                <h2>
+                    Distributed brands
+                </h2>
+            </div>
+            <ul class="brands__list">
+                {% for brand in brands %}
+                <li>
+                    <a href="{{ brand.get_absolute_url }}"><img src="{{ brand.image }}" alt="Brand logo"></a>
+                </li>
+                {% endfor %}
+            </ul>
+                    
+        </div>
+    </div>
+</div>
 
 {% endblock %}
