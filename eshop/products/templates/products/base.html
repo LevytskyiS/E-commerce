@@ -72,10 +72,10 @@
                         <ul class="nav__list">
                             <li><a href="{% url 'products:product_list' %}">All products</a></li>
                             <li><a href="{% url 'products:brand_list' %}">Brands</a></li>
-                            <li><a href="{% url 'products:outdoor_product_list' %}">Outdoor</a></li>
-                            <li><a href="{% url 'products:gym_product_list' %}">Gym</a></li>
-                            <li><a href="{% url 'products:running_product_list' %}">Running</a></li>
-                            <li><a href="{% url 'products:hiking_product_list' %}">Hiking</a></li>
+                            <li><a href="{% url 'products:product_list' %}?subcategory=outdoor">Outdoor</a></li>
+                            <li><a href="{% url 'products:product_list' %}?subcategory=gym">Gym</a></li>
+                            <li><a href="{% url 'products:product_list' %}?subcategory=running">Running</a></li>
+                            <li><a href="{% url 'products:product_list' %}?subcategory=hiking">Hiking</a></li>
                         </ul>
                     </div>
                 </div>
