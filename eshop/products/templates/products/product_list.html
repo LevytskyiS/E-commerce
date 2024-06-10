@@ -7,7 +7,31 @@
     <div class="container">
         <div class="product__row">
             <div class="product__filter">
-                <p>FILTER</p>
+                <div class="product__options">
+                    <div class="product__search">
+                        <form method="get" action="{% url 'products:product_list' %}">
+                            <div class="product__certificate">
+                                <h2>Certificates</h2>
+                                {% for certificate in certificates %}
+                                <div class="product__checkbox">
+                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ certificate.id }}" name="certificate" value="{{ certificate.attribute_value.value }}">
+                                    <label class="product__checkbox__label" for="product__checkbox__{{ certificate.id }}">{{ certificate.attribute_value.value }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="product__colors">
+                                <h2>Colors</h2>
+                                {% for color in colors %}
+                                <div class="product__checkbox">
+                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ color.id }}" name="color" value="{{ color.attribute_value.value }}">
+                                    <label class="product__checkbox__label" for="product__checkbox__{{ color.id }}">{{ color.attribute_value.value }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <button type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="product__list">
                 {% for product in products %}

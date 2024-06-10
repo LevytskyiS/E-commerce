@@ -1,4 +1,5 @@
-from typing import Any
+from django.core.cache import cache
+from django.db.models import Prefetch
 from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.views import View
@@ -11,7 +12,7 @@ from django.views.generic import (
     DeleteView,
 )
 
-from .models import Brand, Product
+from .models import Brand, Product, Attribute
 
 
 class IndexView(View):
@@ -62,8 +63,59 @@ class ProductListView(ListView):
     context_object_name = "products"
     # paginate_by = 10
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # colors = cache.get("colors")
+        # if not colors:
+        #     colors = Attribute.objects.filter(
+        #         attribute_name__name="color"
+        #     ).select_related("attribute_value")
+        #     cache.set("colors", colors, 3600)  # Кэш на 1 час
+        colors = Attribute.objects.filter(attribute_name__name="color").select_related(
+            "attribute_value"
+        )
+        certificates = Attribute.objects.filter(
+            attribute_name__name="certificate"
+        ).select_related("attribute_value")
+
+        context["colors"] = colors
+        context["certificates"] = certificates
+
+        return context
+
     def get_queryset(self) -> QuerySet[Product]:
-        return Product.objects.all().select_related("brand", "category", "subcategory")
+        queryset = Product.objects.all().select_related(
+            "brand", "category", "subcategory"
+        )
+        queryset = queryset.prefetch_related(
+            Prefetch(
+                "attributes",
+                queryset=Attribute.objects.select_related(
+                    "attribute_name", "attribute_value"
+                ),
+            )
+        )
+
+        brands = self.request.GET.getlist("brand")
+        colors = self.request.GET.getlist("color")
+        certificates = self.request.GET.getlist("certificate")
+
+        print(colors)
+
+        if brands:
+            queryset = queryset.filter(brand__name__in=brands)
+
+        if colors:
+            queryset = queryset.filter(
+                attributes__attribute_value__value__in=colors,
+            )
+
+        if certificates:
+            queryset = queryset.filter(
+                attributes__attribute_value__value__in=certificates,
+            )
+
+        return queryset
 
 
 class GentsProductListView(ListView):
