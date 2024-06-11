@@ -53,7 +53,10 @@ ul, ol {
 img {vertical-align: top;}
 
 /* обнуляем заголовки */
-h1, h2, h3, h4, h5, h6 {font-size: inherit; font-weight: 400;}
+h1, h2, h3, h4, h5, h6 {
+    font-size: inherit; 
+    font-weight: 400;
+}
 
 body {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -467,7 +470,7 @@ body {
     margin-bottom: 20px;
 }
         
-.product__search form > button {
+.product__submit__btn {
     text-align: center;
     margin: 0 25%;
     width: 50%;
@@ -478,6 +481,97 @@ body {
     color: #fff;
     padding: 8px 16px;
     font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.product__reset__btn {
+    text-align: center;
+    margin: 0 25%;
+    width: 50%;
+    appearance: none;
+    border: 0;
+    border-radius: 5px;
+    background: red;
+    color: #fff;
+    padding: 8px 16px;
+    font-size: 16px;
+}
+
+/* PRODUCT DETAIL */
+
+.product__detail__row {
+    display: flex;
+    padding-top: 50px; 
+}
+
+.product__photos {
+    display: flex;
+    flex-wrap: wrap;
+    width: 700px;
+    padding-left: 100px;
+
+}
+
+.product__detail__photo {
+    padding-right: 15px;
+    padding-bottom: 15px;
+}
+
+.product__detail__photo img {
+    width: 250px;
+    height: 350px;
+}
+
+.product__data {
+
+}
+
+.product__data h2 {
+    margin-bottom: 15px;
+    font-size: 25px;
+    text-transform: uppercase;
+}
+
+.product__subtitle h2 {
+    font-size: 18px;
+    color: #444;
+    font-style: italic;
+}
+
+.product__attribute__subtitle {
+    font-size: 17px;
+    padding: 10px 0; 
+}
+
+.product__attribute li {
+    padding: 10px 0 10px 15px;
+    position: relative;
+}
+
+.product__attribute li:before {
+    content: "";
+    position: absolute;
+    /* top: 14.5px; */
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 10%;
+    background: #333;
+    box-shadow: 0 0 0 2px white, 0 0 0 3px #333;
+}
+
+.product__choose {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.product__option {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
         
 /* PROFILE HTML */

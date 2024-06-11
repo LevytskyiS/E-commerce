@@ -9,12 +9,12 @@
             <div class="product__filter">
                 <div class="product__options">
                     <div class="product__search">
-                        <form method="get" action="{% url 'products:product_list' %}">
+                        <form method="get" action="{% url 'products:product_list' %}" id="filterForm">
                             <div class="product__certificate">
                                 <h2>Certificates</h2>
                                 {% for certificate in certificates %}
                                 <div class="product__checkbox">
-                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ certificate.id }}" name="certificate" value="{{ certificate.attribute_value.value }}">
+                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ certificate.id }}" name="certificate" value="{{ certificate.attribute_value.value }}" {% if certificate.attribute_value.value in selected_certificates %}checked{% endif %}>
                                     <label class="product__checkbox__label" for="product__checkbox__{{ certificate.id }}">{{ certificate.attribute_value.value }}</label>
                                 </div>
                                 {% endfor %}
@@ -23,12 +23,16 @@
                                 <h2>Colors</h2>
                                 {% for color in colors %}
                                 <div class="product__checkbox">
-                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ color.id }}" name="color" value="{{ color.attribute_value.value }}">
+                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ color.id }}" name="color" value="{{ color.attribute_value.value }}" {% if color.attribute_value.value in selected_colors %}checked{% endif %}>
                                     <label class="product__checkbox__label" for="product__checkbox__{{ color.id }}">{{ color.attribute_value.value }}</label>
                                 </div>
                                 {% endfor %}
                             </div>
-                            <button type="submit">Search</button>
+                            <button class="product__submit__btn" type="submit">Search</button>
+                            <!-- Option 1 -->
+                            <button class="product__reset__btn" type="button" onclick="window.location.href='{% url 'products:product_list' %}'">Reset</button>
+                            <!-- Option 2 -->
+                            <!-- <button class="product__reset__btn" type="button" onclick="resetForm()">Reset</button> -->
                         </form>
                     </div>
                 </div>

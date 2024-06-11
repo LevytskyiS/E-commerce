@@ -81,6 +81,11 @@ class ProductListView(ListView):
         context["colors"] = colors
         context["certificates"] = certificates
 
+        # параметры предыдущего запроса
+        context["selected_brands"] = self.request.GET.getlist("brand")
+        context["selected_colors"] = self.request.GET.getlist("color")
+        context["selected_certificates"] = self.request.GET.getlist("certificate")
+
         return context
 
     def get_queryset(self) -> QuerySet[Product]:
