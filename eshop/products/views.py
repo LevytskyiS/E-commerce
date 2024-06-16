@@ -12,7 +12,7 @@ from django.views.generic import (
     DeleteView,
 )
 
-from .models import Brand, Product, Attribute
+from .models import Brand, Product, Attribute, ProductVariant
 
 
 class IndexView(View):
@@ -45,7 +45,7 @@ class ProductDetailView(DetailView):
     context_object_name = "product"
 
     def get_queryset(self):
-        return Product.objects.select_related(
+        product = Product.objects.select_related(
             "brand", "category", "subcategory"
         ).prefetch_related(
             "attributes__attribute_name",
@@ -55,6 +55,37 @@ class ProductDetailView(DetailView):
 
         # select_related - предзагружает поля, которые являются FK
         # prefetch_related - предзагружает дочерние объекты поля
+
+        return product
+
+
+# ProductVarian
+class ProductVariantDetailView(DetailView):
+    model = ProductVariant
+    slug_url_kwarg = "product_variant_slug"
+    template_name = "products/product_variant_detail.html"
+    context_object_name = "product_variant"
+
+    def get_queryset(self):
+        product_variant = ProductVariant.objects.select_related(
+            "product",
+            "product__brand",
+            "product__subcategory",
+            "product__category",
+            "attributes__attribute_name",
+            "attributes__attribute_value",
+        ).prefetch_related(
+            "product__attributes__attribute_name",
+            "product__attributes__attribute_value",
+        )
+
+        color = self.request.GET.get("color")
+
+        if color:
+            product_variant = product_variant.filter(
+                attributes__attribute_value__value=color
+            )
+        return product_variant
 
 
 class ProductListView(ListView):
@@ -74,16 +105,23 @@ class ProductListView(ListView):
         colors = Attribute.objects.filter(attribute_name__name="color").select_related(
             "attribute_value"
         )
+
+        details = Attribute.objects.filter(
+            attribute_name__name="details"
+        ).select_related("attribute_value")
+
         certificates = Attribute.objects.filter(
             attribute_name__name="certificate"
         ).select_related("attribute_value")
 
         context["colors"] = colors
+        context["details"] = details
         context["certificates"] = certificates
 
         # параметры предыдущего запроса
         context["selected_brands"] = self.request.GET.getlist("brand")
         context["selected_colors"] = self.request.GET.getlist("color")
+        context["selected_details"] = self.request.GET.getlist("detail")
         context["selected_certificates"] = self.request.GET.getlist("certificate")
 
         return context
@@ -104,6 +142,7 @@ class ProductListView(ListView):
         categories = self.request.GET.getlist("category")
         subcategories = self.request.GET.getlist("subcategory")
         brands = self.request.GET.getlist("brand")
+        details = self.request.GET.getlist("detail")
         colors = self.request.GET.getlist("color")
         certificates = self.request.GET.getlist("certificate")
 
@@ -116,10 +155,15 @@ class ProductListView(ListView):
         if brands:
             queryset = queryset.filter(brand__name__in=brands)
 
+        if details:
+            queryset = queryset.filter(
+                attributes__attribute_value__value__in=details,
+            )
+
         if colors:
             queryset = queryset.filter(
-                attributes__attribute_value__value__in=colors,
-            )
+                product_variant__attributes__attribute_value__value__in=colors,
+            ).distinct()
 
         if certificates:
             queryset = queryset.filter(

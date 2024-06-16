@@ -19,6 +19,15 @@
                                 </div>
                                 {% endfor %}
                             </div>
+                            <div class="product__certificate">
+                                <h2>Details</h2>
+                                {% for detail in details %}
+                                <div class="product__checkbox">
+                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ detail.id }}" name="detail" value="{{ detail.attribute_value.value }}" {% if detail.attribute_value.value in selected_details %}checked{% endif %}>
+                                    <label class="product__checkbox__label" for="product__checkbox__{{ detail.id }}">{{ detail.attribute_value.value }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
                             <div class="product__colors">
                                 <h2>Colors</h2>
                                 {% for color in colors %}
@@ -41,10 +50,14 @@
                 {% for product in products %}
                 <div class="product__info">
                     <div class="product__photo">
-                        <img src="{{ product.product_image.all.0.image.image }}" alt="">
+                        <img src="{{ product.get_random_product_variant_image }}" alt="">
                     </div>
-                    <div class="product__url">
-                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    <div class="product_variant_colors">
+                        <ul>
+                            {% for product_variant in product.product_variant.all %}
+                                <li><a href="{% url 'products:product_variant' product_variant_slug=product_variant.slug %}?color={{ product_variant.attributes.attribute_value.value }}"><img src="{{ product_variant.attributes.attribute_image.image }}" alt="{{ product_variant.attributes.attribute_value.value }}"></a></li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
                 {% endfor %}

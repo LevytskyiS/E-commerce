@@ -9,7 +9,6 @@ from .serializers import (
     ProductSerializer,
     NomenclatureSerializer,
     ImageSerializer,
-    ProductImageSerializer,
     ShippingAddressSerializer,
 )
 
@@ -23,7 +22,6 @@ model_serializers_mapping = {
     "Product": ProductSerializer,
     "Nomenclature": NomenclatureSerializer,
     "Image": ImageSerializer,
-    "ProductImage": ProductImageSerializer,
     "ShippingAddress": ShippingAddressSerializer,
 }
 

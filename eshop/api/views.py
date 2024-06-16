@@ -18,7 +18,6 @@ from products.models import (
     Product,
     Nomenclature,
     Image,
-    ProductImage,
 )
 from orders.models import Order, OrderItem, ShippingAddress, Invoice
 from .serializers import (
@@ -29,7 +28,6 @@ from .serializers import (
     ProductSerializer,
     NomenclatureSerializer,
     ImageSerializer,
-    ProductImageSerializer,
     OrderSerializer,
     OrderItemSerializer,
     ShippingAddressSerializer,
@@ -216,24 +214,6 @@ class ImageGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 class ImageListAPIView(generics.ListAPIView):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
-    permission_classes = [IsAuthenticated]
-
-
-# ProductImage
-class ProductImageCreateAPIView(generics.CreateAPIView):
-    serializer_class = ProductImageSerializer
-    permission_classes = [IsAdminUser]
-
-
-class ProductImageGetUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ProductImage.objects.all()
-    serializer_class = ProductImageSerializer
-    permission_classes = [IsAdminUser]
-
-
-class ProductImageListAPIView(generics.ListAPIView):
-    queryset = ProductImage.objects.all()
-    serializer_class = ProductImageSerializer
     permission_classes = [IsAuthenticated]
 
 

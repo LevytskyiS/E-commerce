@@ -1,0 +1,61 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% load custom_tags %}
+
+{% block content %}
+
+<div class="product__detail">
+    <div class="container">
+        <div class="product__detail__row">
+            <div class="product__photos">
+                {% for product_image in product_variant.images.all %}
+                <div class="product__detail__photo"><img src="{{ product_image.image }}" alt="{{ product_image.name }}"></div>
+                {% endfor %}
+            </div>
+            <div class="product__data">
+                <div class="product__title">
+                    <h2>{{ product_variant.product.name }}</h2>
+                </div>
+                <div class="product__subtitle">
+                    <h2>Lorem ipsum, dolor sit amet consectetur adipisicing.</h2>
+                </div>
+                <div class="product__attribute">
+                    <div class="product__attribute__subtitle">
+                        Properties
+                    </div>
+
+                    <ul class="product__attributes">
+                        {% for attribute in product_variant.product.attributes.all|filter_by_name:"details" %}
+                            <li>{{ attribute.attribute_value.value }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- Available colors -->
+                <div class="product_variant_colors">
+                    <div class="product__attribute__subtitle">
+                        Available colors
+                    </div>
+                    <ul>
+                        {% for product_variant in product_variant.product.product_variant.all %}
+                            <li><a href="{% url 'products:product_variant' product_variant_slug=product_variant.slug %}?color={{ product_variant.attributes.attribute_value.value }}"><img src="{{ product_variant.attributes.attribute_image.image }}" alt="{{ product_variant.attributes.attribute_value.value }}"></a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- Sizes to order -->
+                Choose size
+                <select name="size" id="">
+                    {% for nomenclature in product_variant.nomenclatures.all  %}
+                        {% if nomenclature.quantity_available %}
+                            <option value="{{ nomenclature.code }}">{{ nomenclature.attributes.attribute_value.value }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <!-- Add to basket JS function -->
+                <button type="submit">Add to cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

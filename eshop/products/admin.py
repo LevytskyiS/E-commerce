@@ -3,14 +3,15 @@ from django.contrib import admin
 from .models import (
     AttributeName,
     AttributeValue,
+    AttributeImage,
     Attribute,
     Category,
     Subcategory,
     Brand,
     Product,
+    ProductVariant,
     Nomenclature,
     Image,
-    ProductImage,
 )
 
 
@@ -30,10 +31,18 @@ class AttributeValueAdmin(admin.ModelAdmin):
     ordering = ("id",)
 
 
+@admin.register(AttributeImage)
+class AttributeImageAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "image")
+    search_fields = ("name",)
+    list_filter = ("name",)
+    ordering = ("id",)
+
+
 @admin.register(Attribute)
 class AttributeAdmin(admin.ModelAdmin):
-    list_display = ("id", "attribute_name", "attribute_value")
-    list_filter = ("attribute_name", "attribute_value")
+    list_display = ("id", "attribute_name", "attribute_value", "attribute_image")
+    list_filter = ("attribute_name", "attribute_value", "attribute_image")
 
 
 @admin.register(Subcategory)
@@ -73,22 +82,29 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ("name",)
 
 
+@admin.register(ProductVariant)
+class ProductVariantAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "product", "attributes")
+    list_filter = ("product",)
+    # raw_id_fields = ("attributes",)
+    search_fields = ("name",)
+
+
 @admin.register(Nomenclature)
 class NomenclatureAdmin(admin.ModelAdmin):
-    list_display = ("id", "code", "quantity_available", "price", "product")
-    list_filter = ("product",)
+    list_display = (
+        "id",
+        "code",
+        "quantity_available",
+        "price",
+        "product_variant",
+        "attributes",
+    )
+    list_filter = ("product_variant",)
     search_fields = ("nomeclature",)
 
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "image")
+    list_display = ("id", "name", "image", "product_variant")
     search_fields = ("name",)
-
-
-@admin.register(ProductImage)
-class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "product", "image")
-    list_filter = ("product", "image")
-    search_fields = ("name",)
-    raw_id_fields = ("product",)
