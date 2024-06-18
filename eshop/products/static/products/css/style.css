@@ -355,6 +355,12 @@ body {
     margin: 0px 16px 20px 16px;
 }
 
+.product__name {
+    margin-top: 10px;
+    color: black;
+    font-size: 18px;
+}
+
 .product__list img {
     width: 180px;
     height: 280px;
@@ -580,7 +586,23 @@ body {
     height: 30px;
     margin-right: 10px;
 }
-        
+
+.product__select-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.product__select-box {
+    border: 0 solid none;
+    border-radius: 15px;
+    color: white;
+    padding: 8px 12px;
+    background-color: #2873ff;
+    font-size: 20px;
+}
+
 /* PROFILE HTML */
 .profile__row {
     display: flex;

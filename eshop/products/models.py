@@ -40,7 +40,11 @@ class Attribute(models.Model):
         AttributeValue, related_name="attribute", on_delete=models.CASCADE
     )
     attribute_image = models.ForeignKey(
-        AttributeImage, related_name="attribute", on_delete=models.CASCADE, null=True
+        AttributeImage,
+        related_name="attribute",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
     )
 
     def __str__(self):
@@ -98,6 +102,10 @@ class Product(NameSlugModel):
     )
     attributes = models.ManyToManyField(Attribute, related_name="products")
 
+    def get_basic_price(self):
+        basic_price = min([item.price for item in self.product_variant.all()])
+        return basic_price
+
     def get_absolute_url(self):
         return reverse(
             "products:product_detail",
@@ -134,6 +142,11 @@ class ProductVariant(NameSlugModel):
     attributes = models.ForeignKey(
         Attribute, related_name="product_variant", on_delete=models.CASCADE
     )
+    price = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        validators=[MinValueValidator(0, "The price must be equal or greater than 0.")],
+    )
 
     class Meta:
         verbose_name = "Product Variant"
@@ -151,6 +164,9 @@ class ProductVariant(NameSlugModel):
     def get_nomenclatures(self):
         return self.nomenclatures.all()
 
+    def get_title_photo(self):
+        return self.images.all()[0].image
+
 
 class Nomenclature(models.Model):
     code = models.CharField(max_length=15, unique=True)
@@ -161,11 +177,19 @@ class Nomenclature(models.Model):
         max_digits=8,
         decimal_places=2,
         validators=[MinValueValidator(0, "The price must be equal or greater than 0.")],
+        blank=True,
     )
     quantity_available = models.PositiveIntegerField(default=0)
     attributes = models.ForeignKey(
         Attribute, related_name="nomenclature", on_delete=models.CASCADE
     )
+
+    def save(self, *args, **kwargs):
+        if not self.price:  # Check if price is not set
+            self.price = (
+                self.product_variant.price
+            )  # Use the price from the parent ProductVariant
+        super().save(*args, **kwargs)  # Call the original save method
 
     def __str__(self):
         return self.code

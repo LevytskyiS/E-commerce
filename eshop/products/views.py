@@ -59,7 +59,7 @@ class ProductDetailView(DetailView):
         return product
 
 
-# ProductVarian
+# ProductVariant
 class ProductVariantDetailView(DetailView):
     model = ProductVariant
     slug_url_kwarg = "product_variant_slug"
@@ -88,11 +88,10 @@ class ProductVariantDetailView(DetailView):
         return product_variant
 
 
-class ProductListView(ListView):
-    model = Product
-    template_name = "products/product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
+class ProductVariantListView(ListView):
+    model = ProductVariant
+    template_name = "products/product_variant_list.html"
+    context_object_name = "product_variants"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -114,6 +113,9 @@ class ProductListView(ListView):
             attribute_name__name="certificate"
         ).select_related("attribute_value")
 
+        brands = Brand.objects.all()
+
+        context["brands"] = brands
         context["colors"] = colors
         context["details"] = details
         context["certificates"] = certificates
@@ -127,47 +129,54 @@ class ProductListView(ListView):
         return context
 
     def get_queryset(self) -> QuerySet[Product]:
-        queryset = Product.objects.all().select_related(
-            "brand", "category", "subcategory"
-        )
+        queryset = ProductVariant.objects.all().select_related("product")
         queryset = queryset.prefetch_related(
             Prefetch(
                 "attributes",
                 queryset=Attribute.objects.select_related(
                     "attribute_name", "attribute_value"
                 ),
-            )
+            ),
+            Prefetch(
+                "product",
+                queryset=Product.objects.select_related(
+                    "brand", "category", "subcategory"
+                ),
+            ),
         )
 
         categories = self.request.GET.getlist("category")
         subcategories = self.request.GET.getlist("subcategory")
         brands = self.request.GET.getlist("brand")
         details = self.request.GET.getlist("detail")
+        print(details)
         colors = self.request.GET.getlist("color")
         certificates = self.request.GET.getlist("certificate")
 
         if categories:
-            queryset = queryset.filter(category__name__in=categories)
+            queryset = queryset.filter(product__category__name__in=categories)
 
         if subcategories:
-            queryset = queryset.filter(subcategory__name__in=subcategories)
+            queryset = queryset.filter(product__subcategory__name__in=subcategories)
 
         if brands:
-            queryset = queryset.filter(brand__name__in=brands)
+            queryset = queryset.filter(product__brand__name__in=brands)
 
         if details:
+            print(queryset)
             queryset = queryset.filter(
-                attributes__attribute_value__value__in=details,
+                product__attributes__attribute_value__value__in=details,
             )
+            print(queryset)
 
         if colors:
             queryset = queryset.filter(
-                product_variant__attributes__attribute_value__value__in=colors,
+                attributes__attribute_value__value__in=colors,
             ).distinct()
 
         if certificates:
             queryset = queryset.filter(
-                attributes__attribute_value__value__in=certificates,
+                product__attributes__attribute_value__value__in=certificates,
             )
 
         return queryset

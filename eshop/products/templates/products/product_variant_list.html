@@ -9,7 +9,7 @@
             <div class="product__filter">
                 <div class="product__options">
                     <div class="product__search">
-                        <form method="get" action="{% url 'products:product_list' %}" id="filterForm">
+                        <form method="get" action="{% url 'products:product_variant_list' %}" id="filterForm">
                             <div class="product__certificate">
                                 <h2>Certificates</h2>
                                 {% for certificate in certificates %}
@@ -37,9 +37,18 @@
                                 </div>
                                 {% endfor %}
                             </div>
+                            <div class="product__certificate">
+                                <h2>Brands</h2>
+                                {% for brand in brands %}
+                                <div class="product__checkbox">
+                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ brand.name }}" name="brand" value="{{ brand.name }}" {% if brand.name in selected_brands %}checked{% endif %}>
+                                    <label class="product__checkbox__label" for="product__checkbox__{{ brand.name }}">{{ brand.name }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
                             <button class="product__submit__btn" type="submit">Search</button>
                             <!-- Option 1 -->
-                            <button class="product__reset__btn" type="button" onclick="window.location.href='{% url 'products:product_list' %}'">Reset</button>
+                            <button class="product__reset__btn" type="button" onclick="window.location.href='{% url 'products:product_variant_list' %}'">Reset</button>
                             <!-- Option 2 -->
                             <!-- <button class="product__reset__btn" type="button" onclick="resetForm()">Reset</button> -->
                         </form>
@@ -47,17 +56,13 @@
                 </div>
             </div>
             <div class="product__list">
-                {% for product in products %}
+                {% for product_variant in product_variants %}
                 <div class="product__info">
                     <div class="product__photo">
-                        <img src="{{ product.get_random_product_variant_image }}" alt="">
+                        <img src="{{ product_variant.get_title_photo }}" alt="">
                     </div>
-                    <div class="product_variant_colors">
-                        <ul>
-                            {% for product_variant in product.product_variant.all %}
-                                <li><a href="{% url 'products:product_variant' product_variant_slug=product_variant.slug %}?color={{ product_variant.attributes.attribute_value.value }}"><img src="{{ product_variant.attributes.attribute_image.image }}" alt="{{ product_variant.attributes.attribute_value.value }}"></a></li>
-                            {% endfor %}
-                        </ul>
+                    <div class="product__name">
+                        <a href="{% url 'products:product_variant' product_variant_slug=product_variant.slug %}?color={{ product_variant.attributes.attribute_value.value }}">{{ product_variant.product.name }} {{ product_variant.price }} €</a>
                     </div>
                 </div>
                 {% endfor %}

@@ -20,6 +20,9 @@
                 <div class="product__subtitle">
                     <h2>Lorem ipsum, dolor sit amet consectetur adipisicing.</h2>
                 </div>
+                <div class="product__subtitle">
+                    <h2>{{ product_variant.price }} €</h2>
+                </div>
                 <div class="product__attribute">
                     <div class="product__attribute__subtitle">
                         Properties
@@ -43,14 +46,18 @@
                     </ul>
                 </div>
                 <!-- Sizes to order -->
-                Choose size
-                <select name="size" id="">
-                    {% for nomenclature in product_variant.nomenclatures.all  %}
-                        {% if nomenclature.quantity_available %}
-                            <option value="{{ nomenclature.code }}">{{ nomenclature.attributes.attribute_value.value }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
+                <div class="product__select-container">
+                    <div class="product__attribute__subtitle">
+                        Available sizes
+                    </div>
+                    <select class="product__select-box" name="size" id="">
+                        {% for nomenclature in product_variant.nomenclatures.all  %}
+                            {% if nomenclature.quantity_available %}
+                                <option value="{{ nomenclature.code }}">{{ nomenclature.attributes.attribute_value.value }}, price: {{ nomenclature.price }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
                 <!-- Add to basket JS function -->
                 <button type="submit">Add to cart</button>
             </div>

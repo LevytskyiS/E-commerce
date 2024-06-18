@@ -14,7 +14,7 @@
             <ul class="brands__list">
                 {% for brand in brands %}
                 <li>
-                    <a href="{% url 'products:product_list' %}?brand={{ brand.name }}"><img src="{{ brand.image }}" alt="Brand logo"></a>
+                    <a href="{% url 'products:product_variant_list' %}?brand={{ brand.name }}"><img src="{{ brand.image }}" alt="Brand logo"></a>
                 </li>
                 {% endfor %}
             </ul>
