@@ -722,6 +722,61 @@ body {
     border-radius: 15px;
 }
 
+/* PROFILE UPDATE HTML */
+.profile__update__row {
+    padding-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+}
+
+.profile__update__form {
+    border: 0px solid rgb(159, 159, 159);
+    border-radius: 15px;
+    box-shadow: 0px 3px 17px -10px;
+    /* width: 50%; */
+    padding: 0px 20px 20px 20px;
+}
+
+.profile__form__row {
+    margin: 30px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile__form__row label {
+    padding: 10px 0px 10px 10px;
+}
+.profile__form__row input {
+    margin-left: 30px;
+    border: 1px solid rgb(225, 225, 225);
+    border-radius: 10px;
+    font-size: 17px;
+    padding: 10px 10px 10px 10px;
+}
+
+.profile__form__submit__input {
+    text-align: center;
+}
+
+.profile__form__submit__input input {
+    font-size: 17px;
+    background-color: #2873ff;
+    color: white;
+    padding: 15px;
+    border: 2px solid none;
+    border-radius: 15px;
+    transition-duration: 1s;
+    
+}
+
+.profile__form__submit__input input:hover {
+    cursor: pointer;
+    background-color: blue;
+}
+
 /* MY ORDERS */
 .orders__row {
     padding-bottom: 50px;

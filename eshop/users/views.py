@@ -22,7 +22,7 @@ from django.contrib.auth.views import (
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 
-from .forms import RegisterUserForm, LoginUserForm
+from .forms import RegisterUserForm, LoginUserForm, UserUpdateFrom
 from orders.models import Order
 
 
@@ -88,8 +88,8 @@ class ProfileDetailView(DetailView):
 
 class ProfileUpdateView(UpdateView):
     model = User
+    form_class = UserUpdateFrom
     context_object_name = "user"
-    fields = ["first_name", "last_name", "username", "email"]
     template_name = "users/user_update_form.html"
 
     def get_success_url(self):
