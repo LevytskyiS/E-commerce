@@ -14,7 +14,7 @@ from django.http import HttpRequest
 from django.contrib.auth.models import User
 
 from .models import Order, ShippingAddress
-from .forms import CreateShippingAddressForm
+from .forms import CreateShippingAddressForm, UpdateShippingAddressForm
 
 
 # Order
@@ -87,8 +87,22 @@ class ShippingAddressInactiveListView(ListView):
 class ShippingAddressUpdateView(UpdateView):
     model = ShippingAddress
     context_object_name = "shipping_address"
-    fields = ["address", "city", "country", "postal_code", "is_active", "is_default"]
+    form_class = UpdateShippingAddressForm
     template_name_suffix = "_update_form"
 
     def get_success_url(self) -> str:
         return reverse("orders:shipping_address_list")
+
+    # model = ShippingAddress
+    # form_class = CreateShippingAddressForm
+    # template_name = "orders/create_shipping_address.html"
+    # request = HttpRequest()
+
+    # def form_valid(self, form):
+    #     user = User.objects.get(id=self.request.user.id)
+    #     form.instance.user = user
+    #     self.object = form.save()
+    #     return super().form_valid(form)
+
+    # def get_success_url(self) -> str:
+    #     return reverse("users:profile", kwargs={"username": self.object.user.username})
