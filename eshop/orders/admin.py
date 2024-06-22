@@ -46,7 +46,7 @@ class OrderAdmin(admin.ModelAdmin):
     )
     list_filter = ("created_at", "user", "shipping_address")
     # list_filter = ("created_at", "updated_at", "user", "shipping_address")
-    raw_id_fields = ("user", "shipping_address")
+    raw_id_fields = ("shipping_address",)
     search_fields = ("code", "user__username")
     date_hierarchy = "created_at"
     # list_select_related — это атрибут в Django Admin, который используется для оптимизации
@@ -57,7 +57,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_select_related = True
     inlines = [OrderItemInline]
     list_per_page = 20
-    readonly_fields = ("user", "code")
+    readonly_fields = ("code",)
 
     def total_order_price(self, obj: Order):
         return obj.total_price()

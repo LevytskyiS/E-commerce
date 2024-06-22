@@ -361,6 +361,10 @@ body {
     font-size: 18px;
 }
 
+.product__name a {
+    color: black;
+}
+
 .product__list img {
     width: 180px;
     height: 280px;
@@ -533,9 +537,11 @@ body {
 .product__data h2 {
     margin-bottom: 15px;
     font-size: 25px;
-    text-transform: uppercase;
 }
 
+.product__subtitle {
+    width: 446px;
+}
 .product__subtitle h2 {
     font-size: 18px;
     color: #444;
@@ -831,6 +837,56 @@ body {
     cursor: pointer;
     background-color: blue;
 }
+
+/* SHIPPING ADDRESSES LIST */
+.address__list__row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+}
+
+.address__list__row > h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.addresses__info {
+    margin-top: 30px;
+}
+
+.addresses__details {
+    background-color: black;
+    color: white;
+    font-size: 18px;
+    padding: 25px 20px;
+    border: 0 solid none;
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+.addresses__detail {
+    display: flex;
+    margin-bottom: 35px;
+}
+
+.addresses__detail > div {
+    margin-right: 30px;
+}
+.addresses__detail > div:last-child {
+    margin-right: 0;
+}
+
+.addresses__update__url a {
+    background-color: #fff;
+    color: black;
+    text-decoration: none;
+    padding: 10px;
+    border: 0 solid none;
+    border-radius: 15px;
+}
+
+
 /* MY ORDERS */
 .orders__row {
     padding-bottom: 50px;
@@ -876,6 +932,62 @@ body {
     padding: 0 5px;
     border: 2px solid black;
     border-radius: 3px;
+}
+
+/* ORDER DETAIL */
+.order__row {
+    padding-top: 50px;
+}
+
+.back__url {
+    margin-bottom: 30px;
+}
+
+.back__url a {
+    display: inline-block;
+    padding: 15px;
+    border: 0 solid none;
+    border-radius: 15px;
+    background-color: black;
+    color: white;
+    font-size: 18px;
+}
+
+.order__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.order__title {
+    background-color: black;
+    font-size: 18px;
+    color: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 0 solid none;
+    border-radius: 15px;
+}
+
+.order__orderitem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.orderitem__detail {
+    width: 100px;
+    font-size: 15px;
+}
+
+.total__price {
+    background-color: black;
+    color: white;
+    padding: 15px;
+    font-size: 17px;
+    border: 0 solid none;
+    border-radius: 15px;
 }
 
 /* BRANDS */

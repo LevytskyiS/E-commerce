@@ -2,21 +2,51 @@
 {% load static %}
 
 {% block content %}
-<a href="{% url 'users:profile' username=request.user.username %}">Back</a>
-<br/><br/>
 
-{{ order }}<br/><br/>
-<p>List of ordered goods:</p><br/>
-{% for orderitem in order.items.all %}
-    <a href="{{ orderitem.nomenclature.product.get_absolute_url }}">{{ orderitem.nomenclature.product }}</a>, {{ orderitem.quantity }} pcs, Price/piece: {{ orderitem.nomenclature.price }}, total price: {{ orderitem.total_price }}<br/>
-{% endfor %}
-<br/><br/>
-TOTAL PRICE:<br/> 
-{{ order.total_price }}
-<br/><br/>
-Delivery address:<br/>
-{{ order.shipping_address.address }}<br/>
-{{ order.shipping_address.city }}<br/>
-{{ order.shipping_address.country }}<br/>
-{{ order.shipping_address.postal_code }}<br/>
+<div class="order">
+    <div class="container">
+        <div class="order__row">
+            <div class="back__url">
+                <a href="{% url 'users:profile' username=request.user.username %}">Back</a>
+            </div>
+            <div class="order__info">
+                <div class="order__title">
+                    <h2>Order Summary - {{ order.code }}</h2>
+                </div>
+                <div class="order__goods">
+                    {% for orderitem in order.items.all %}
+                    <div class="order__orderitem">
+                        <div class="orderitem__detail">
+                            {{ orderitem.nomenclature.product_variant.product.name }}
+                        </div>
+                        <div class="orderitem__detail">
+                            {{ orderitem.nomenclature.product_variant.attributes.attribute_value.value }}
+                        </div>
+                        <div class="orderitem__detail">
+                            {{ orderitem.nomenclature.attributes.attribute_value.value }}
+                        </div>
+                        <div class="orderitem__detail">
+                            {{ orderitem.nomenclature.code }}
+                        </div>
+                        <div class="orderitem__detail">
+                            {{ orderitem.quantity }}
+                        </div>
+                        <div class="orderitem__detail">
+                            {{ orderitem.nomenclature.price }}
+                        </div>
+                        <div class="orderitem__detail">
+                            {{ orderitem.total_price }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="order__info">
+                        <div class="total__price">
+                            Total: {{ order.total_price }} EUR
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
