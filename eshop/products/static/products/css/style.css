@@ -609,6 +609,28 @@ body {
     font-size: 20px;
 }
 
+.product__add {
+    margin-top: 20px;
+    margin-bottom: 100px;
+    text-align: center;
+}
+
+.product__add span {
+    display: inline-block;
+    padding: 10px;
+    border: 0 solid none;
+    border-radius: 12px;
+    color: white;
+    font-size: 18px;
+    background-color: #2873ff;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.product__add span:hover {
+    background-color: blue;
+}
+
 /* PROFILE HTML */
 .profile__row {
     display: flex;

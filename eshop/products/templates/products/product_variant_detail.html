@@ -50,19 +50,20 @@
                     <div class="product__attribute__subtitle">
                         Available sizes
                     </div>
-                    <select class="product__select-box" name="size" id="">
+                    <select class="product__select-box" name="size" id="size-select">
                         {% for nomenclature in product_variant.nomenclatures.all  %}
                             {% if nomenclature.quantity_available %}
-                                <option value="{{ nomenclature.code }}">{{ nomenclature.attributes.attribute_value.value }}, price: {{ nomenclature.price }}</option>
+                                <option id="nomenclature" data-product="{{ nomenclature }}" value="{{ nomenclature.code }}">{{ nomenclature.attributes.attribute_value.value }}, price: {{ nomenclature.price }}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
                 </div>
                 <!-- Add to basket JS function -->
-                <button type="submit">Add to cart</button>
+                <div class="product-add-to-cart-js product__add">
+                    <span>Add to cart</span>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}
