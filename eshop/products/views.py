@@ -1,7 +1,8 @@
 from django.core.cache import cache
 from django.db.models import Prefetch
 from django.db.models.query import QuerySet
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.views import View
 from django.views.generic import (
     ListView,
@@ -12,7 +13,9 @@ from django.views.generic import (
     DeleteView,
 )
 
-from .models import Brand, Product, Attribute, ProductVariant
+from .models import Brand, Product, Attribute, ProductVariant, Nomenclature
+
+from cart.models import Cart, CartItem
 
 
 class IndexView(View):
@@ -65,6 +68,21 @@ class ProductVariantDetailView(DetailView):
     slug_url_kwarg = "product_variant_slug"
     template_name = "products/product_variant_detail.html"
     context_object_name = "product_variant"
+
+    def post(self, request, *args, **kwargs):
+        nomenclature_code = request.POST.get("nomenclature_code")
+        nomenclature = get_object_or_404(Nomenclature, code=nomenclature_code)
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        cart_item, created = CartItem.objects.get_or_create(
+            cart=cart, nomenclature=nomenclature
+        )
+
+        if not created:
+            cart_item.quantity += 1
+        cart_item.save()
+
+        redirect_url = self.get_object().get_absolute_url()
+        return redirect(redirect_url)
 
     def get_queryset(self):
         product_variant = ProductVariant.objects.select_related(
@@ -149,7 +167,6 @@ class ProductVariantListView(ListView):
         subcategories = self.request.GET.getlist("subcategory")
         brands = self.request.GET.getlist("brand")
         details = self.request.GET.getlist("detail")
-        print(details)
         colors = self.request.GET.getlist("color")
         certificates = self.request.GET.getlist("certificate")
 
@@ -163,11 +180,9 @@ class ProductVariantListView(ListView):
             queryset = queryset.filter(product__brand__name__in=brands)
 
         if details:
-            print(queryset)
             queryset = queryset.filter(
                 product__attributes__attribute_value__value__in=details,
             )
-            print(queryset)
 
         if colors:
             queryset = queryset.filter(

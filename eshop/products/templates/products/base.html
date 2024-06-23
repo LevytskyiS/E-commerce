@@ -42,7 +42,10 @@
                                     <a href="{% url 'orders:order_list' %}">My Orders</a>
                                 </li>
                                 <li>
-                                <a href="{% url 'users:profile' username=request.user.username %}">My Profile</a>
+                                    <a href="{% url 'users:profile' username=request.user.username %}">My Profile</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'cart:cart_detail' %}">Cart</a>
                                 </li>
                                 {% endif %}
                                 {% if not request.user.is_authenticated %}

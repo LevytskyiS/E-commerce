@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     "products",
     "orders",
     "users",
-    "company",
+    "company",  # удалить
+    "cart",
     # installed packages
     "rest_framework",
     "django_extensions",

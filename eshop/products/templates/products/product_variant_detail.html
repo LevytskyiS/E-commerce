@@ -2,7 +2,6 @@
 {% load static %}
 
 {% load custom_tags %}
-
 {% block content %}
 
 <div class="product__detail">
@@ -63,6 +62,23 @@
                     <span>Add to cart</span>
                 </div>
             </div>
+            <!--  -->
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="product__select-container">
+                    <div class="product__attribute__subtitle">
+                        Available sizes
+                    </div>
+                    <select class="product__select-box" name="nomenclature_code">
+                        {% for nomenclature in product_variant.nomenclatures.all %}
+                            {% if nomenclature.quantity_available %}
+                                <option value="{{ nomenclature.code }}">{{ nomenclature.attributes.attribute_value.value }} - {{ nomenclature.price }} €</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="product__add-to-cart-btn">Add to cart</button>
+            </form>
         </div>
     </div>
 </div>

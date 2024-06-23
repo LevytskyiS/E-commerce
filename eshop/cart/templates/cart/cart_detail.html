@@ -1,0 +1,13 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Your Cart</h2>
+<ul>
+    {% for item in cart_items %}
+        <li>{{ item.nomenclature.product_variant.name }} - {{ item.nomenclature.attributes.attribute_value.value }} - {{ item.quantity }} - {{ item.get_total_price }} €</li>
+    {% endfor %}
+</ul>
+<p>Total Price: {{ total_price }} €</p>
+<a href="{% url 'cart:checkout' %}">Proceed to Checkout</a>
+{% endblock %}

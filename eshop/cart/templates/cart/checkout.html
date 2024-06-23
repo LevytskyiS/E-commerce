@@ -1,0 +1,11 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Checkout</h2>
+<form method="post">
+    {% csrf_token %}
+    <!-- Поля для ввода данных доставки и оплаты -->
+    <button type="submit">Confirm Order</button>
+</form>
+{% endblock %}

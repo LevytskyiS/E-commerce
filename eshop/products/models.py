@@ -157,7 +157,7 @@ class ProductVariant(NameSlugModel):
 
     def get_absolute_url(self):
         return reverse(
-            "products:product_variant_detail",
+            "products:product_variant",
             kwargs={"product_variant_slug": self.slug},
         )
 
