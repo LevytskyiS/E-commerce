@@ -2,10 +2,28 @@
 {% load static %}
 
 {% block content %}
-<h2>Checkout</h2>
-<form method="post">
-    {% csrf_token %}
-    <!-- Поля для ввода данных доставки и оплаты -->
-    <button type="submit">Confirm Order</button>
-</form>
+<div class="checkout-container">
+    <h2>Checkout</h2>
+    <form method="post" class="checkout-form">
+        {% csrf_token %}
+        <!-- Поля для ввода данных доставки и оплаты -->
+        <div class="form-group">
+            <label for="name">Name on Card:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="card-number">Card Number:</label>
+            <input type="text" id="card-number" name="card-number" required>
+        </div>
+        <div class="form-group">
+            <label for="expiry-date">Expiry Date:</label>
+            <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" required>
+        </div>
+        <div class="form-group">
+            <label for="cvv">CVV:</label>
+            <input type="text" id="cvv" name="cvv" required>
+        </div>
+        <button type="submit" class="submit-btn">Confirm Order</button>
+    </form>
+</div>
 {% endblock %}

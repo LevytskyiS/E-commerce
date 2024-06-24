@@ -2,12 +2,46 @@
 {% load static %}
 
 {% block content %}
-<h2>Your Cart</h2>
+<div class="cart">
+    <div class="container">
+        <div class="cart__row">
+            <div class="cart__title">
+                <h2>Your Cart</h2>
+            </div>
+            <div class="cart__items">
+                <table class="cart__table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Size</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                            <tr>
+                                <td>{{ item.nomenclature.product_variant.name }}</td>
+                                <td>{{ item.nomenclature.attributes.attribute_value.value }}</td>
+                                <td>{{ item.nomenclature.price }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.get_total_price }} €</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="cart__summary">
+                <p>Total Price: {{ total_price }} €</p>
+                <a href="{% url 'cart:checkout' %}">Proceed to Checkout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <ul>
-    {% for item in cart_items %}
-        <li>{{ item.nomenclature.product_variant.name }} - {{ item.nomenclature.attributes.attribute_value.value }} - {{ item.quantity }} - {{ item.get_total_price }} €</li>
-    {% endfor %}
+
 </ul>
-<p>Total Price: {{ total_price }} €</p>
-<a href="{% url 'cart:checkout' %}">Proceed to Checkout</a>
+
 {% endblock %}
