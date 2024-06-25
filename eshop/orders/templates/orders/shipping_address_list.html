@@ -3,26 +3,36 @@
 
 {% block content %}
 
-<br>
-<a href="{% url 'users:profile' username=request.user.username %}">BACK</a>
-<br>
-<br>
-Shipping Addresses (Active):
-<br>
-<br>
+<div class="addresses">
+    <div class="container">
+        <div class="address__list__row">
+            <h2>Active Shipping Addresses</h2>
+            <div class="addresses__info">
+                {% for address in addresses %}
+                <div class="addresses__details">
+                    <div class="addresses__detail">
+                        <div>
+                            {{ address.address }}
+                        </div>
+                        <div>
+                            {{ address.city }}
+                        </div>
+                        <div>
+                            {{ address.country }}
+                        </div>
+                        <div>
+                            {{ address.postal_code }}
+                        </div>
+                    </div>
+                    <div class="addresses__update__url">
+                        <a href="{% url 'orders:update_shipping_address' pk=address.id %}">Update</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
 
-{% for address in addresses %}
-
-    Street: {{ address.address }}<br/>
-    City: {{ address.city }}<br/>
-    Country: {{ address.country }}<br/>
-    Postal Code: {{ address.postal_code }}<br/>
-    Active: {{ address.is_active }}<br/>
-    Default: {{ address.is_default }}<br/>
-    <a href="{% url 'orders:update_shipping_address' pk=address.id %}">Update SA</a><br/>
-    <br/>
-    <br/>
-
-{% endfor %}
-
+<!-- <a href="{% url 'users:profile' username=request.user.username %}">BACK</a> -->
 {% endblock %}

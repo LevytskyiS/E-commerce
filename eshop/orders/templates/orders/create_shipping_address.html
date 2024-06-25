@@ -2,11 +2,33 @@
 {% load static %}
 
 {% block content %}
-
-<form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit">
-</form>
+<div class="address">
+    <div class="container">
+        <div class="address__row">
+            <form class="address__form" method="post">
+                {% csrf_token %}
+                <div class="address__field">
+                    <label for="id_address">{{ form.address.label }}:</label>
+                    {{ form.address }}
+                </div>
+                <div class="address__field">
+                    <label for="id_address">{{ form.city.label }}:</label>
+                    {{ form.city }}
+                </div>
+                <div class="address__field">
+                    <label for="id_address">{{ form.country.label }}:</label>
+                    {{ form.country }}
+                </div>
+                <div class="address__field">
+                    <label for="id_address">{{ form.postal_code.label }}:</label>
+                    {{ form.postal_code }}
+                </div>
+                <div class="address__submit__input">
+                    <input type="submit" value="Create">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

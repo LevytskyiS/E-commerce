@@ -1,3 +1,5 @@
+import random
+
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.urls import reverse
@@ -22,12 +24,27 @@ class AttributeValue(models.Model):
         verbose_name_plural = "Attribute Values"
 
 
+class AttributeImage(AttributesBase):
+    image = models.URLField(unique=True)
+
+    class Meta:
+        verbose_name = "Attribute Image"
+        verbose_name_plural = "Attribute Images"
+
+
 class Attribute(models.Model):
     attribute_name = models.ForeignKey(
         AttributeName, related_name="attribute", on_delete=models.CASCADE
     )
     attribute_value = models.ForeignKey(
         AttributeValue, related_name="attribute", on_delete=models.CASCADE
+    )
+    attribute_image = models.ForeignKey(
+        AttributeImage,
+        related_name="attribute",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
     )
 
     def __str__(self):
@@ -61,6 +78,7 @@ class Brand(NameSlugModel):
         related_name="brand",
     )
     category = models.ManyToManyField(Category, related_name="brand")
+    image = models.URLField(unique=True, null=True)
 
     def get_products(self):
         return self.product.all()
@@ -84,8 +102,9 @@ class Product(NameSlugModel):
     )
     attributes = models.ManyToManyField(Attribute, related_name="products")
 
-    def get_nomenclatures(self):
-        return self.nomenclatures.all()
+    def get_basic_price(self):
+        basic_price = min([item.price for item in self.product_variant.all()])
+        return basic_price
 
     def get_absolute_url(self):
         return reverse(
@@ -93,22 +112,84 @@ class Product(NameSlugModel):
             kwargs={"slug": self.brand.slug, "product_slug": self.slug},
         )
 
+    def get_product_variants_colors(self):
+        return [
+            product_variant.colors.attribute_value.value
+            for product_variant in self.product_variant.all()
+        ]
+
+    def get_random_product_variant_image(self):
+        images = []
+        product_variant = self.product_variant.all()
+        attributes = [pv.images.all() for pv in product_variant]
+
+        for attribute in attributes:
+            images.extend([img.image for img in attribute])
+
+        image = random.choice(images)
+
+        return image
+
     class Meta:
         verbose_name = "Product"
         verbose_name_plural = "Products"
 
 
-class Nomenclature(models.Model):
-    code = models.CharField(max_length=15, unique=True)
+class ProductVariant(NameSlugModel):
     product = models.ForeignKey(
-        Product, related_name="nomenclatures", on_delete=models.CASCADE
+        Product, related_name="product_variant", on_delete=models.CASCADE
+    )
+    attributes = models.ForeignKey(
+        Attribute, related_name="product_variant", on_delete=models.CASCADE
     )
     price = models.DecimalField(
         max_digits=8,
         decimal_places=2,
         validators=[MinValueValidator(0, "The price must be equal or greater than 0.")],
     )
+
+    class Meta:
+        verbose_name = "Product Variant"
+        verbose_name_plural = "Product Variants"
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse(
+            "products:product_variant",
+            kwargs={"product_variant_slug": self.slug},
+        )
+
+    def get_nomenclatures(self):
+        return self.nomenclatures.all()
+
+    def get_title_photo(self):
+        return self.images.all()[0].image
+
+
+class Nomenclature(models.Model):
+    code = models.CharField(max_length=15, unique=True)
+    product_variant = models.ForeignKey(
+        ProductVariant, related_name="nomenclatures", on_delete=models.CASCADE
+    )
+    price = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        validators=[MinValueValidator(0, "The price must be equal or greater than 0.")],
+        blank=True,
+    )
     quantity_available = models.PositiveIntegerField(default=0)
+    attributes = models.ForeignKey(
+        Attribute, related_name="nomenclature", on_delete=models.CASCADE
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.price:  # Check if price is not set
+            self.price = (
+                self.product_variant.price
+            )  # Use the price from the parent ProductVariant
+        super().save(*args, **kwargs)  # Call the original save method
 
     def __str__(self):
         return self.code
@@ -121,6 +202,9 @@ class Nomenclature(models.Model):
 class Image(models.Model):
     name = models.CharField(max_length=256)
     image = models.URLField(unique=True)
+    product_variant = models.ForeignKey(
+        ProductVariant, related_name="images", on_delete=models.CASCADE
+    )
 
     def __str__(self):
         if self.name:
@@ -130,20 +214,3 @@ class Image(models.Model):
     class Meta:
         verbose_name = "Image"
         verbose_name_plural = "Images"
-
-
-class ProductImage(models.Model):
-    name = models.CharField(max_length=256)
-    product = models.ForeignKey(
-        Product, related_name="product_image", on_delete=models.CASCADE
-    )
-    image = models.ForeignKey(
-        Image, related_name="product_image", on_delete=models.CASCADE
-    )
-
-    def __str__(self):
-        return f"Product Image of {self.product}"
-
-    class Meta:
-        verbose_name = "Product Image"
-        verbose_name_plural = "Product Images"

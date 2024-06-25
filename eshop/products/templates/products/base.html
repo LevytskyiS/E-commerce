@@ -42,7 +42,10 @@
                                     <a href="{% url 'orders:order_list' %}">My Orders</a>
                                 </li>
                                 <li>
-                                <a href="{% url 'users:profile' username=request.user.username %}">My Profile</a>
+                                    <a href="{% url 'users:profile' username=request.user.username %}">My Profile</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'cart:cart_detail' %}">Cart</a>
                                 </li>
                                 {% endif %}
                                 {% if not request.user.is_authenticated %}
@@ -70,10 +73,12 @@
                 <div class="container">
                     <div class="nav__row">
                         <ul class="nav__list">
-                            <li><a href="{% url 'products:outdoor_product_list' %}">Outdoor</a></li>
-                            <li><a href="{% url 'products:gym_product_list' %}">Gym</a></li>
-                            <li><a href="{% url 'products:running_product_list' %}">Running</a></li>
-                            <li><a href="{% url 'products:hiking_product_list' %}">Hiking</a></li>
+                            <li><a href="{% url 'products:product_variant_list' %}">All products</a></li>
+                            <li><a href="{% url 'products:brand_list' %}">Brands</a></li>
+                            <li><a href="{% url 'products:product_variant_list' %}?subcategory=outdoor">Outdoor</a></li>
+                            <li><a href="{% url 'products:product_variant_list' %}?subcategory=gym">Gym</a></li>
+                            <li><a href="{% url 'products:product_variant_list' %}?subcategory=running">Running</a></li>
+                            <li><a href="{% url 'products:product_variant_list' %}?subcategory=hiking">Hiking</a></li>
                         </ul>
                     </div>
                 </div>
@@ -91,5 +96,15 @@
             </div>
         </footer>
     </div>
+    <!-- Script for the 2nd option -->
+    <!-- <script>
+        function resetForm() {
+            const form = document.getElementById('filterForm');
+            form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+            // Optionally, submit the form if you want to refresh the page without filters
+            form.submit();
+        }
+    </script> -->
+    <!-- <script src="{% static 'products/js/product_variant.js' %}"></script> -->
 </body>
 </html>

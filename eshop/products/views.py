@@ -1,6 +1,8 @@
-from typing import Any
+from django.core.cache import cache
+from django.db.models import Prefetch
 from django.db.models.query import QuerySet
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.views import View
 from django.views.generic import (
     ListView,
@@ -11,7 +13,9 @@ from django.views.generic import (
     DeleteView,
 )
 
-from .models import Brand, Product
+from .models import Brand, Product, Attribute, ProductVariant, Nomenclature
+
+from cart.models import Cart, CartItem
 
 
 class IndexView(View):
@@ -33,9 +37,7 @@ class BrandListView(ListView):
     # paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Brand]:
-        brands = Brand.objects.all()
-        sublists = [brands[i : i + 3] for i in range(0, len(brands), 3)]
-        return sublists
+        return Brand.objects.order_by("name")
 
 
 # Product
@@ -46,7 +48,7 @@ class ProductDetailView(DetailView):
     context_object_name = "product"
 
     def get_queryset(self):
-        return Product.objects.select_related(
+        product = Product.objects.select_related(
             "brand", "category", "subcategory"
         ).prefetch_related(
             "attributes__attribute_name",
@@ -57,213 +59,139 @@ class ProductDetailView(DetailView):
         # select_related - предзагружает поля, которые являются FK
         # prefetch_related - предзагружает дочерние объекты поля
 
-
-class ProductListView(ListView):
-    model = Product
-    template_name = "products/product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
-
-    def get_queryset(self) -> QuerySet[Product]:
-        return Product.objects.all().select_related("brand", "category", "subcategory")
+        return product
 
 
-class GentsProductListView(ListView):
-    model = Product
-    template_name = "products/gents_product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
+# ProductVariant
+class ProductVariantDetailView(DetailView):
+    model = ProductVariant
+    slug_url_kwarg = "product_variant_slug"
+    template_name = "products/product_variant_detail.html"
+    context_object_name = "product_variant"
 
-    def get_queryset(self) -> QuerySet[Product]:
-        return Product.objects.filter(sex="M").select_related(
-            "brand", "category", "subcategory"
+    def post(self, request, *args, **kwargs):
+        nomenclature_code = request.POST.get("nomenclature_code")
+        nomenclature = get_object_or_404(Nomenclature, code=nomenclature_code)
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        cart_item, created = CartItem.objects.get_or_create(
+            cart=cart, nomenclature=nomenclature
         )
 
+        if not created:
+            cart_item.quantity += 1
+        cart_item.save()
 
-class LadiesProductListView(ListView):
-    model = Product
-    template_name = "products/ladies_product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
+        redirect_url = self.get_object().get_absolute_url()
+        return redirect(redirect_url)
 
-    def get_queryset(self) -> QuerySet[Product]:
-        return Product.objects.filter(sex="W").select_related(
-            "brand", "category", "subcategory"
+    def get_queryset(self):
+        product_variant = ProductVariant.objects.select_related(
+            "product",
+            "product__brand",
+            "product__subcategory",
+            "product__category",
+            "attributes__attribute_name",
+            "attributes__attribute_value",
+        ).prefetch_related(
+            "product__attributes__attribute_name",
+            "product__attributes__attribute_value",
         )
 
+        color = self.request.GET.get("color")
 
-class HikingProductListView(ListView):
-    model = Product
-    template_name = "products/product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
+        if color:
+            product_variant = product_variant.filter(
+                attributes__attribute_value__value=color
+            )
+        return product_variant
 
-    def get_queryset(self) -> QuerySet[Product]:
-        return (
-            Product.objects.filter(subcategory__name="hiking")
-            .select_related("brand", "category", "subcategory")
-            .order_by("name")
+
+class ProductVariantListView(ListView):
+    model = ProductVariant
+    template_name = "products/product_variant_list.html"
+    context_object_name = "product_variants"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # colors = cache.get("colors")
+        # if not colors:
+        #     colors = Attribute.objects.filter(
+        #         attribute_name__name="color"
+        #     ).select_related("attribute_value")
+        #     cache.set("colors", colors, 3600)  # Кэш на 1 час
+        colors = Attribute.objects.filter(attribute_name__name="color").select_related(
+            "attribute_value"
         )
 
+        details = Attribute.objects.filter(
+            attribute_name__name="details"
+        ).select_related("attribute_value")
 
-class RunningProductListView(ListView):
-    model = Product
-    template_name = "products/product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
+        certificates = Attribute.objects.filter(
+            attribute_name__name="certificate"
+        ).select_related("attribute_value")
 
-    def get_queryset(self) -> QuerySet[Product]:
-        return (
-            Product.objects.filter(subcategory__name="running")
-            .select_related("brand", "category", "subcategory")
-            .order_by("name")
-        )
+        brands = Brand.objects.all()
 
+        context["brands"] = brands
+        context["colors"] = colors
+        context["details"] = details
+        context["certificates"] = certificates
 
-class GymProductListView(ListView):
-    model = Product
-    template_name = "products/product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
+        # параметры предыдущего запроса
+        context["selected_brands"] = self.request.GET.getlist("brand")
+        context["selected_colors"] = self.request.GET.getlist("color")
+        context["selected_details"] = self.request.GET.getlist("detail")
+        context["selected_certificates"] = self.request.GET.getlist("certificate")
 
-    def get_queryset(self) -> QuerySet[Product]:
-        return (
-            Product.objects.filter(subcategory__name="gym")
-            .select_related("brand", "category", "subcategory")
-            .order_by("name")
-        )
-
-
-class OutdoorProductListView(ListView):
-    model = Product
-    template_name = "products/product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
+        return context
 
     def get_queryset(self) -> QuerySet[Product]:
-        return (
-            Product.objects.filter(subcategory__name="outdoor")
-            .select_related("brand", "category", "subcategory")
-            .order_by("name")
+        queryset = ProductVariant.objects.all().select_related("product")
+        queryset = queryset.prefetch_related(
+            Prefetch(
+                "attributes",
+                queryset=Attribute.objects.select_related(
+                    "attribute_name", "attribute_value"
+                ),
+            ),
+            Prefetch(
+                "product",
+                queryset=Product.objects.select_related(
+                    "brand", "category", "subcategory"
+                ),
+            ),
         )
 
+        categories = self.request.GET.getlist("category")
+        subcategories = self.request.GET.getlist("subcategory")
+        brands = self.request.GET.getlist("brand")
+        details = self.request.GET.getlist("detail")
+        colors = self.request.GET.getlist("color")
+        certificates = self.request.GET.getlist("certificate")
 
-class GentsHikingProductListView(ListView):
-    model = Product
-    template_name = "products/gents_product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
+        if categories:
+            queryset = queryset.filter(product__category__name__in=categories)
 
-    def get_queryset(self) -> QuerySet[Product]:
-        return (
-            Product.objects.filter(subcategory__name="hiking")
-            .filter(sex="M")
-            .select_related("brand", "category", "subcategory")
-            .order_by("name")
-        )
+        if subcategories:
+            queryset = queryset.filter(product__subcategory__name__in=subcategories)
 
+        if brands:
+            queryset = queryset.filter(product__brand__name__in=brands)
 
-class LadiesHikingProductListView(ListView):
-    model = Product
-    template_name = "products/ladies_product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
+        if details:
+            queryset = queryset.filter(
+                product__attributes__attribute_value__value__in=details,
+            )
 
-    def get_queryset(self) -> QuerySet[Product]:
-        print(len(Product.objects.filter(subcategory__name="hiking")))
-        return (
-            Product.objects.filter(subcategory__name="hiking")
-            .filter(sex="W")
-            .select_related("brand", "category", "subcategory")
-            .order_by("name")
-        )
+        if colors:
+            queryset = queryset.filter(
+                attributes__attribute_value__value__in=colors,
+            ).distinct()
 
+        if certificates:
+            queryset = queryset.filter(
+                product__attributes__attribute_value__value__in=certificates,
+            )
 
-class GentsRunningProductListView(ListView):
-    model = Product
-    template_name = "products/gents_product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
-
-    def get_queryset(self) -> QuerySet[Product]:
-        return (
-            Product.objects.filter(subcategory__name="running")
-            .filter(sex="M")
-            .select_related("brand", "category", "subcategory")
-            .order_by("name")
-        )
-
-
-class LadiesRunningProductListView(ListView):
-    model = Product
-    template_name = "products/ladies_product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
-
-    def get_queryset(self) -> QuerySet[Product]:
-        return (
-            Product.objects.filter(subcategory__name="running")
-            .filter(sex="W")
-            .select_related("brand", "category", "subcategory")
-            .order_by("name")
-        )
-
-
-class GentsGymProductListView(ListView):
-    model = Product
-    template_name = "products/gents_product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
-
-    def get_queryset(self) -> QuerySet[Product]:
-        return (
-            Product.objects.filter(subcategory__name="gym")
-            .filter(sex="M")
-            .select_related("brand", "category", "subcategory")
-            .order_by("name")
-        )
-
-
-class LadiesGymProductListView(ListView):
-    model = Product
-    template_name = "products/ladies_product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
-
-    def get_queryset(self) -> QuerySet[Product]:
-        return (
-            Product.objects.filter(subcategory__name="gym")
-            .filter(sex="W")
-            .select_related("brand", "category", "subcategory")
-            .order_by("name")
-        )
-
-
-class GentsOutdoorProductListView(ListView):
-    model = Product
-    template_name = "products/gents_product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
-
-    def get_queryset(self) -> QuerySet[Product]:
-        return (
-            Product.objects.filter(subcategory__name="outdoor")
-            .filter(sex="M")
-            .select_related("brand", "category", "subcategory")
-            .order_by("name")
-        )
-
-
-class LadiesOutdoorProductListView(ListView):
-    model = Product
-    template_name = "products/ladies_product_list.html"
-    context_object_name = "products"
-    # paginate_by = 10
-
-    def get_queryset(self) -> QuerySet[Product]:
-        return (
-            Product.objects.filter(subcategory__name="outdoor")
-            .filter(sex="W")
-            .select_related("brand", "category", "subcategory")
-            .order_by("name")
-        )
+        return queryset

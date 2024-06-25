@@ -3,18 +3,24 @@
 
 {% block content %}
 
-<div class="brands-wrapper">
-    {% for sublist in brands %}
-        <ul class="brands-sublist">
-        {% for brand in sublist %}
-        <div class="brands-li-wrapper">
-            <li class="brands-sublist-item">
-                <a href="{{ brand.get_absolute_url }}">{{ brand.name }}</a>
-            </li>
+<div class="brands">
+    <div class="container">
+        <div class="brands__row">
+            <div class="brands__title">
+                <h2>
+                    Distributed brands
+                </h2>
+            </div>
+            <ul class="brands__list">
+                {% for brand in brands %}
+                <li>
+                    <a href="{% url 'products:product_variant_list' %}?brand={{ brand.name }}"><img src="{{ brand.image }}" alt="Brand logo"></a>
+                </li>
+                {% endfor %}
+            </ul>
+                    
         </div>
-        {% endfor %}
-        </ul>
-    {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

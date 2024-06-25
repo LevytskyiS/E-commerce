@@ -3,11 +3,33 @@
 
 {% block content %}
 
-<form method="post" action="{% url 'users:update_profile' pk=user.id %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Update">
-</form>
-
+<div class="profile__update">
+    <div class="container">
+        <div class="profile__update__row">
+            <form class="profile__update__form" method="post" action="{% url 'users:update_profile' pk=user.id %}">
+                {% csrf_token %}
+                <div class="profile__form__row">
+                    <label for="id_first_name">First Name:</label>
+                    {{ form.first_name }}
+                </div>
+                <div class="profile__form__row">
+                    <label for="id_last_name">Last Name:</label>
+                    {{ form.last_name }}
+                </div>
+                <div class="profile__form__row">
+                    <label for="id_username">Username:</label>
+                    {{ form.username }}
+                </div>
+                <div class="profile__form__row">
+                    <label for="id_email">Email:</label>
+                    {{ form.email }}
+                </div>
+                <div class="profile__form__submit__input">
+                    <input type="submit" value="Update">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
