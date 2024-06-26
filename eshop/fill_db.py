@@ -16,68 +16,102 @@ from eshop.settings import PIXABAY_API_KEY
 from products.models import (
     AttributeName,
     AttributeValue,
+    AttributeImage,
     Attribute,
     Category,
     Subcategory,
     Brand,
     Product,
+    ProductVariant,
     Image,
-    ProductImage,
 )
 from orders.models import Order, OrderItem, ShippingAddress, Nomenclature, PaymentMethod
 
 # from users.models import Profile
 
+from productsd import products_data
+
 faker = Faker()
-attr_names = ["color", "certificate", "details", "size"]
+attr_names = ["certificate", "size", "color", "material", "properties"]
 attr_values = [
     {
-        "color": [
-            "Absolute Zero",
-            "Acid green",
-            "Aero",
-            "African violet",
-            "Air superiority blue",
-            "Alice blue",
-            "Alizarin",
-            "Alloy orange",
-            "Almond",
-            "Amaranth deep purple",
+        "certificate": [
+            "Eco-Friendly Fabric Certification",
+            "Fair Trade Apparel Certification",
+            "Organic Cotton Standard",
+            "Non-Toxic Dye Certification",
+            "Sustainable Manufacturing Seal",
         ]
     },
-    {"certificate": ["OEKO", "TEX", "WTF-6", "OMG"]},
+    {"size": ["XS", "S", "M", "L", "XL", "2XL", "3XL"]},
+    {"color": ["Black", "White", "Red", "Blue", "Green", "Yellow"]},
     {
-        "details": [
-            "Regular fit",
-            "Lace closure",
-            "Mesh upper",
-            "Stable, responsive feel",
-            "Textile lining",
-            "Lightstrike cushioning",
-            "Adiwear outsole",
-            "Upper contains a minimum of 50% recycled content",
-            "Imported",
+        "material": [
+            "100% cotton",
+            "100% polyester",
+            "50% cotton, 50% polyester",
+            "softshell",
         ]
     },
     {
-        "size": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "2XL",
+        "properties": [
+            "Breathable",
+            "Water-Resistant",
+            "Wrinkle-Free",
+            "Stretchable",
+            "Quick-Drying",
+            "Moisture-Wicking",
+            "Hypoallergenic",
+            "Thermal Insulation",
+            "UV Protection",
+            "Anti-Microbial",
         ]
     },
 ]
-categories = ["gents", "ladies"]
-subcategories = ["hiking", "running", "gym", "outdoor"]
+
+color_images = [
+    {
+        "Black": "https://i1.wp.com/cornellsun.com/wp-content/uploads/2020/06/1591119073-screen_shot_2020-06-02_at_10.30.13_am.png?fit=700%2C652&ssl=1"
+    },
+    {
+        "White": "https://dragonimage.com.au/cdn/shop/products/image36_4_1.jpg?v=1637899806"
+    },
+    {"Red": "https://w0.peakpx.com/wallpaper/195/332/HD-wallpaper-red-plain.jpg"},
+    {"Blue": "https://i.pinimg.com/736x/d7/4c/e3/d74ce3c8f1accd04ba44bdf18781a593.jpg"},
+    {
+        "Green": "https://xmple.com/wallpaper/solid-color-plain-green-single-one-colour-2732x2048-c-03360b-f-24.svg"
+    },
+    {
+        "Yellow": "https://img.freepik.com/free-photo/vivid-blurred-colorful-wallpaper-background_58702-5912.jpg"
+    },
+]
+
+categories = ["gents", "ladies", "kids"]
+subcategories = ["t-shirt", "shirt", "polo shirt", "jacket", "top"]
 brands = [
-    "UrbanTrend",
-    "VogueVista",
-    "Eclipse Apparel",
-    "Fabrica Luxe",
-    "ChicStreet",
+    {"UrbanTrend": [[1, 2], [2, 3]]},
+    {"VogueVista": [[2, 3], [1, 2, 3]]},
+    {"Eclipse Apparel": [[1, 3], [4, 5]]},
+    {"Fabrica Luxe": [[1, 2, 3], [3, 4, 4]]},
+    {"ChicStreet": [[2, 3], [1, 4, 5]]},
+]
+
+brands_images = [
+    {
+        "UrbanTrend": "https://cdn.shopify.com/s/files/1/2224/0955/files/UrbanTrnd_Logo.png?height=628&pad_color=fff&v=1613154939&width=1200"
+    },
+    {
+        "VogueVista": "https://vogue-vista.shop/cdn/shop/files/Vogue_Vista-4.png?height=628&pad_color=f8f8f8&v=1704562729&width=1200"
+    },
+    {
+        "Eclipse Apparel": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjA0zjzay2HpHJoR_3yJr62kpyzKvj1qEZPQ&s"
+    },
+    {
+        "Fabrica Luxe": "https://seeklogo.com/images/L/luxury-logo-C88D07841D-seeklogo.com.png"
+    },
+    {
+        "ChicStreet": "https://chicstreet.com/cdn/shop/files/logo_1200x1200.jpg?v=1613712202"
+    },
 ]
 
 
@@ -148,6 +182,22 @@ def create_attributes(names, values):
                 attribute.save()
 
 
+def create_attribute_images():
+    for data in color_images:
+        for key, value in data.items():
+            AttributeImage.objects.create(name=key, image=value)
+
+
+def add_attribute_image():
+    attrs = Attribute.objects.filter(attribute_name__name="color")
+    colors_images = AttributeImage.objects.all()
+    for attr in attrs:
+        for color_data in colors_images:
+            if attr.attribute_value.value == color_data.name:
+                attr.attribute_image = color_data
+                attr.save()
+
+
 def create_categories(categories):
     for category in categories:
         Category.objects.create(name=category)
@@ -164,32 +214,30 @@ def create_subcategories(subcategories):
             obj.save()
 
 
-def create_brands(brands):
-    categories = Category.objects.all()
-    subcategories = Subcategory.objects.all()
+def create_brands(brands: list):
+    for brand_data in brands:
+        for key, value in brand_data.items():
+            brand = Brand.objects.create(name=key)
+            categories_id = value[0]
+            subcategories_id = value[1]
 
-    for brand in brands:
-        obj = Brand.objects.create(name=brand)
+            for cat_id in categories_id:
+                category = Category.objects.get(id=cat_id)
+                brand.category.add(category)
+                brand.save()
 
-        number_of_cats = random.randint(1, len(categories))
-        number_of_subcats = random.randint(1, len(subcategories))
+            for subcat_id in subcategories_id:
+                subcategory = Subcategory.objects.get(id=subcat_id)
+                brand.subcategory.add(subcategory)
+                brand.save()
 
-        celected_cats = set()
-        celected_subcats = set()
 
-        while len(celected_cats) < number_of_cats:
-            celected_cats.add(random.choice(categories))
-
-        for cat in celected_cats:
-            obj.category.add(cat)
-            obj.save()
-
-        while len(celected_subcats) < number_of_subcats:
-            celected_subcats.add(random.choice(subcategories))
-
-        for subcat in celected_subcats:
-            obj.subcategory.add(subcat)
-            obj.save()
+def add_brand_image():
+    for data in brands_images:
+        for key, value in data.items():
+            brand = Brand.objects.get(name=key)
+            brand.image = value
+            brand.save()
 
 
 def create_images():
@@ -206,84 +254,69 @@ def create_images():
         counter += 1
 
 
-def create_products():
-    names = [
-        "Army men",
-        "B-Daman",
-        "Bakugan",
-        "Digital pet",
-        "Evel Knievel",
-        "Funko",
-        "G.I. Joe",
-        "Gumby",
-        "He-Man",
-        "Jumping Jack",
-        "Kenner Star Wars",
-        "Lara",
-        "Little People",
-        "Monster",
-        "Playmobil",
-        "Power Rangers",
-        "The Smurfs",
-        "Stretch Armstrong",
-        "TMNT",
-        "Toy soldier",
-        "Transformers",
-        "Weebles",
-    ]
-    for name in names:
-        sex = random.choice(["M", "W"])
-        brand = random.choice(Brand.objects.all())
-        if sex == "M":
-            category = Category.objects.get(name="gents")
-        else:
-            category = Category.objects.get(name="ladies")
-        subcategory = random.choice(Subcategory.objects.all())
+def create_products_productvariants_nomenclatures():
+    for prod_data in products_data:
+        product = prod_data["product"]
+        attributes = product["attributes"]
 
-        # price = random.choice([i for i in range(20, 200)])
-        number_of_attributes = random.randint(2, 7)
-        attributes = set()
-
-        while len(attributes) < number_of_attributes:
-            attributes.add(random.choice(Attribute.objects.all()))
-
-        product = Product.objects.create(
-            name=name, sex=sex, brand=brand, category=category, subcategory=subcategory
+        product_obj = Product.objects.create(
+            name=product["name"],
+            sex=product["sex"],
+            category=Category.objects.get(id=product["category"]),
+            subcategory=Subcategory.objects.get(id=product["subcategory"]),
+            brand=Brand.objects.get(id=product["brand"]),
         )
 
-        for attribute in attributes:
-            product.attributes.add(attribute)
-            product.save()
+        for attribute_id in attributes:
+            attribute = Attribute.objects.get(id=attribute_id)
+            product_obj.attributes.add(attribute)
+            product_obj.save()
 
+        product_variants: list = product["product_variants"]
 
-def create_nomenclatures():
-    product_code = 100
-    size_code = 10
-    products = Product.objects.all()
-
-    for product in products:
-        number_of_nomenclatures = random.randint(2, 5)
-        price = random.randint(10, 200)
-        for _ in range(1, number_of_nomenclatures):
-            nomenclature = Nomenclature.objects.create(
-                code=f"{product_code}{size_code}",
-                product=product,
-                price=price,
-                quantity_available=random.randint(1, 999),
+        for product_variant in product_variants:
+            product_variant_data = product_variant["product_variant"]
+            product_variant_obj = ProductVariant.objects.create(
+                product=product_obj,
+                name=product_variant_data["name"],
+                attributes=Attribute.objects.get(id=product_variant_data["attributes"]),
+                price=product_variant_data["price"],
+                description=product_variant_data["description"],
             )
-            size_code += 1
-        product_code += 1
+
+            images = product_variant_data["images"]
+
+            for image in images:
+                image_obj = Image.objects.create(
+                    name=product_variant_obj.name,
+                    image=image,
+                    product_variant=product_variant_obj,
+                )
+
+            nomenclatures = product_variant_data["nomenclatures"]
+
+            for nomenclature in nomenclatures:
+                nomenclature_data = nomenclature["nomenclature"]
+                nomenclature_obj = Nomenclature.objects.create(
+                    code=nomenclature_data["code"],
+                    product_variant=product_variant_obj,
+                    price=nomenclature_data["price"],
+                    quantity_available=nomenclature_data["quantity_available"],
+                    attributes=Attribute.objects.get(
+                        id=nomenclature_data["attributes"]
+                    ),
+                )
 
 
-def creade_product_images():
-    products = Product.objects.all()
-    images = Image.objects.all()
-    counter = 1
+# def creade_product_images():
+#     products = Product.objects.all()
+#     images = Image.objects.all()
+#     counter = 1
 
-    for product in products:
-        ProductImage.objects.create(
-            name=f"Prod photo {counter}", product=product, image=random.choice(images)
-        )
+#     for product in products:
+#         ProductImage.objects.create(
+#             name=f"Prod photo {counter}", product=product, image=random.choice(images)
+#         )
 
 
 def create_shipping_address():
@@ -342,11 +375,15 @@ create_users()
 create_attribute_names(attr_names)
 create_attribute_values(attr_values)
 create_attributes(attr_names, attr_values)
+create_attribute_images()
+add_attribute_image()
 create_categories(categories)
 create_subcategories(subcategories)
 create_brands(brands)
-create_images()
-# create_products()
+add_brand_image()
+
+create_products_productvariants_nomenclatures()
+
 # create_nomenclatures()
 # creade_product_images()
 # create_shipping_address()

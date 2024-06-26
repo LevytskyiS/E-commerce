@@ -20,11 +20,11 @@
                                 {% endfor %}
                             </div>
                             <div class="product__certificate">
-                                <h2>Details</h2>
-                                {% for detail in details %}
+                                <h2>Properties</h2>
+                                {% for property in properties %}
                                 <div class="product__checkbox">
-                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ detail.id }}" name="detail" value="{{ detail.attribute_value.value }}" {% if detail.attribute_value.value in selected_details %}checked{% endif %}>
-                                    <label class="product__checkbox__label" for="product__checkbox__{{ detail.id }}">{{ detail.attribute_value.value }}</label>
+                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ property.id }}" name="property" value="{{ property.attribute_value.value }}" {% if property.attribute_value.value in selected_properties %}checked{% endif %}>
+                                    <label class="product__checkbox__label" for="product__checkbox__{{ property.id }}">{{ property.attribute_value.value }}</label>
                                 </div>
                                 {% endfor %}
                             </div>

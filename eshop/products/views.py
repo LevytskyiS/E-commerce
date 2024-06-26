@@ -123,8 +123,8 @@ class ProductVariantListView(ListView):
             "attribute_value"
         )
 
-        details = Attribute.objects.filter(
-            attribute_name__name="details"
+        properties = Attribute.objects.filter(
+            attribute_name__name="properties"
         ).select_related("attribute_value")
 
         certificates = Attribute.objects.filter(
@@ -135,13 +135,13 @@ class ProductVariantListView(ListView):
 
         context["brands"] = brands
         context["colors"] = colors
-        context["details"] = details
+        context["properties"] = properties
         context["certificates"] = certificates
 
         # параметры предыдущего запроса
         context["selected_brands"] = self.request.GET.getlist("brand")
         context["selected_colors"] = self.request.GET.getlist("color")
-        context["selected_details"] = self.request.GET.getlist("detail")
+        context["selected_properties"] = self.request.GET.getlist("property")
         context["selected_certificates"] = self.request.GET.getlist("certificate")
 
         return context
@@ -166,7 +166,7 @@ class ProductVariantListView(ListView):
         categories = self.request.GET.getlist("category")
         subcategories = self.request.GET.getlist("subcategory")
         brands = self.request.GET.getlist("brand")
-        details = self.request.GET.getlist("detail")
+        properties = self.request.GET.getlist("property")
         colors = self.request.GET.getlist("color")
         certificates = self.request.GET.getlist("certificate")
 
@@ -179,9 +179,9 @@ class ProductVariantListView(ListView):
         if brands:
             queryset = queryset.filter(product__brand__name__in=brands)
 
-        if details:
+        if properties:
             queryset = queryset.filter(
-                product__attributes__attribute_value__value__in=details,
+                product__attributes__attribute_value__value__in=properties,
             )
 
         if colors:
