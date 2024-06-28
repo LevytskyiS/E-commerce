@@ -19,9 +19,11 @@
                 <div class="product__subtitle">
                     <h2>{{ product_variant.description }}</h2>
                 </div>
+                {% if request.user.is_authenticated %}
                 <div class="product__subtitle">
                     <h2>{{ product_variant.price }} €</h2>
                 </div>
+                {% endif %}
                 <div class="product__attribute">
                     <div class="product__attribute__subtitle">
                         Properties
@@ -54,11 +56,21 @@
                         <select class="product__select-box" name="nomenclature_code">
                             {% for nomenclature in product_variant.nomenclatures.all %}
                                 {% if nomenclature.quantity_available %}
+                                    {% if request.user.is_authenticated %}
                                     <option value="{{ nomenclature.code }}">{{ nomenclature.attributes.attribute_value.value }} - {{ nomenclature.price }} €</option>
+                                    {% else %}
+                                    <option value="{{ nomenclature.code }}">{{ nomenclature.attributes.attribute_value.value }}</option>
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                         </select>
+                        {% if request.user.is_authenticated %}
                         <button type="submit" class="product__add-to-cart-btn">Add to cart</button>
+                        {% else %}
+                        <div class="product__none">
+                            <p>Sign in to purchase</p>
+                        </div>
+                        {% endif %}
                     </div>
                 </form>
             </div>

@@ -79,7 +79,7 @@ color_images = [
     {"Red": "https://w0.peakpx.com/wallpaper/195/332/HD-wallpaper-red-plain.jpg"},
     {"Blue": "https://i.pinimg.com/736x/d7/4c/e3/d74ce3c8f1accd04ba44bdf18781a593.jpg"},
     {
-        "Green": "https://xmple.com/wallpaper/solid-color-plain-green-single-one-colour-2732x2048-c-03360b-f-24.svg"
+        "Green": "https://pub-static.fotor.com/assets/bg/246400f6-8a87-48ad-9698-281d55b388f5.jpg"
     },
     {
         "Yellow": "https://img.freepik.com/free-photo/vivid-blurred-colorful-wallpaper-background_58702-5912.jpg"
@@ -254,6 +254,10 @@ def create_images():
         counter += 1
 
 
+def create_payment_methods():
+    pass
+
+
 def create_products_productvariants_nomenclatures():
     for prod_data in products_data:
         product = prod_data["product"]
@@ -306,17 +310,6 @@ def create_products_productvariants_nomenclatures():
                         id=nomenclature_data["attributes"]
                     ),
                 )
-
-
-# def creade_product_images():
-#     products = Product.objects.all()
-#     images = Image.objects.all()
-#     counter = 1
-
-#     for product in products:
-#         ProductImage.objects.create(
-#             name=f"Prod photo {counter}", product=product, image=random.choice(images)
-#         )
 
 
 def create_shipping_address():
@@ -381,7 +374,7 @@ create_categories(categories)
 create_subcategories(subcategories)
 create_brands(brands)
 add_brand_image()
-
+create_payment_methods()
 create_products_productvariants_nomenclatures()
 
 # create_nomenclatures()

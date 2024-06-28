@@ -47,6 +47,8 @@ class OrderListView(ListView):
     context_object_name = "orders"
 
     def get_queryset(self) -> QuerySet[Order]:
+        if not self.request.user.is_authenticated:
+            return reverse("products:index")
         # return Order.objects.filter(user=self.request.user).order_by("created_at")
         return (
             Order.objects.filter(user=self.request.user)

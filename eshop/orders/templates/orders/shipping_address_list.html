@@ -7,6 +7,7 @@
     <div class="container">
         <div class="address__list__row">
             <h2>Active Shipping Addresses</h2>
+            {% if addresses %}
             <div class="addresses__info">
                 {% for address in addresses %}
                 <div class="addresses__details">
@@ -30,6 +31,11 @@
                 </div>
                 {% endfor %}
             </div>
+            {% else %}
+            <div class="detail-none">
+                <p>You haven`t add any shipping address</p>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

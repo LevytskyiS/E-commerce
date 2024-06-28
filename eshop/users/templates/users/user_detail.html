@@ -6,6 +6,7 @@
 <div class="profile">
     <div class="container">
         <div class="profile__row">
+        {% if request.user.is_authenticated and request.user.id == user.id %}
             <div class="profile__menu">
                 <div class="profile__url">
                     <a href="{% url 'users:update_profile' pk=user.id %}">Edit profile</a>
@@ -54,6 +55,11 @@
                 </div>
             </div>
         </div>
+        {% else %}
+        <script>
+            window.location.href = "{% url 'products:index' %}";
+        </script>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
