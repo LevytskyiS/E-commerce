@@ -3,6 +3,7 @@ from django.views.generic import ListView
 from django.views import View
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.db import transaction
 
 
 from .models import CartItem, Cart
@@ -49,30 +50,7 @@ class CartDetailView(View):
             else:
                 form_errors = True
 
-        # if form_errors:
-        #     messages.error(request, "There was an error updating your cart.")
-        # else:
-        #     messages.success(request, "Your cart was updated successfully.")
-
         return redirect("cart:cart_detail")
-
-
-# class CartDetailView(ListView):
-#     model = CartItem
-#     template_name = "cart/cart_detail.html"
-#     context_object_name = "cart_items"
-
-#     def get_queryset(self):
-#         cart, created = Cart.objects.get_or_create(user=self.request.user)
-#         return cart.cart_items.all()
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         cart = Cart.objects.get(user=self.request.user)
-#         context["total_price"] = sum(
-#             item.get_total_price() for item in cart.cart_items.all()
-#         )
-#         return context
 
 
 class CheckoutView(View):
@@ -82,29 +60,37 @@ class CheckoutView(View):
 
     def post(self, request):
         cart = Cart.objects.get(user=request.user)
-        # Обработка заказа (например, создание записи в модели заказа)
-        order = Order.objects.create(
-            user=request.user, shipping_address=cart.shipping_address
-        )
-        for cart_item in cart.cart_items.all():
-            nomenclature = Nomenclature.objects.get(code=cart_item.nomenclature)
-            if cart_item.quantity <= nomenclature.quantity_available:
-                nomenclature.quantity_available -= cart_item.quantity
-                nomenclature.save()
-                order_item = OrderItem.objects.create(
-                    order=order, nomenclature=nomenclature, quantity=cart_item.quantity
-                )
-            else:
-                error_occurred = True
-                messages.error(
-                    request,
-                    f"Quantity for {nomenclature.product_variant.name} exceeds available stock.",
-                )
-                order.delete()
-                # Need to inform a user, that a certain item is out of stock
-                return redirect("cart:cart_detail")
+        order = Order(user=request.user, shipping_address=cart.shipping_address)
+
+        order_items = []
+
+        with transaction.atomic():
+
+            for item in cart.cart_items.all():
+                nomenclature: Nomenclature = item.nomenclature
+
+                if item.quantity <= nomenclature.quantity_available:
+                    nomenclature.quantity_available -= item.quantity
+                    order_item = OrderItem(
+                        order=order, nomenclature=nomenclature, quantity=item.quantity
+                    )
+                    nomenclature.save()
+                    order_items.append(order_item)
+
+                else:
+                    error_occurred = True
+                    messages.error(
+                        request,
+                        f"Quantity for {nomenclature.product_variant.name} exceeds available stock.",
+                    )
+                    return redirect("cart:cart_detail")
+
+            order.save()
+            OrderItem.objects.bulk_create(order_items)
 
         cart.cart_items.all().delete()
+        cart.shipping_address = None
+        cart.save()
         return redirect("cart:order_confirmation")
 
 

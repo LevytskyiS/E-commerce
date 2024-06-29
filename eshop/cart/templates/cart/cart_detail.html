@@ -18,6 +18,7 @@
                             <th>Item Code</th>
                             <th>Item Price</th>
                             <th>Quantity</th>
+                            <th>In Stock</th>
                             <th>Total Price</th>
                         </tr>
                     </thead>
@@ -28,13 +29,23 @@
                             <td>{{ item.nomenclature.code }}</td>
                             <td>{{ item.nomenclature.price }}</td>
                             <td>{{ form.quantity }}</td>
+                            <td>{{ item.nomenclature.quantity_available }}</td>
                             <td>{{ item.get_total_price }} €</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                <div class="cart__address">Current Delivery Address<br>
-                    {{ cart.shipping_address }}
+                <div class="cart__address">
+                    {% if not cart.shipping_address %}
+                    <div class="cart__current__address">
+                        <p>Choose a delivery address</p>
+                    </div>
+                    {% else %}
+                    <div class="cart__current__address">
+                        <p>The order will be delivered to:</p>
+                        <div class="cart__select__address"><p>{{ cart.shipping_address }}</p></div>
+                    </div>
+                    {% endif %}
                 </div>
                 <select class="address__select-box" name="address_id">
                     {% for address in addresses %}
@@ -47,7 +58,7 @@
                 <div class="cart__summary__total">
                     <p>Total Price: {{ total_price }} €</p>
                 </div>
-                {% if total_price > 0 %}
+                {% if total_price > 0 and cart.shipping_address %}
                 <div class="cart__summary__url">
                     <a href="{% url 'cart:checkout' %}">Proceed to Checkout</a>
                 </div>

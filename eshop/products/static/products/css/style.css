@@ -1061,6 +1061,70 @@ th {
     text-align: left;
 }
 
+.cart__address {
+    margin: 30px 0;
+    font-size: 20px;
+    text-align: center;
+}
+
+.cart__select__address {
+    padding-top: 10px;
+
+}
+
+.cart__select__address p {
+    display: inline-block;
+    color: white;
+    background-color: #2873ff;
+    padding: 15px;
+    border-radius: 15px;
+}
+
+/* Основной стиль для select */
+.address__select-box {
+    width: 100%;
+    margin: 15px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #333;
+    appearance: none; /* Убирает стрелку по умолчанию в некоторых браузерах */
+    -webkit-appearance: none; /* Для Webkit браузеров */
+    -moz-appearance: none; /* Для Firefox */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 24px;
+}
+
+/* Стиль при наведении */
+.address__select-box:hover {
+    border-color: #888;
+}
+
+/* Стиль при фокусе */
+.address__select-box:focus {
+    border-color: #4676D7;
+    box-shadow: 0 0 5px rgba(70, 118, 215, 0.5);
+    outline: none;
+}
+
+/* Убирает стрелку по умолчанию в Internet Explorer */
+.address__select-box::-ms-expand {
+    display: none;
+}
+
+/* Стиль для мобильных устройств */
+/* @media (max-width: 600px) {
+    .address__select-box {
+        font-size: 14px;
+        padding: 8px;
+    }
+} */
+
+
 .cart button {
     display: block;
     width: 100%;
