@@ -147,6 +147,7 @@ class ProductVariant(NameSlugModel):
         decimal_places=2,
         validators=[MinValueValidator(0, "The price must be equal or greater than 0.")],
     )
+    description = models.CharField()
 
     class Meta:
         verbose_name = "Product Variant"

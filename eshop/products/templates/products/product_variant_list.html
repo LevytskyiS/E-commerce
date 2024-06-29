@@ -10,21 +10,30 @@
                 <div class="product__options">
                     <div class="product__search">
                         <form method="get" action="{% url 'products:product_variant_list' %}" id="filterForm">
-                            <div class="product__certificate">
-                                <h2>Certificates</h2>
-                                {% for certificate in certificates %}
+                            <div class="product__category">
+                                <h2>Categories</h2>
+                                {% for category in categories %}
                                 <div class="product__checkbox">
-                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ certificate.id }}" name="certificate" value="{{ certificate.attribute_value.value }}" {% if certificate.attribute_value.value in selected_certificates %}checked{% endif %}>
-                                    <label class="product__checkbox__label" for="product__checkbox__{{ certificate.id }}">{{ certificate.attribute_value.value }}</label>
+                                    <input type="checkbox" class="product__input" id="product__checkbox__category{{ category.id }}" name="category" value="{{ category.name }}" {% if category.name in selected_categories %}checked{% endif %}>
+                                    <label class="product__checkbox__label" for="product__checkbox__category{{ category.id }}">{{ category.name.capitalize }}</label>
                                 </div>
                                 {% endfor %}
                             </div>
-                            <div class="product__certificate">
-                                <h2>Details</h2>
-                                {% for detail in details %}
+                            <div class="product__subcategories">
+                                <h2>Subcategories</h2>
+                                {% for subcategory in subcategories %}
                                 <div class="product__checkbox">
-                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ detail.id }}" name="detail" value="{{ detail.attribute_value.value }}" {% if detail.attribute_value.value in selected_details %}checked{% endif %}>
-                                    <label class="product__checkbox__label" for="product__checkbox__{{ detail.id }}">{{ detail.attribute_value.value }}</label>
+                                    <input type="checkbox" class="product__input" id="product__checkbox__subcategory{{ subcategory.id }}" name="subcategory" value="{{ subcategory.name }}" {% if subcategory.name in selected_subcategories %}checked{% endif %}>
+                                    <label class="product__checkbox__label" for="product__checkbox__subcategory{{ subcategory.id }}">{{ subcategory.name.capitalize }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="product__properties">
+                                <h2>Properties</h2>
+                                {% for property in properties %}
+                                <div class="product__checkbox">
+                                    <input type="checkbox" class="product__input" id="product__checkbox__property{{ property.id }}" name="property" value="{{ property.attribute_value.value }}" {% if property.attribute_value.value in selected_properties %}checked{% endif %}>
+                                    <label class="product__checkbox__label" for="product__checkbox__property{{ property.id }}">{{ property.attribute_value.value }}</label>
                                 </div>
                                 {% endfor %}
                             </div>
@@ -32,17 +41,17 @@
                                 <h2>Colors</h2>
                                 {% for color in colors %}
                                 <div class="product__checkbox">
-                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ color.id }}" name="color" value="{{ color.attribute_value.value }}" {% if color.attribute_value.value in selected_colors %}checked{% endif %}>
-                                    <label class="product__checkbox__label" for="product__checkbox__{{ color.id }}">{{ color.attribute_value.value }}</label>
+                                    <input type="checkbox" class="product__input" id="product__checkbox__color{{ color.id }}" name="color" value="{{ color.attribute_value.value }}" {% if color.attribute_value.value in selected_colors %}checked{% endif %}>
+                                    <label class="product__checkbox__label" for="product__checkbox__color{{ color.id }}">{{ color.attribute_value.value }}</label>
                                 </div>
                                 {% endfor %}
                             </div>
-                            <div class="product__certificate">
+                            <div class="product__brands">
                                 <h2>Brands</h2>
                                 {% for brand in brands %}
                                 <div class="product__checkbox">
-                                    <input type="checkbox" class="product__input" id="product__checkbox__{{ brand.name }}" name="brand" value="{{ brand.name }}" {% if brand.name in selected_brands %}checked{% endif %}>
-                                    <label class="product__checkbox__label" for="product__checkbox__{{ brand.name }}">{{ brand.name }}</label>
+                                    <input type="checkbox" class="product__input" id="product__checkbox__brand{{ brand.name }}" name="brand" value="{{ brand.name }}" {% if brand.name in selected_brands %}checked{% endif %}>
+                                    <label class="product__checkbox__label" for="product__checkbox__brand{{ brand.name }}">{{ brand.name }}</label>
                                 </div>
                                 {% endfor %}
                             </div>
@@ -62,7 +71,11 @@
                         <img src="{{ product_variant.get_title_photo }}" alt="">
                     </div>
                     <div class="product__name">
+                        {% if request.user.is_authenticated %}
                         <a href="{% url 'products:product_variant' product_variant_slug=product_variant.slug %}?color={{ product_variant.attributes.attribute_value.value }}">{{ product_variant.product.name }} {{ product_variant.price }} €</a>
+                        {% else %}
+                        <a href="{% url 'products:product_variant' product_variant_slug=product_variant.slug %}?color={{ product_variant.attributes.attribute_value.value }}">{{ product_variant.product.name }}</a>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}

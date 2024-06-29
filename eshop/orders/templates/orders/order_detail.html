@@ -6,6 +6,11 @@
 <div class="order">
     <div class="container">
         <div class="order__row">
+        {% if not request.user.is_authenticated %}
+        <script>
+            window.location.href = "{% url 'products:index' %}";
+        </script>
+        {% else %}
             <div class="back__url">
                 <a href="{% url 'users:profile' username=request.user.username %}">Back</a>
             </div>
@@ -46,6 +51,7 @@
                     </div>
                 </div>
             </div>
+        {% endif %}
         </div>
     </div>
 </div>

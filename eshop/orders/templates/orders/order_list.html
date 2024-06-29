@@ -6,9 +6,15 @@
 <div class="orders">
     <div class="container">
         <div class="orders__row">
+        {% if not request.user.is_authenticated %}
+        <script>
+            window.location.href = "{% url 'products:index' %}";
+        </script>
+        {% else %}
             <div class="orders__backurl">
                 <a href="{% url 'users:profile' username=request.user.username %}">My profile</a>
             </div>
+            {% if orders %}
             <ul class="orders__list">
                 {% for order in orders %}
                 <li>
@@ -18,6 +24,12 @@
                 </li>
                 {% endfor %}
             </ul>
+            {% else %}
+            <div class="orders__none detail-none">
+                <p>You haven`t purchased yet.</p>
+            </div>
+            {% endif %}
+        {% endif %}
         </div>
     </div>
 </div>

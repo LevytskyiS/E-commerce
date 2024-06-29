@@ -2,46 +2,69 @@
 {% load static %}
 
 {% block content %}
+
 <div class="cart">
     <div class="container">
         <div class="cart__row">
             <div class="cart__title">
                 <h2>Your Cart</h2>
             </div>
-            <div class="cart__items">
-                <table class="cart__table">
+            <form method="post" action="{% url 'cart:cart_detail' %}">
+                {% csrf_token %}
+                <table>
                     <thead>
                         <tr>
-                            <th>Product Name</th>
-                            <th>Size</th>
-                            <th>Price</th>
+                            <th>Product</th>
+                            <th>Item Code</th>
+                            <th>Item Price</th>
                             <th>Quantity</th>
+                            <th>In Stock</th>
                             <th>Total Price</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in cart_items %}
-                            <tr>
-                                <td>{{ item.nomenclature.product_variant.name }}</td>
-                                <td>{{ item.nomenclature.attributes.attribute_value.value }}</td>
-                                <td>{{ item.nomenclature.price }}</td>
-                                <td>{{ item.quantity }}</td>
-                                <td>{{ item.get_total_price }} €</td>
-                            </tr>
+                        {% for item, form in cart_item_forms %}
+                        <tr>
+                            <td>{{ item.nomenclature.product_variant.name }}</td>
+                            <td>{{ item.nomenclature.code }}</td>
+                            <td>{{ item.nomenclature.price }}</td>
+                            <td>{{ form.quantity }}</td>
+                            <td>{{ item.nomenclature.quantity_available }}</td>
+                            <td>{{ item.get_total_price }} €</td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
+                <div class="cart__address">
+                    {% if not cart.shipping_address %}
+                    <div class="cart__current__address">
+                        <p>Choose a delivery address</p>
+                    </div>
+                    {% else %}
+                    <div class="cart__current__address">
+                        <p>The order will be delivered to:</p>
+                        <div class="cart__select__address"><p>{{ cart.shipping_address }}</p></div>
+                    </div>
+                    {% endif %}
+                </div>
+                <select class="address__select-box" name="address_id">
+                    {% for address in addresses %}
+                            <option value="{{ address.id }}">{{ address }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Update Order</button>
+            </form>
             <div class="cart__summary">
-                <p>Total Price: {{ total_price }} €</p>
-                <a href="{% url 'cart:checkout' %}">Proceed to Checkout</a>
+                <div class="cart__summary__total">
+                    <p>Total Price: {{ total_price }} €</p>
+                </div>
+                {% if total_price > 0 and cart.shipping_address %}
+                <div class="cart__summary__url">
+                    <a href="{% url 'cart:checkout' %}">Proceed to Checkout</a>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
-
-<ul>
-
-</ul>
-
 {% endblock %}

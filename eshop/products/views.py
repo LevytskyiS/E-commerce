@@ -13,7 +13,15 @@ from django.views.generic import (
     DeleteView,
 )
 
-from .models import Brand, Product, Attribute, ProductVariant, Nomenclature
+from .models import (
+    Brand,
+    Product,
+    Attribute,
+    ProductVariant,
+    Nomenclature,
+    Category,
+    Subcategory,
+)
 
 from cart.models import Cart, CartItem
 
@@ -53,11 +61,7 @@ class ProductDetailView(DetailView):
         ).prefetch_related(
             "attributes__attribute_name",
             "attributes__attribute_value",
-            # "product_image__image",
         )
-
-        # select_related - предзагружает поля, которые являются FK
-        # prefetch_related - предзагружает дочерние объекты поля
 
         return product
 
@@ -123,26 +127,26 @@ class ProductVariantListView(ListView):
             "attribute_value"
         )
 
-        details = Attribute.objects.filter(
-            attribute_name__name="details"
+        properties = Attribute.objects.filter(
+            attribute_name__name="properties"
         ).select_related("attribute_value")
 
-        certificates = Attribute.objects.filter(
-            attribute_name__name="certificate"
-        ).select_related("attribute_value")
-
+        categories = Category.objects.all()
+        subcategories = Subcategory.objects.all().prefetch_related("category")
         brands = Brand.objects.all()
 
+        context["categories"] = categories
+        context["subcategories"] = subcategories
         context["brands"] = brands
         context["colors"] = colors
-        context["details"] = details
-        context["certificates"] = certificates
+        context["properties"] = properties
 
         # параметры предыдущего запроса
+        context["selected_categories"] = self.request.GET.getlist("category")
+        context["selected_subcategories"] = self.request.GET.getlist("subcategory")
         context["selected_brands"] = self.request.GET.getlist("brand")
         context["selected_colors"] = self.request.GET.getlist("color")
-        context["selected_details"] = self.request.GET.getlist("detail")
-        context["selected_certificates"] = self.request.GET.getlist("certificate")
+        context["selected_properties"] = self.request.GET.getlist("property")
 
         return context
 
@@ -166,9 +170,8 @@ class ProductVariantListView(ListView):
         categories = self.request.GET.getlist("category")
         subcategories = self.request.GET.getlist("subcategory")
         brands = self.request.GET.getlist("brand")
-        details = self.request.GET.getlist("detail")
+        properties = self.request.GET.getlist("property")
         colors = self.request.GET.getlist("color")
-        certificates = self.request.GET.getlist("certificate")
 
         if categories:
             queryset = queryset.filter(product__category__name__in=categories)
@@ -179,19 +182,14 @@ class ProductVariantListView(ListView):
         if brands:
             queryset = queryset.filter(product__brand__name__in=brands)
 
-        if details:
+        if properties:
             queryset = queryset.filter(
-                product__attributes__attribute_value__value__in=details,
+                product__attributes__attribute_value__value__in=properties,
             )
 
         if colors:
             queryset = queryset.filter(
                 attributes__attribute_value__value__in=colors,
             ).distinct()
-
-        if certificates:
-            queryset = queryset.filter(
-                product__attributes__attribute_value__value__in=certificates,
-            )
 
         return queryset
