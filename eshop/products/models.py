@@ -186,11 +186,9 @@ class Nomenclature(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        if not self.price:  # Check if price is not set
-            self.price = (
-                self.product_variant.price
-            )  # Use the price from the parent ProductVariant
-        super().save(*args, **kwargs)  # Call the original save method
+        if not self.price:
+            self.price = self.product_variant.price
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.code

@@ -236,7 +236,6 @@ class OrderSerializer(serializers.ModelSerializer):
         items_data = request.data.get("order_item_ids")
         user = self.context["request"].user
 
-        # Обработка данных для объединения дублирующихся номенклатур
         consolidated_items = defaultdict(int)
 
         if not items_data:
@@ -254,7 +253,6 @@ class OrderSerializer(serializers.ModelSerializer):
                 {"error": f"'nomenclature' or 'quantity' is missing. Chech the body"}
             )
 
-        # Преобразование consolidated_items обратно в список словарей
         items_data = [
             {"nomenclature": k, "quantity": v} for k, v in consolidated_items.items()
         ]
@@ -269,7 +267,6 @@ class OrderSerializer(serializers.ModelSerializer):
                         item_id = item.get("nomenclature")
                         nomenclature: Nomenclature = Nomenclature.objects.get(
                             id=item_id
-                            # code=item.get("nomenclature")
                         )
                     except Nomenclature.DoesNotExist:
                         raise ValidationError(

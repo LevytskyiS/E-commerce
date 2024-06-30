@@ -23,7 +23,6 @@ class ShippingAddressAdmin(admin.ModelAdmin):
     )
     list_filter = ("user", "is_default", "is_active")
     search_fields = ("user__username", "address", "city", "country", "postal_code")
-    # raw_id_fields = ("user",)
     autocomplete_fields = ("user",)
 
 
@@ -45,15 +44,9 @@ class OrderAdmin(admin.ModelAdmin):
         # "updated_at",
     )
     list_filter = ("created_at", "user", "shipping_address")
-    # list_filter = ("created_at", "updated_at", "user", "shipping_address")
     raw_id_fields = ("shipping_address",)
     search_fields = ("code", "user__username")
     date_hierarchy = "created_at"
-    # list_select_related — это атрибут в Django Admin, который используется для оптимизации
-    # запросов к базе данных при отображении связанных объектов в списках. Он позволяет вам
-    # заранее загружать связанные объекты с использованием SQL JOIN, чтобы избежать выполнения
-    # дополнительных запросов на каждую связанную запись.
-    # list_select_related = ("user", "shipping_address")
     list_select_related = True
     inlines = [OrderItemInline]
     list_per_page = 20
@@ -77,7 +70,6 @@ class OrderItemAdmin(admin.ModelAdmin):
 class InvoiceAdmin(admin.ModelAdmin):
     list_display = ("id", "order", "number")
     search_fields = ("order__code", "number")
-    # list_filter = ("order", "nomenclature")
     autocomplete_fields = ("order",)
 
 

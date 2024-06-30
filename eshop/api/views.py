@@ -142,7 +142,6 @@ class AttributeCreateAPIView(generics.CreateAPIView):
 class AttributeAPIViewSet(viewsets.ModelViewSet):
     queryset = Attribute.objects.all()
     serializer_class = AttributeSerializer
-    # Переделать, что читать могут все, а удалять - админ
 
 
 # Brand
@@ -287,8 +286,6 @@ class OrderItemListAPIView(generics.ListAPIView):
 
 # Invoice
 class InvoiceDetailAPIView(generics.RetrieveAPIView):
-    """Accept GET request and return invoice details by its model id."""
-
     permission_classes = [IsInvoiceUserOrAdminUser]
 
     def get(self, request: HttpRequest, pk: int, format="json") -> Response:
