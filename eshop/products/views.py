@@ -6,11 +6,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import (
     ListView,
-    CreateView,
     DetailView,
-    FormView,
-    UpdateView,
-    DeleteView,
 )
 
 from .models import (
@@ -42,7 +38,6 @@ class BrandListView(ListView):
     model = Brand
     template_name = "products/brand_list.html"
     context_object_name = "brands"
-    # paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Brand]:
         return Brand.objects.order_by("name")
@@ -141,7 +136,6 @@ class ProductVariantListView(ListView):
         context["colors"] = colors
         context["properties"] = properties
 
-        # параметры предыдущего запроса
         context["selected_categories"] = self.request.GET.getlist("category")
         context["selected_subcategories"] = self.request.GET.getlist("subcategory")
         context["selected_brands"] = self.request.GET.getlist("brand")

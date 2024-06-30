@@ -9,7 +9,6 @@ urlpatterns = [
     # Brands
     path("brands/", views.BrandListView.as_view(), name="brand_list"),
     path("brand/<slug:slug>/", views.BrandDetailView.as_view(), name="brand_detail"),
-    # Product
     # ProductVariant
     path(
         "products/<slug:product_variant_slug>",

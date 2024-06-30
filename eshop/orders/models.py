@@ -25,9 +25,6 @@ class ShippingAddress(models.Model):
     is_default = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
-    # def get_absolute_url(self):
-    #     return reverse("orders:order_detail", kwargs={"pk": self.pk})
-
     def __str__(self):
         return f"{self.user.username} - {self.address}, {self.city}, {self.country}"
 
@@ -59,7 +56,7 @@ class Order(TimeStampedModel):
         "shipped": "Shipped",
         "delivered": "Delivered",
         "cancelled": "Cancelled",
-    }  # key - actual value, value - human readable name
+    }
 
     user = models.ForeignKey(User, related_name="orders", on_delete=models.CASCADE)
     shipping_address = models.ForeignKey(
@@ -121,10 +118,8 @@ class Invoice(models.Model):
         return self.number
 
     def generate_invoice_file(self):
-        # Создаем буфер для хранения PDF
         buffer = io.BytesIO()
 
-        # Создаем PDF-документ с ReportLab
         p = canvas.Canvas(buffer, pagesize=A4)
         p.drawString(100, 750, f"Invoice Number: {self.number}")
         p.drawString(100, 730, f"Order Code: {self.order.code}")
@@ -132,11 +127,9 @@ class Invoice(models.Model):
             100, 710, f"Order Date: {self.order.created_at.strftime('%Y-%m-%d')}"
         )
 
-        # Добавьте сюда больше информации, как нужно
         p.showPage()
         p.save()
 
-        # Получаем содержимое буфера
         pdf = buffer.getvalue()
         buffer.close()
 
