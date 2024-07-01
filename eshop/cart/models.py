@@ -5,7 +5,6 @@ from products.models import Nomenclature
 from orders.models import ShippingAddress
 
 
-# Create your models here.
 class Cart(models.Model):
     user = models.OneToOneField(User, related_name="cart", on_delete=models.CASCADE)
     shipping_address = models.OneToOneField(

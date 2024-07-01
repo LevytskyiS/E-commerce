@@ -86,7 +86,6 @@ class ProductAdmin(admin.ModelAdmin):
 class ProductVariantAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "product", "attributes")
     list_filter = ("product",)
-    # raw_id_fields = ("attributes",)
     search_fields = ("name",)
 
 
